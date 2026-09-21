@@ -1,0 +1,21 @@
+{
+  "name": "Agriculture API",
+  "dockerComposeFile": "../../compose.yaml",
+  "service": "api",
+  "runServices": ["api", "web", "db"],
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspace/apps/api/.venv/bin/python"
+      }
+    }
+  }
+}
