@@ -1,0 +1,7 @@
+services:
+  # Keep the editor environments available before the apps are scaffolded,
+  # and when an application process exits. Start servers from a terminal.
+  api:
+    command: ["sleep", "infinity"]
+  web:
+    command: ["sleep", "infinity"]

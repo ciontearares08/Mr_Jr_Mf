@@ -1,3 +1,3 @@
-FROM mcr.microsoft.com/devcontainers/javascript-node:1-26-bookworm AS dev
+FROM mcr.microsoft.com/devcontainers/javascript-node:26-trixie AS dev
 
 WORKDIR /workspace/apps/web
