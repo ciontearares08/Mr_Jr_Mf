@@ -1,6 +1,6 @@
 {
   "name": "Agriculture Web",
-  "dockerComposeFile": "../../compose.yaml",
+  "dockerComposeFile": ["../../compose.yaml", "../compose.yaml"],
   "service": "web",
   "runServices": ["api", "web", "db"],
   "workspaceFolder": "/workspace",
