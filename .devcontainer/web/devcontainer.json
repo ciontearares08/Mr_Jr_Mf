@@ -1,0 +1,16 @@
+{
+  "name": "Agriculture Web",
+  "dockerComposeFile": ["../../compose.yaml", "../compose.yaml"],
+  "service": "web",
+  "runServices": ["api", "web", "db"],
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
