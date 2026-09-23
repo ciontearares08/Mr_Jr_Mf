@@ -5,6 +5,7 @@
   "runServices": ["api", "web", "db"],
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
+  "postStartCommand": "sudo chown -R node:node /workspace/apps/web/node_modules",
   "customizations": {
     "vscode": {
       "extensions": [
