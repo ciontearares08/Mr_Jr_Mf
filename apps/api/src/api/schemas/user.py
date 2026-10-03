@@ -12,14 +12,12 @@ class EmailInput(BaseModel):
     @classmethod
     def normalize_email(cls, raw_email: str) -> str:
         try:
-            return validate_email(
-                        raw_email.strip(), check_deliverability=False
-                    ).normalized
+            return normalize_email(raw_email)
         except EmailNotValidError as e:
             raise ValueError(f"Invalid email address: {e}") from e
 
 class UserCreate(EmailInput):
-    password: str = Field(min_length=12)
+    password: str = Field(min_length=12, max_length=256)
 
 class LoginRequest(EmailInput):
     password: str = Field(...)
@@ -31,4 +29,9 @@ class UserRead(BaseModel):
     email: str = Field(...)
     created_at: datetime = Field(...)
 
-
+def normalize_email(raw_email: str) -> str:
+    result = validate_email(
+        raw_email.strip(),
+        check_deliverability=False,
+    )
+    return result.normalized.casefold()
