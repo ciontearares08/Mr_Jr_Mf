@@ -4,7 +4,8 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from api.db.models.field import Field
+import api.db.models  # noqa: F401 — registers the table
+from api.db.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -19,7 +20,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Field.metadata
+target_metadata = Base.metadata
 
 config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
 
