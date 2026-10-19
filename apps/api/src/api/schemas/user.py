@@ -1,8 +1,11 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
 from email_validator import EmailNotValidError, validate_email
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+Password = Annotated[str, Field(min_length=12, max_length=256)]
 
 
 class EmailInput(BaseModel):
@@ -16,11 +19,19 @@ class EmailInput(BaseModel):
         except EmailNotValidError as e:
             raise ValueError(f"Invalid email address: {e}") from e
 
-class UserCreate(EmailInput):
-    password: str = Field(min_length=12, max_length=256)
 
-class LoginRequest(EmailInput):
-    password: str = Field(...)
+class UserCreate(EmailInput):
+    password: Password
+
+
+class EmailChange(EmailInput):
+    current_password: str
+
+
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: Password
+
 
 class UserRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -28,6 +39,12 @@ class UserRead(BaseModel):
     id: UUID
     email: str = Field(...)
     created_at: datetime = Field(...)
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
 
 def normalize_email(raw_email: str) -> str:
     result = validate_email(
