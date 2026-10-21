@@ -1,7 +1,10 @@
 services:
-  # Keep the editor environments available before the apps are scaffolded,
-  # and when an application process exits. Start servers from a terminal.
   api:
     command: ["sleep", "infinity"]
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    security_opt:
+      - seccomp=unconfined
   web:
     command: ["sleep", "infinity"]

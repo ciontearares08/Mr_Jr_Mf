@@ -10,6 +10,7 @@ engine = create_engine(DATABASE_URL)
 
 session_local = sessionmaker(bind=engine)
 
+
 def get_db() -> Generator[Session]:
     with session_local() as session:
         yield session

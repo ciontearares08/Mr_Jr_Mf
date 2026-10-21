@@ -1,11 +1,18 @@
 {
   "name": "Agriculture Web",
-  "dockerComposeFile": ["../../compose.yaml", "../compose.yaml"],
+  "dockerComposeFile": [
+    "../../compose.yaml",
+    "../compose.yaml"
+  ],
   "service": "web",
-  "runServices": ["api", "web", "db"],
+  "runServices": [
+    "api",
+    "web",
+    "db"
+  ],
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  "postStartCommand": "sudo chown -R node:node /workspace/apps/web/node_modules",
+  "postStartCommand": "sudo chown -R node:node /home/node/.codex /home/node/.vscode-server && sudo chown -R node:node /workspace/apps/web/node_modules",
   "customizations": {
     "vscode": {
       "extensions": [
