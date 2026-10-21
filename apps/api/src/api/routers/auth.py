@@ -222,9 +222,7 @@ def read_current_user(user: CurrentUser) -> UserRead:
 
 
 @router.patch("/email", response_model=UserRead)
-def change_email(
-    data: EmailChange, user: CurrentUser, db: DbSession
-) -> UserRead:
+def change_email(data: EmailChange, user: CurrentUser, db: DbSession) -> UserRead:
     check_current_password(user, data.current_password)
 
     user.email = data.email
