@@ -1,3 +1,9 @@
+from pathlib import Path  # noqa: EXE002
+
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parents[3] / ".env")
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
