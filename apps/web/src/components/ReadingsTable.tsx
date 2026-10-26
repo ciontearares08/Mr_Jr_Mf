@@ -9,18 +9,10 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-
-// You can export this interface or use the one from your mock_api.ts
-export interface Reading {
-  clock_today: string;
-  wheat_lai: number;
-  wheat_phenology_current_stage_name: string;
-  wheat_above_ground_wt: number;
-  "soil_soilwater_paw(1)": number;
-}
+import type { Reading } from "../services/mock_api";
 
 interface ReadingsTableProps {
-  data: any[]; // Using any[] to flexibly accept your mock CSV JSON array
+  data: Reading[];
 }
 
 export default function ReadingsTable({ data }: ReadingsTableProps) {

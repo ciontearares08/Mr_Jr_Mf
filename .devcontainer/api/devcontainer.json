@@ -12,7 +12,7 @@
   ],
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  "postStartCommand": "sudo chown -R vscode:vscode /workspace/apps/api/.venv && cd /workspace/apps/api && uv sync",
+  "postStartCommand": "sudo chown -R vscode:vscode /workspace/apps/api/.venv && cd /workspace && make api-install hooks",
   "customizations": {
     "vscode": {
       "extensions": [

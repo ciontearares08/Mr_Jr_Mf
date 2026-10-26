@@ -26,20 +26,20 @@ export async function getReadings(): Promise<Reading[]> {
 
     // 2. Wrap PapaParse in a Promise so we can await the asynchronous parsing
     return new Promise((resolve, reject) => {
-      Papa.parse(csvText, {
+      Papa.parse<Reading>(csvText, {
         header: true,         // Uses the first row (clock_today, etc.) as object keys
         dynamicTyping: true,  // Automatically converts numbers (e.g. "0.323" -> 0.323)
         skipEmptyLines: true,
         complete: (results) => {
           // Add a generic ID to each row so React map() has a unique key
-          const parsedData = results.data.map((row: any, index: number) => ({
+          const parsedData = results.data.map((row, index) => ({
             ...row,
             id: index
-          })) as Reading[];
+          }));
           
           resolve(parsedData);
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           reject(error);
         }
       });
