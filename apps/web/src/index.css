@@ -90,8 +90,10 @@
     --card-foreground: oklch(0.988 0.003 106.5);
     --popover: oklch(0.228 0.013 107.4);
     --popover-foreground: oklch(0.988 0.003 106.5);
-    --primary: oklch(0.432 0.095 166.913);
-    --primary-foreground: oklch(0.979 0.021 166.113);
+    /* Lighter green than the preset's default: we use text-primary for headings,
+       and the darker green was too hard to read on the dark background */
+    --primary: oklch(0.696 0.17 162.48);
+    --primary-foreground: oklch(0.262 0.051 172.552);
     --secondary: oklch(0.274 0.006 286.033);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.286 0.016 107.4);
@@ -127,4 +129,8 @@
   html {
     @apply font-sans;
     }
+  /* Makes the browser's own parts (scrollbars, etc.) dark too */
+  .dark {
+    color-scheme: dark;
+  }
 }

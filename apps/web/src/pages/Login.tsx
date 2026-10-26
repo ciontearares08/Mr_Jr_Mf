@@ -1,16 +1,12 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
   return (
-    <Box>
-      <Typography>THIS IS THE LOGIN PAGE</Typography>
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{ mt: 3, mb: 2, py: 1.5, fontWeight: "bold" }}
-      >
+    <div>
+      <p>THIS IS THE LOGIN PAGE</p>
+      <Button type="submit" size="lg" className="mt-6">
         Sign In
       </Button>
-    </Box>
+    </div>
   );
 }

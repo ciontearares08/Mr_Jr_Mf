@@ -1,26 +1,16 @@
 import { Outlet } from "react-router-dom";
-import { Box } from "@mui/material";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 export default function MainLayout() {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    // min-h-screen + flex-col + flex-1 on <main> keeps the footer at the bottom
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <Box
-        component="main"
-        sx={{
-          flex: 1,
-          p: 3,
-          maxWidth: "1200px",
-          mx: "auto",
-          width: "100%",
-          boxSizing: "border-box",
-        }}
-      >
+      <main className="mx-auto w-full max-w-6xl flex-1 p-6">
         <Outlet />
-      </Box>
+      </main>
       <Footer />
-    </Box>
+    </div>
   );
 }
