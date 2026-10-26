@@ -3,12 +3,12 @@ import { Box, Typography, Grid, CircularProgress, Alert } from "@mui/material";
 import GrassIcon from "@mui/icons-material/Grass";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { getReadings } from "../services/mock_api";
+import { getReadings, type Reading } from "../services/mock_api";
 import MetricCard from "./MetricCard";
 import ReadingsTable from "./ReadingsTable";
 
 export default function Dashboard() {
-  const [readings, setReadings] = useState<any[]>([]);
+  const [readings, setReadings] = useState<Reading[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,8 +17,8 @@ export default function Dashboard() {
       try {
         const data = await getReadings();
         setReadings(data);
-      } catch (err: any) {
-        setError(err.message || "Failed to fetch data");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch data");
       } finally {
         setLoading(false);
       }

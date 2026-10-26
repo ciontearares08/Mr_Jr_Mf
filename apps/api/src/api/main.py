@@ -1,4 +1,4 @@
-from pathlib import Path  # noqa: EXE002
+from pathlib import Path
 
 from dotenv import load_dotenv
 
