@@ -1,5 +1,5 @@
-import { Paper, Typography, Box } from "@mui/material";
 import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface MetricCardProps {
   title: string;
@@ -15,36 +15,21 @@ export default function MetricCard({
   icon,
 }: MetricCardProps) {
   return (
-    <Paper
-      elevation={2}
-      sx={{
-        p: 3,
-        borderRadius: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "100%",
-      }}
-    >
-      <Box>
-        <Typography
-          variant="subtitle2"
-          color="text.secondary"
-          gutterBottom
-          sx={{ fontWeight: "bold", textTransform: "uppercase" }}
-        >
-          {title}
-        </Typography>
-        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#166534" }}>
-          {value}{" "}
-          {unit && (
-            <Typography component="span" variant="h6" color="text.secondary">
-              {unit}
-            </Typography>
-          )}
-        </Typography>
-      </Box>
-      {icon && <Box sx={{ color: "#166534", opacity: 0.8 }}>{icon}</Box>}
-    </Paper>
+    <Card className="h-full">
+      <CardContent className="flex items-center justify-between">
+        <div>
+          <p className="mb-1 text-sm font-bold uppercase text-muted-foreground">
+            {title}
+          </p>
+          <p className="text-3xl font-bold text-primary">
+            {value}{" "}
+            {unit && (
+              <span className="text-lg text-muted-foreground">{unit}</span>
+            )}
+          </p>
+        </div>
+        {icon && <div className="text-primary opacity-80">{icon}</div>}
+      </CardContent>
+    </Card>
   );
 }

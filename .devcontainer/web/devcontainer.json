@@ -12,7 +12,7 @@
   ],
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  "postStartCommand": "sudo chown -R node:node /home/node/.codex /home/node/.vscode-server && sudo chown -R node:node /workspace/apps/web/node_modules",
+  "postStartCommand": "sudo chown -R node:node /home/node/.codex /home/node/.vscode-server 2>/dev/null; sudo chown -R node:node /workspace/apps/web/node_modules && cd /workspace && make web-setup hooks",
   "customizations": {
     "vscode": {
       "extensions": [

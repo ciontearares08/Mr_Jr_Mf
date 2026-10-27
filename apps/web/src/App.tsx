@@ -9,7 +9,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* MainLayout supplies the MUI Navbar (Header) and Footer */}
+        {/* MainLayout supplies the Navbar (Header) and Footer */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Dashboard />} />
