@@ -5,6 +5,8 @@ interface MetricCardProps {
   title: string;
   value: string | number;
   unit?: string;
+  // A short line under the value that explains it, e.g. a date range
+  description?: string;
   icon?: React.ReactNode;
 }
 
@@ -12,23 +14,35 @@ export default function MetricCard({
   title,
   value,
   unit,
+  description,
   icon,
 }: MetricCardProps) {
   return (
     <Card className="h-full">
-      <CardContent className="flex items-center justify-between">
+      <CardContent className="flex items-start justify-between gap-4">
         <div>
-          <p className="mb-1 text-sm font-bold uppercase text-muted-foreground">
+          <p className="mb-2 text-xs font-medium tracking-wide uppercase text-muted-foreground">
             {title}
           </p>
-          <p className="text-3xl font-bold text-primary">
+          <p className="text-3xl font-bold">
             {value}{" "}
             {unit && (
-              <span className="text-lg text-muted-foreground">{unit}</span>
+              <span className="text-lg font-medium text-muted-foreground">
+                {unit}
+              </span>
             )}
           </p>
+          {description && (
+            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+          )}
         </div>
-        {icon && <div className="text-primary opacity-80">{icon}</div>}
+
+        {/* The icon sits in a small, faintly green square ("badge") */}
+        {icon && (
+          <div className="rounded-lg bg-primary/10 p-2.5 text-primary">
+            {icon}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

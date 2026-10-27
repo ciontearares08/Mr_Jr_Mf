@@ -51,6 +51,10 @@ export default function Dashboard() {
       readings.length
     : 0;
 
+  // The CSV has one row per day, so the first and last rows give the date range
+  const firstDay = readings[0]?.clock_today.split(" ")[0];
+  const lastDay = readings[readings.length - 1]?.clock_today.split(" ")[0];
+
   return (
     <div>
       <h2 className="mb-6 text-3xl font-bold text-primary">
@@ -69,23 +73,25 @@ export default function Dashboard() {
             <MetricCard
               title="Total Days Simulated"
               value={readings.length}
-              icon={<Calendar className="size-9" />}
+              description={`${firstDay} to ${lastDay}`}
+              icon={<Calendar className="size-5" />}
             />
             <MetricCard
               title="Peak Leaf Area Index"
               value={maxLai.toFixed(2)}
-              icon={<Sprout className="size-9" />}
+              description="Highest leaf cover reached"
+              icon={<Sprout className="size-5" />}
             />
             <MetricCard
               title="Avg Topsoil Moisture"
               value={avgMoisture.toFixed(3)}
               unit="PAW"
-              icon={<Droplet className="size-9" />}
+              description="Plant-available water, top layer"
+              icon={<Droplet className="size-5" />}
             />
           </div>
 
-          <section className="mt-12">
-            <h3 className="mb-4 text-xl font-bold">Daily Telemetry Log</h3>
+          <section className="mt-8">
             <ReadingsTable data={readings} />
           </section>
         </>
