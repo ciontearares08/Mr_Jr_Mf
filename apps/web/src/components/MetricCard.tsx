@@ -1,10 +1,12 @@
-import { Paper, Typography, Box } from "@mui/material";
 import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface MetricCardProps {
   title: string;
   value: string | number;
   unit?: string;
+  // A short line under the value that explains it, e.g. a date range
+  description?: string;
   icon?: React.ReactNode;
 }
 
@@ -12,39 +14,36 @@ export default function MetricCard({
   title,
   value,
   unit,
+  description,
   icon,
 }: MetricCardProps) {
   return (
-    <Paper
-      elevation={2}
-      sx={{
-        p: 3,
-        borderRadius: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "100%",
-      }}
-    >
-      <Box>
-        <Typography
-          variant="subtitle2"
-          color="text.secondary"
-          gutterBottom
-          sx={{ fontWeight: "bold", textTransform: "uppercase" }}
-        >
-          {title}
-        </Typography>
-        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#166534" }}>
-          {value}{" "}
-          {unit && (
-            <Typography component="span" variant="h6" color="text.secondary">
-              {unit}
-            </Typography>
+    <Card className="h-full">
+      <CardContent className="flex items-start justify-between gap-4">
+        <div>
+          <p className="mb-2 text-xs font-medium tracking-wide uppercase text-muted-foreground">
+            {title}
+          </p>
+          <p className="text-3xl font-bold">
+            {value}{" "}
+            {unit && (
+              <span className="text-lg font-medium text-muted-foreground">
+                {unit}
+              </span>
+            )}
+          </p>
+          {description && (
+            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
           )}
-        </Typography>
-      </Box>
-      {icon && <Box sx={{ color: "#166534", opacity: 0.8 }}>{icon}</Box>}
-    </Paper>
+        </div>
+
+        {/* The icon sits in a small, faintly green square ("badge") */}
+        {icon && (
+          <div className="rounded-lg bg-primary/10 p-2.5 text-primary">
+            {icon}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

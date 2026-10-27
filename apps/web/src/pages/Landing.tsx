@@ -1,35 +1,20 @@
-import { Typography, Button, Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function Landing() {
-  const navigate = useNavigate();
-
   return (
-    <Container maxWidth="md" sx={{ textAlign: "center", py: 8 }}>
-      <Typography
-        variant="h3"
-        component="h1"
-        gutterBottom
-        sx={{ fontWeight: "bold", color: "primary" }}
-      >
+    <section className="mx-auto max-w-3xl py-16 text-center">
+      <h1 className="mb-4 text-4xl font-bold text-primary">
         Smart Agriculture Monitoring System
-      </Typography>
-      <Typography variant="h6" sx={{ color: "text.secondary", mb: 4 }}>
+      </h1>
+      <p className="mb-8 text-lg text-muted-foreground">
         Using a combination of NDVI Satellite images and IRL metrics using IoT
         and a cloud backend to track crop health and predictive yields.
-      </Typography>
-      <Button
-        variant="contained"
-        size="large"
-        onClick={() => navigate("/dashboard")}
-        sx={{
-          fontWeight: "bold",
-          px: 4,
-          py: 1.5,
-        }}
-      >
+      </p>
+      {/* buttonVariants() gives a normal link the same look as a <Button> */}
+      <Link to="/dashboard" className={buttonVariants({ size: "lg" })}>
         View Live Dashboard
-      </Button>
-    </Container>
+      </Link>
+    </section>
   );
 }

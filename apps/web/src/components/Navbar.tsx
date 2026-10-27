@@ -1,33 +1,26 @@
-import { Link as RouterLink } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-// import AgricultureIcon from "@mui/icons-material/Agriculture";
+import { Link } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   return (
-    <AppBar position="static" color="primary">
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography sx={{ fontWeight: "bold" }} variant="h6" component="div">
-            <Button
-              color="inherit"
-              component={RouterLink}
-              to="/"
-              sx={{ fontWeight: "bold" }}
-            >
-              Smart Agriculture
-            </Button>
-            {/* <AgricultureIcon /> */}
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", gap: 2 }}>
-          <Button color="inherit" component={RouterLink} to="/dashboard">
+    <header className="border-b bg-background">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <Link to="/" className="text-lg font-bold text-primary">
+          Smart Agriculture
+        </Link>
+
+        <div className="flex gap-2">
+          {/* buttonVariants() gives a normal link the same look as a <Button> */}
+          <Link to="/dashboard" className={buttonVariants({ variant: "ghost" })}>
             Dashboard
-          </Button>
-          <Button color="inherit" component={RouterLink} to="/login">
+          </Link>
+          <Link to="/login" className={buttonVariants({ variant: "ghost" })}>
             Login
-          </Button>
-        </Box>
-      </Toolbar>
-    </AppBar>
+          </Link>
+          <ThemeToggle />
+        </div>
+      </nav>
+    </header>
   );
 }

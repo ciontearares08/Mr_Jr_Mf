@@ -5,6 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>web</title>
+    <script>
+      // Picks the colour theme before the page is drawn, so it never flashes white.
+      // Dark is the default; light is only used if someone chose it with the
+      // theme toggle in the navbar (see src/components/ThemeToggle.tsx).
+      if (localStorage.getItem("theme") !== "light") {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

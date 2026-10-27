@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Grid, CircularProgress, Alert } from "@mui/material";
-import GrassIcon from "@mui/icons-material/Grass";
-import WaterDropIcon from "@mui/icons-material/WaterDrop";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { Calendar, CircleAlert, Droplet, Info, Sprout } from "lucide-react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Spinner } from "@/components/ui/spinner";
 import { getReadings, type Reading } from "../services/mock_api";
 import MetricCard from "./MetricCard";
 import ReadingsTable from "./ReadingsTable";
@@ -28,21 +27,19 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "200px",
-        }}
-      >
-        <CircularProgress color="success" />
-      </Box>
+      <div className="flex min-h-50 items-center justify-center">
+        <Spinner className="size-8 text-primary" />
+      </div>
     );
   }
 
   if (error) {
-    return <Alert severity="error">Error: {error}</Alert>;
+    return (
+      <Alert variant="destructive">
+        <CircleAlert />
+        <AlertTitle>Error: {error}</AlertTitle>
+      </Alert>
+    );
   }
 
   // Calculate some simple mock statistics for the cards based on the CSV data
@@ -54,63 +51,51 @@ export default function Dashboard() {
       readings.length
     : 0;
 
+  // The CSV has one row per day, so the first and last rows give the date range
+  const firstDay = readings[0]?.clock_today.split(" ")[0];
+  const lastDay = readings[readings.length - 1]?.clock_today.split(" ")[0];
+
   return (
-    <Box>
-      <Typography
-        variant="h4"
-        component="h2"
-        gutterBottom
-        sx={{ fontWeight: "bold", color: "#166534" }}
-      >
+    <div>
+      <h2 className="mb-6 text-3xl font-bold text-primary">
         Simulation Dashboard
-      </Typography>
+      </h2>
 
       {readings.length === 0 ? (
-        <Alert severity="info">
-          No records found. Ensure mock data is loaded.
+        <Alert>
+          <Info />
+          <AlertTitle>No records found. Ensure mock data is loaded.</AlertTitle>
         </Alert>
       ) : (
         <>
-          <Box>
-            {/* Top Row: Metric Cards */}
-            <Grid container spacing={3}>
-              <Grid size={{ xs: 12, sm: 4 }}>
-                <MetricCard
-                  title="Total Days Simulated"
-                  value={readings.length}
-                  icon={<CalendarMonthIcon fontSize="large" />}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, sm: 4 }}>
-                <MetricCard
-                  title="Peak Leaf Area Index"
-                  value={maxLai.toFixed(2)}
-                  icon={<GrassIcon fontSize="large" />}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, sm: 4 }}>
-                <MetricCard
-                  title="Avg Topsoil Moisture"
-                  value={avgMoisture.toFixed(3)}
-                  unit="PAW"
-                  icon={<WaterDropIcon fontSize="large" />}
-                />
-              </Grid>
-            </Grid>
+          {/* Top Row: Metric Cards (stacked on phones, 3 across from `sm` up) */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <MetricCard
+              title="Total Days Simulated"
+              value={readings.length}
+              description={`${firstDay} to ${lastDay}`}
+              icon={<Calendar className="size-5" />}
+            />
+            <MetricCard
+              title="Peak Leaf Area Index"
+              value={maxLai.toFixed(2)}
+              description="Highest leaf cover reached"
+              icon={<Sprout className="size-5" />}
+            />
+            <MetricCard
+              title="Avg Topsoil Moisture"
+              value={avgMoisture.toFixed(3)}
+              unit="PAW"
+              description="Plant-available water, top layer"
+              icon={<Droplet className="size-5" />}
+            />
+          </div>
 
-            <Box sx={{ mt: 10 }}>
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{ mt: 2, mb: 4, fontWeight: "bold" }}
-              >
-                Daily Telemetry Log
-              </Typography>
-              <ReadingsTable data={readings} />
-            </Box>
-          </Box>
+          <section className="mt-8">
+            <ReadingsTable data={readings} />
+          </section>
         </>
       )}
-    </Box>
+    </div>
   );
 }
