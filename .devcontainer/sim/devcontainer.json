@@ -1,0 +1,27 @@
+{
+  "name": "APSIM Simulation",
+  "dockerComposeFile": [
+    "../../compose.yaml",
+    "../compose.yaml"
+  ],
+  "service": "sim",
+  "runServices": [
+    "sim"
+  ],
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "postStartCommand": "sudo chown -R vscode:vscode /workspace/apps/sim/.venv && cd /workspace && make sim-install hooks",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml",
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspace/apps/sim/.venv/bin/python"
+      }
+    }
+  }
+}

@@ -33,6 +33,31 @@ services:
       db:
         condition: service_healthy
 
+  sim:
+    build:
+      context: .
+      dockerfile: apps/sim/Dockerfile
+      target: dev
+
+    working_dir: /workspace/apps/sim
+
+    volumes:
+      - .:/workspace
+      - sim-venv:/workspace/apps/sim/.venv
+
+    command:
+      - sh
+      - -c
+      - >-
+        uv sync &&
+        exec uv run uvicorn sim.main:app
+        --host 0.0.0.0
+        --port 8001
+        --reload
+
+    ports:
+      - "8001:8001"
+
   web:
     build:
       context: .
@@ -79,5 +104,6 @@ services:
 
 volumes:
   api-venv:
+  sim-venv:
   web-node-modules:
   postgres-data:
