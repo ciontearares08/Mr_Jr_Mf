@@ -1,6 +1,12 @@
 # Agricultural Simulation project
 This codebase was written for AAU MsC Computer Engineering 4th groups group project
 
+# IMPORTANT !!!
+After pulling run these commands:
+1. `docker compose up -d db` to pull the new image
+2. `make api-setup` (installs deps and runs the migrations)
+The docker image for the db has changed so these commands are mandatory
+
 # Layout
 The project has two main parts, both are stored in apps directory:
 ## Web
