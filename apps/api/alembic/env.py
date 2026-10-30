@@ -1,7 +1,9 @@
 import os
 from logging.config import fileConfig
 
+import geoalchemy2  # noqa: F401 — lets autogenerate render Geometry columns
 from alembic import context
+from geoalchemy2 import alembic_helpers
 from sqlalchemy import engine_from_config, pool
 
 import api.db.models  # noqa: F401 — registers the table
@@ -23,6 +25,14 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
+
+
+def include_object(obj, name, type_, reflected, compare_to):
+    # PostGIS owns spatial_ref_sys; never let autogenerate drop it.
+    if type_ == "table" and name == "spatial_ref_sys":
+        return False
+    return alembic_helpers.include_object(obj, name, type_, reflected, compare_to)
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -48,6 +58,9 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        include_object=include_object,
+        process_revision_directives=alembic_helpers.writer,
+        render_item=alembic_helpers.render_item,
     )
 
     with context.begin_transaction():
@@ -68,7 +81,18 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        # The postgis image adds the tiger and topology schemas to search_path, which
+        # makes autogenerate see their tables as ours. Only look at public.
+        connection.exec_driver_sql("SET search_path TO public")
+        connection.commit()
+
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+            include_object=include_object,
+            process_revision_directives=alembic_helpers.writer,
+            render_item=alembic_helpers.render_item,
+        )
 
         with context.begin_transaction():
             context.run_migrations()
