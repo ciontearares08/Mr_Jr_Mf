@@ -3,6 +3,7 @@ import MainLayout from "./components/MainLayout";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./components/Dashboard";
+import DataExplorer from "./pages/dev/DataExplorer";
 
 // 3. The Main App component wrapping your Dashboard in React Router
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/dev/data" element={<DataExplorer />} />
         </Route>
       </Routes>
     </BrowserRouter>
