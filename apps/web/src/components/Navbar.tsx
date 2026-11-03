@@ -12,7 +12,13 @@ export default function Navbar() {
 
         <div className="flex gap-2">
           {/* buttonVariants() gives a normal link the same look as a <Button> */}
-          <Link to="/dashboard" className={buttonVariants({ variant: "ghost" })}>
+          <Link to="/fieldmap" className={buttonVariants({ variant: "ghost" })}>
+            Field Map
+          </Link>
+          <Link
+            to="/dashboard"
+            className={buttonVariants({ variant: "ghost" })}
+          >
             Dashboard
           </Link>
           <Link to="/login" className={buttonVariants({ variant: "ghost" })}>

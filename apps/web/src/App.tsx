@@ -3,7 +3,7 @@ import MainLayout from "./components/MainLayout";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./components/Dashboard";
-import FieldMap from "./components/FieldMap";
+import FieldMap from "./components/map/FieldMap";
 
 // 3. The Main App component wrapping your Dashboard in React Router
 export default function App() {
