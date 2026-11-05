@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Leaflet from "leaflet";
 import type { Polygon as GeoJSONPolygon } from "geojson";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
@@ -26,9 +26,18 @@ type DrawControlsProps = {
 
 function DrawControls({ onChange }: DrawControlsProps) {
   const map = useMap();
+  // Keep the latest callback in a ref so a new onChange identity
+  // doesn't tear down and rebuild the controls (and the drawn polygon).
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     const drawn = Leaflet.featureGroup().addTo(map);
+    // Self-intersecting ("bow-tie") polygons are invalid geometry for PostGIS
+    // and give a meaningless area, so block them while drawing/editing.
+    map.pm.setGlobalOptions({ allowSelfIntersection: false });
     map.pm.addControls({
       position: "topleft",
       drawMarker: false,
@@ -47,9 +56,9 @@ function DrawControls({ onChange }: DrawControlsProps) {
       const layer = drawn.getLayers()[0];
       if (layer instanceof Leaflet.Polygon) {
         const geometry = layer.toGeoJSON().geometry;
-        onChange(geometry.type === "Polygon" ? geometry : null);
+        onChangeRef.current(geometry.type === "Polygon" ? geometry : null);
       } else {
-        onChange(null);
+        onChangeRef.current(null);
       }
       map.pm.Toolbar.setButtonDisabled(
         // disables the draw polygon button in the toolbar when there is already an existing polygon on the map
@@ -63,7 +72,7 @@ function DrawControls({ onChange }: DrawControlsProps) {
       event.layer.on("pm:dragend", refresh);
       refresh();
     };
-    const onRemove: Leaflet.PM.CreateEventHandler = (event) => {
+    const onRemove: Leaflet.PM.RemoveEventHandler = (event) => {
       drawn.removeLayer(event.layer);
       refresh();
     };
@@ -71,13 +80,19 @@ function DrawControls({ onChange }: DrawControlsProps) {
     map.on("pm:create", onCreate);
     map.on("pm:remove", onRemove);
 
+    // Sync React state and the toolbar with the (empty) layer group on every
+    // setup, so a re-run after hot reload / StrictMode doesn't leave a stale
+    // polygon in state or a disabled draw button.
+    refresh();
+
     return () => {
+      map.pm.disableDraw();
       map.off("pm:create", onCreate);
       map.off("pm:remove", onRemove);
       map.pm.removeControls();
       map.removeLayer(drawn);
     };
-  }, [map, onChange]);
+  }, [map]);
   return null;
 }
 
@@ -87,7 +102,7 @@ export default function FieldMap() {
 
   return (
     <div>
-      <h2 className="mb-6 text-3x1 font-bold text-primary">Field Map</h2>
+      <h2 className="mb-6 text-3xl font-bold text-primary">Field Map</h2>
       <Card>
         <CardHeader>
           <CardTitle>Draw Your Field</CardTitle>
@@ -113,7 +128,7 @@ export default function FieldMap() {
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
         <MetricCard
           title="Estimated Area"
-          value={areaHa === null ? "0" : areaHa.toFixed(2)}
+          value={areaHa === null ? "-" : areaHa.toFixed(2)}
           unit={areaHa === null ? undefined : "ha"}
           description="Estimated Area on the frontend"
           icon={<Ruler className="size-5" />}
