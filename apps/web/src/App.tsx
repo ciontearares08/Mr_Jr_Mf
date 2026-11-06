@@ -5,6 +5,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./components/Dashboard";
 import { Spinner } from "@/components/ui/spinner";
+import FieldMap from "./components/map/FieldMap";
 
 const DataExplorer = lazy(() => import("./pages/dev/DataExplorer.tsx"));
 // 3. The Main App component wrapping your Dashboard in React Router
@@ -31,6 +32,7 @@ export default function App() {
               </Suspense>
             }
           />
+          <Route path="/fieldmap" element={<FieldMap />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

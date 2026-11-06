@@ -9,7 +9,7 @@ require = @command -v $(1) >/dev/null 2>&1 || { echo "error: '$(1)' not found. $
 
 .DEFAULT_GOAL := help
 .PHONY: help api-setup api-install api-dev api-lint api-format api-test api-check \
-	migration migrate migrate-down db-reset web-setup web-dev web-lint web-typecheck web-build web-check \
+	migration migrate migrate-down db-reset web-setup web-dev web-lint web-typecheck web-build web-check api-types \
 	up down logs hooks
 
 help: ## Show this help
@@ -85,6 +85,10 @@ web-build: ## Production build
 	cd $(WEB) && npm run build
 
 web-check: web-lint web-typecheck web-build ## Everything CI runs for the web app
+
+api-types: ## Regenerate src/shared/api-types.ts from the running API, override with url=...
+	$(call require,npm,$(WEB_HINT))
+	cd $(WEB) && OPENAPI_URL=$(url) npm run api-types
 
 ##@ Repo
 
