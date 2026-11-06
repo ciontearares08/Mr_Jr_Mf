@@ -6,8 +6,17 @@ import Login from "./pages/Login";
 import Dashboard from "./components/Dashboard";
 import { Spinner } from "@/components/ui/spinner";
 import FieldMap from "./components/map/FieldMap";
+import {
+  GetField,
+  JoinField,
+  NewField,
+  FieldSettings,
+  FieldTimeline,
+  FieldTrends,
+  FieldTechnical,
+} from "./pages/fields/FieldExport";
 
-const DataExplorer = lazy(() => import("./pages/dev/DataExplorer.tsx"));
+const DataExplorer = lazy(() => import("./pages/dev/DataExplorer"));
 // 3. The Main App component wrapping your Dashboard in React Router
 export default function App() {
   return (
@@ -21,18 +30,26 @@ export default function App() {
           <Route
             path="/dev/data"
             element={
-              <Suspense>
-                fallback=
-                {
+              <Suspense
+                fallback={
                   <div className="flex min-h-50 items-center justify-center">
-                    <Spinner className="sixe-8 text-primary" />
+                    <Spinner className="size-8 text-primary" />
                   </div>
                 }
+              >
                 <DataExplorer />
               </Suspense>
             }
           />
           <Route path="/fieldmap" element={<FieldMap />} />
+          {/* FIELD ROUTES */}
+          <Route path="/fields/:id" element={<GetField />} />
+          <Route path="/fields/join" element={<JoinField />} />
+          <Route path="/fields/new" element={<NewField />} />
+          <Route path="/fields/:id/settings" element={<FieldSettings />} />
+          <Route path="/fields/:id/timeline" element={<FieldTimeline />} />
+          <Route path="/fields/:id/trends" element={<FieldTrends />} />
+          <Route path="/fields/:id/technical" element={<FieldTechnical />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
