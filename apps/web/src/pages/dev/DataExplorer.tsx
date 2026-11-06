@@ -112,7 +112,6 @@ export default function DataExplorer() {
         });
 
         setData(parsedData);
-        console.log("CSV processed");
       } catch (error) {
         setError(
           error instanceof Error
@@ -129,9 +128,6 @@ export default function DataExplorer() {
 
   // Get CSV columns
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
-
-  // Only the first PREVIEW_ROWS = 50 records are available in the table
-  // const tableData = data.slice(0, PREVIEW_ROWS);
 
   // Pagination calculations
   const firstRow = page * rowsPerPage;
@@ -167,13 +163,7 @@ export default function DataExplorer() {
       useGrouping: false,
     });
   }
-  // Chart uses ALL CSV observations
-  /*const chartData = data.map((row) => ({
-    clock_today: row.clock_today.getTime(),
-    wheat_lai: row.wheat_lai,
-  }));*/
 
-  //Chart uses only 50 records
   const chartData = useMemo(
     () =>
       data.map((row) => ({
@@ -199,7 +189,7 @@ export default function DataExplorer() {
   if (loading) {
     return (
       <div className="flex min-h-50 items-center justify-center">
-        <Spinner className="size-8text-primary" />
+        <Spinner className="size-8 text-primary" />
       </div>
     );
   }
@@ -225,18 +215,6 @@ export default function DataExplorer() {
             Developer tools / Simulation diagnostics
           </p>
         </div>
-
-        {/* <div className="flex items-center gap-2">
-          <span
-            className={`h-2.5 w-2.5 rounded-full ${
-              loading ? "bg-yellow-500" : "bg-green-500"
-            }`}
-          />
-
-          <span className="text-sm font-medium">
-            {loading ? "Loading CSV..." : "CSV Loaded Successfully"}
-          </span>
-        </div> */}
       </div>
 
       {/* DATASET METRICS */}
@@ -351,8 +329,8 @@ export default function DataExplorer() {
             </CardTitle>
 
             <CardDescription>
-              First 50 records of the APSIM dataset · All available simulation
-              variables.
+              First 50 records of the APSIM dataset· All {data.length} available
+              simulation variables.
             </CardDescription>
           </CardHeader>
 
