@@ -43,9 +43,9 @@ export default function App() {
           />
           <Route path="/fieldmap" element={<FieldMap />} />
           {/* FIELD ROUTES */}
-          <Route path="/fields/:id" element={<GetField />} />
           <Route path="/fields/join" element={<JoinField />} />
           <Route path="/fields/new" element={<NewField />} />
+          <Route path="/fields/:id" element={<GetField />} />
           <Route path="/fields/:id/settings" element={<FieldSettings />} />
           <Route path="/fields/:id/timeline" element={<FieldTimeline />} />
           <Route path="/fields/:id/trends" element={<FieldTrends />} />
