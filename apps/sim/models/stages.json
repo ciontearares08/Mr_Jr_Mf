@@ -1,0 +1,62 @@
+[
+  {
+    "stage_name": "Sowing",
+    "farmer_name": "Sowing",
+    "zadoks": 0.0,
+    "note": ""
+  },
+  {
+    "stage_name": "Germination",
+    "farmer_name": "Germination",
+    "zadoks": 1.0,
+    "note": ""
+  },
+  {
+    "stage_name": "Emergence",
+    "farmer_name": "Crop Emergence",
+    "zadoks": 10.0,
+    "note": ""
+  },
+  {
+    "stage_name": "TerminalSpikelet",
+    "farmer_name": "Terminal Spikelet",
+    "zadoks": 31.0,
+    "note": ""
+  },
+  {
+    "stage_name": "FlagLeaf",
+    "farmer_name": "Flag Leaf Visible",
+    "zadoks": 37.0,
+    "note": ""
+  },
+  {
+    "stage_name": "Flowering",
+    "farmer_name": "Flowering",
+    "zadoks": 65.0,
+    "note": ""
+  },
+  {
+    "stage_name": "StartGrainFill",
+    "farmer_name": "Start Grain Fill",
+    "zadoks": 71.0,
+    "note": ""
+  },
+  {
+    "stage_name": "EndGrainFill",
+    "farmer_name": "End Grain Fill",
+    "zadoks": 85.0,
+    "note": ""
+  },
+  {
+    "stage_name": "Maturity",
+    "farmer_name": "Ripe for Harvest / Maturity",
+    "zadoks": 92.0,
+    "note": ""
+  },
+  {
+    "stage_name": "HarvestRipe",
+    "farmer_name": "Harvest Ripe",
+    "zadoks": 99.0,
+    "note": ""
+  }
+]

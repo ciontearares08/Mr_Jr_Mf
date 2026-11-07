@@ -4,12 +4,12 @@ version = "0.1.0"
 description = "APSIM Simulation"
 requires-python = ">=3.13"
 dependencies = [
+    "apsimNGpy",
     "fastapi>=0.141.1",
     "python-dotenv>=1.2.4",
     "python-multipart>=0.0.32",
     "uvicorn>=0.53.0",
 ]
-
 
 [build-system]
 requires = ["uv_build>=0.12.17,<0.13.0"]
@@ -17,7 +17,7 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
-    "httpx2>=2.13.1",
+    "httpx>=0.27.0",
     "pytest>=9.1.1",
     "ruff>=0.16.8",
 ]
