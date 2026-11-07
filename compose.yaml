@@ -52,11 +52,11 @@ services:
         uv sync &&
         exec uv run uvicorn sim.main:app
         --host 0.0.0.0
-        --port 8008
+        --port 8001
         --reload
 
     ports:
-      - "8008:8008"
+      - "8001:8001"
   web:
     build:
       context: .

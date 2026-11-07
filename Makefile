@@ -1,6 +1,6 @@
 API := apps/api
 WEB := apps/web
-SIM := apps/SIM
+SIM := apps/sim
 
 API_HINT := Run api targets inside the API devcontainer.
 WEB_HINT := Run web targets inside the Web devcontainer.
@@ -56,7 +56,7 @@ sim-install: ## Install/update Python deps
 
 sim-dev: ## Start the SIM with auto-reload on :8001
 	$(call require,uv,$(SIM_HINT))
-	cd $(SIM) && uv run uvicorn sim.main:app --host 0.0.0.0 --port 8008 --reload
+	cd $(SIM) && uv run uvicorn sim.main:app --host 0.0.0.0 --port 8001 --reload
 
 sim-lint: ## Lint and check formatting (same as CI)
 	$(call require,uv,$(SIM_HINT))

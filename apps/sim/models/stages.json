@@ -1,0 +1,68 @@
+[
+  {
+    "stage_name": "Sowing",
+    "farmer_name": "Sowing",
+    "zadoks": 0.0,
+    "note": ""
+  },
+  {
+    "stage_name": "Germination",
+    "farmer_name": "Germination",
+    "zadoks": 5.0,
+    "note": ""
+  },
+  {
+    "stage_name": "Emergence",
+    "farmer_name": "Emergence",
+    "zadoks": 10.0,
+    "note": ""
+  },
+  {
+    "stage_name": "DoubleRidge",
+    "farmer_name": "Double ridge",
+    "zadoks": 12.0,
+    "note": ""
+  },
+  {
+    "stage_name": "MaximumSpikeletPrimordia",
+    "farmer_name": "Spikelets formed",
+    "zadoks": 14.0,
+    "note": ""
+  },
+  {
+    "stage_name": "FlagLeafAppearance",
+    "farmer_name": "Flag leaf",
+    "zadoks": 39.0,
+    "note": ""
+  },
+  {
+    "stage_name": "HeadEmergence",
+    "farmer_name": "Heading",
+    "zadoks": 55.0,
+    "note": ""
+  },
+  {
+    "stage_name": "Anthesis",
+    "farmer_name": "Flowering",
+    "zadoks": 65.0,
+    "note": ""
+  },
+  {
+    "stage_name": "MaximumGrainLength",
+    "farmer_name": "Grain filling",
+    "zadoks": 71.0,
+    "note": ""
+  },
+  {
+    "stage_name": "EndGrainFill",
+    "farmer_name": "End of grain fill",
+    "zadoks": 87.0,
+    "note": ""
+  },
+  {
+    "stage_name": "HarvestRipe",
+    "farmer_name": "Harvest ripe",
+    "zadoks": 90.0,
+    "note": ""
+  }
+]
