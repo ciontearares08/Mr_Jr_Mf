@@ -34,24 +34,3 @@ Run API commands in the API devcontainer and web commands in the Web devcontaine
 A pre-commit hook lints the files you stage. To skip it for one commit, run `git commit --no-verify`.
 
 On Windows without WSL you won't have `make`. Run `docker compose up` on the host, then run `make` inside the devcontainers.
-
-## Baseline Wheat Model (`wheat.apsimx`)
-
-This directory contains the base simulation templates utilized by the `sim` API service.
-
-**Model Specification:**
-- **APSIM Version:** 2024.6.7516.0
-- **Cultivar:** [Insert Cultivar Name, e.g., Scout]
-- **Sowing Date:** 15-Oct (Baseline - dynamically overridden by API)
-- **Soil Type:** [Insert Soil Name, e.g., Silt Loam]
-- **Source Paper/Validation:** [Insert Paper DOI/Title that produced zealand_cleaned.csv]
-
-## Soil Hydraulic Limits (Constant Parameters)
-The following limits define the water holding characteristics across the soil profile layers:
-
-| Layer | Depth (cm) | LL15 (Lower Limit) | DUL (Drained Upper Limit) | SAT (Saturation) |
-| :--- | :--- | :--- | :--- | :--- |
-| 1 | 0 - 15 | [Insert Value] | [Insert Value] | [Insert Value] |
-| 2 | 15 - 30 | [Insert Value] | [Insert Value] | [Insert Value] |
-| 3 | 30 - 60 | [Insert Value] | [Insert Value] | [Insert Value] |
-| 4 | 60 - 90 | [Insert Value] | [Insert Value] | [Insert Value] |

@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "APSIM Simulation"
 requires-python = ">=3.13"
 dependencies = [
-    "apsimNGpy",
+    "pandas>=3.1.1",
     "fastapi>=0.141.1",
     "python-dotenv>=1.2.4",
     "python-multipart>=0.0.32",

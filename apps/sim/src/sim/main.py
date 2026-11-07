@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from sim.routers.health import router as health_router
 
 app = FastAPI(title="APSIM Simulaton")

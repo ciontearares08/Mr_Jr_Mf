@@ -1,0 +1,6 @@
+# APSIM run output and scratch files
+*.db
+*.db-wal
+*.db-shm
+*.bak
+.scratch/

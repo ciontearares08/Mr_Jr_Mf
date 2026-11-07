@@ -13,10 +13,12 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && wget -O apsim.deb "https://builds.apsim.info/api/nextgen/download/${APSIM_VERSION}/Linux" \
     && apt-get install -y ./apsim.deb \
     && rm apsim.deb \
+    && ln -s /usr/local/lib/apsim/*/bin /opt/apsim \
+    && test -x /opt/apsim/Models \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set APSIM binary path for apsimNGpy
-ENV APSIM=/opt/apsim/Models
+# APSIM bin folder, read by apsim_models_path() in the sim service
+ENV APSIM_BIN_PATH=/opt/apsim
 
 # Install uv
 RUN pip install --no-cache-dir uv
