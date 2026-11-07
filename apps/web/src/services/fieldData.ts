@@ -1,4 +1,5 @@
 import type { components } from "@/shared/api-types";
+import { API_URL } from "./config";
 
 // Generated from the API, run `make api-types` after a backend schema change
 type Schemas = components["schemas"];
@@ -9,8 +10,6 @@ export type TimelineDetails = Schemas["TimelineDetails"];
 export type FloatRange = Schemas["FloatRange"];
 export type DateRange = Schemas["DateRange"];
 export type Rating = Schemas["Rating"];
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
 async function getJson<T>(path: string): Promise<T> {
   const response = await fetch(`${API_URL}${path}`);
