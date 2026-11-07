@@ -3,7 +3,14 @@ from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
-from api.schemas.common import DateRange, FloatRange, Rating, SourceInfo, Stage
+from api.schemas.common import (
+    DateRange,
+    FloatRange,
+    GeoJSONPolygon,
+    Rating,
+    SourceInfo,
+    Stage,
+)
 
 
 class SowingStatus(StrEnum):
@@ -114,13 +121,6 @@ class ConsistencyStatus(StrEnum):
     on_track = "on_track"
     behind_model = "behind_model"
     not_enough_data = "not_enough_data"
-
-
-class GeoJSONPolygon(BaseModel):
-    type: str = "Polygon"
-    coordinates: list[list[tuple[float, float]]] = Field(
-        description="Rings of [lon, lat] points"
-    )
 
 
 class NdviLegendEntry(BaseModel):
