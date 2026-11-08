@@ -14,7 +14,7 @@ from statistics import fmean
 
 from fastapi import APIRouter
 
-from api.schemas.common import DateRange, FloatRange, Rating, Stage
+from api.schemas.common import DateRange, FloatRange, GeoJSONPolygon, Rating, Stage
 from api.schemas.overview import (
     Alert,
     AlertRule,
@@ -22,7 +22,6 @@ from api.schemas.overview import (
     AlertSeverity,
     ConsistencyStatus,
     FieldInfo,
-    GeoJSONPolygon,
     HealthSummary,
     Metric,
     Metrics,

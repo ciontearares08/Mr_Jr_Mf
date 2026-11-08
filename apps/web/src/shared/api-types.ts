@@ -324,6 +324,8 @@ export interface components {
              * @description The name of the field
              */
             name: string;
+            /** @description Field boundary drawn on the map, in WGS84 */
+            geometry: components["schemas"]["GeoJSONPolygon"];
         };
         /** FieldInfo */
         FieldInfo: {
@@ -374,8 +376,9 @@ export interface components {
             /**
              * Type
              * @default Polygon
+             * @constant
              */
-            type: string;
+            type: "Polygon";
             /**
              * Coordinates
              * @description Rings of [lon, lat] points
