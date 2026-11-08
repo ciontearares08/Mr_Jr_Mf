@@ -1,0 +1,1136 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"5560f1a5-45b1-607c-6e6a-79f8ff5fd4a5","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-07-02T10:12:14+00:00","timeResolution":"day","from":"2026-07-01T00:00:00.001000+02:00","to":"2026-07-02T00:00:00+02:00","cellId":"10km_632_55","value":70.7,"calculatedAt":"2026-07-02T01:07:00.232000"}},{"type":"Feature","id":"2b65cc7a-b454-a8b7-9e43-c01f8d682cdf","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-07-01T13:06:31+00:00","timeResolution":"day","from":"2026-06-30T00:00:00.001000+02:00","to":"2026-07-01T00:00:00+02:00","cellId":"10km_632_55","value":70.1,"calculatedAt":"2026-07-01T09:28:34.415000"}},{"type":"Feature","id":"2e368aab-1225-2681-8b69-32893dc73577","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-30T15:13:55+00:00","timeResolution":"day","from":"2026-06-29T00:00:00.001000+02:00","to":"2026-06-30T00:00:00+02:00","cellId":"10km_632_55","value":70.4,"calculatedAt":"2026-06-30T09:49:15.351000"}},{"type":"Feature","id":"5dc7052b-be2c-0319-734d-60c16ef21f75","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-29T13:33:49+00:00","timeResolution":"day","from":"2026-06-28T00:00:00.001000+02:00","to":"2026-06-29T00:00:00+02:00","cellId":"10km_632_55","value":79.8,"calculatedAt":"2026-06-29T01:06:53.813000"}},{"type":"Feature","id":"f42e314c-b344-7694-dd2e-a75038ab0107","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-29T13:30:19+00:00","timeResolution":"day","from":"2026-06-27T00:00:00.001000+02:00","to":"2026-06-28T00:00:00+02:00","cellId":"10km_632_55","value":72.5,"calculatedAt":"2026-06-28T04:07:41.952000"}},{"type":"Feature","id":"e05e54c0-28f9-b322-a9e9-8b40d4f5850e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-29T13:27:03+00:00","timeResolution":"day","from":"2026-06-26T00:00:00.001000+02:00","to":"2026-06-27T00:00:00+02:00","cellId":"10km_632_55","value":67.6,"calculatedAt":"2026-06-27T01:06:41.917000"}},{"type":"Feature","id":"db1371b1-71cf-523f-7c0f-b2d41c6b2703","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-26T15:29:08+00:00","timeResolution":"day","from":"2026-06-25T00:00:00.001000+02:00","to":"2026-06-26T00:00:00+02:00","cellId":"10km_632_55","value":72.7,"calculatedAt":"2026-06-26T01:06:26.201000"}},{"type":"Feature","id":"10901714-2fde-dc4b-2cee-cc8c2031904e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-26T15:26:07+00:00","timeResolution":"day","from":"2026-06-24T00:00:00.001000+02:00","to":"2026-06-25T00:00:00+02:00","cellId":"10km_632_55","value":72.0,"calculatedAt":"2026-06-25T08:08:15.943000"}},{"type":"Feature","id":"ae6a90de-704b-900a-69a9-41c7d0c9bfec","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-24T08:45:39+00:00","timeResolution":"day","from":"2026-06-23T00:00:00.001000+02:00","to":"2026-06-24T00:00:00+02:00","cellId":"10km_632_55","value":71.4,"calculatedAt":"2026-06-24T01:06:59.558000"}},{"type":"Feature","id":"e4b3991b-719a-fa47-b66c-045e3d383938","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-23T15:15:00+00:00","timeResolution":"day","from":"2026-06-22T00:00:00.001000+02:00","to":"2026-06-23T00:00:00+02:00","cellId":"10km_632_55","value":71.5,"calculatedAt":"2026-06-23T08:28:41.941000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5512'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"ebf06b34-3581-3308-515d-f913c9f2ab54","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-07-03T09:34:02+00:00","timeResolution":"day","from":"2026-07-01T00:00:00.001000+02:00","to":"2026-07-02T00:00:00+02:00","cellId":"10km_632_55","value":3.7,"calculatedAt":"2026-07-03T09:25:11.355000"}},{"type":"Feature","id":"f335215e-a471-99f3-e7d7-25fd223f3183","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-07-01T13:08:10+00:00","timeResolution":"day","from":"2026-06-30T00:00:00.001000+02:00","to":"2026-07-01T00:00:00+02:00","cellId":"10km_632_55","value":3.5,"calculatedAt":"2026-07-01T09:29:14.000000"}},{"type":"Feature","id":"e6e52fee-e554-82ad-b8c5-329bfee61bcf","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-30T15:14:00+00:00","timeResolution":"day","from":"2026-06-29T00:00:00.001000+02:00","to":"2026-06-30T00:00:00+02:00","cellId":"10km_632_55","value":5.6,"calculatedAt":"2026-06-30T09:49:07.027000"}},{"type":"Feature","id":"2a024188-7ab5-9e39-f968-d1cd4d0488fc","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-29T13:33:54+00:00","timeResolution":"day","from":"2026-06-28T00:00:00.001000+02:00","to":"2026-06-29T00:00:00+02:00","cellId":"10km_632_55","value":2.8,"calculatedAt":"2026-06-29T00:07:10.404000"}},{"type":"Feature","id":"85ed1837-7d57-ce9e-bf57-d2a899a7e973","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-29T13:30:23+00:00","timeResolution":"day","from":"2026-06-27T00:00:00.001000+02:00","to":"2026-06-28T00:00:00+02:00","cellId":"10km_632_55","value":2.7,"calculatedAt":"2026-06-28T04:07:46.380000"}},{"type":"Feature","id":"4b662e26-5950-1577-7299-cfbbd59cbfad","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-29T13:27:07+00:00","timeResolution":"day","from":"2026-06-26T00:00:00.001000+02:00","to":"2026-06-27T00:00:00+02:00","cellId":"10km_632_55","value":2.8,"calculatedAt":"2026-06-27T00:07:12.192000"}},{"type":"Feature","id":"c15aeec2-3676-e30f-8a7c-6f007c4e2f00","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-26T15:29:08+00:00","timeResolution":"day","from":"2026-06-25T00:00:00.001000+02:00","to":"2026-06-26T00:00:00+02:00","cellId":"10km_632_55","value":4.7,"calculatedAt":"2026-06-26T13:57:39.143000"}},{"type":"Feature","id":"9da5a2a1-1049-c6c4-76ed-fef19271b506","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-26T15:26:11+00:00","timeResolution":"day","from":"2026-06-24T00:00:00.001000+02:00","to":"2026-06-25T00:00:00+02:00","cellId":"10km_632_55","value":3.9,"calculatedAt":"2026-06-26T13:57:14.332000"}},{"type":"Feature","id":"b2b9106f-047d-94d5-527d-c83f86845826","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-26T14:07:00+00:00","timeResolution":"day","from":"2026-06-23T00:00:00.001000+02:00","to":"2026-06-24T00:00:00+02:00","cellId":"10km_632_55","value":3.6,"calculatedAt":"2026-06-26T13:57:09.135000"}},{"type":"Feature","id":"caa921ad-5de7-1005-6cf0-da21192e9b5a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-24T08:26:06+00:00","timeResolution":"day","from":"2026-06-22T00:00:00.001000+02:00","to":"2026-06-23T00:00:00+02:00","cellId":"10km_632_55","value":4.5,"calculatedAt":"2026-06-24T08:09:20.394000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5478'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"86856db0-a475-8fc3-2e1a-8abcd1f0b575","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-07-02T10:12:14+00:00","timeResolution":"day","from":"2026-07-01T00:00:00.001000+02:00","to":"2026-07-02T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-07-02T09:23:24.609000"}},{"type":"Feature","id":"059fd479-e58a-04dd-7264-e8d1f30425e3","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-07-02T09:22:49+00:00","timeResolution":"day","from":"2026-06-30T00:00:00.001000+02:00","to":"2026-07-01T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-07-02T09:19:11.713000"}},{"type":"Feature","id":"7e6bcbd0-2276-968b-93e0-d98eb8a8fbb4","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-07-13T12:53:56+00:00","timeResolution":"day","from":"2026-06-29T00:00:00.001000+02:00","to":"2026-06-30T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-07-13T12:52:32.269000"}},{"type":"Feature","id":"509dbfb8-8889-89d2-cef0-17d9b84505b8","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-07-08T11:56:10+00:00","timeResolution":"day","from":"2026-06-28T00:00:00.001000+02:00","to":"2026-06-29T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-07-08T11:53:11.725000"}},{"type":"Feature","id":"0384c120-d1f3-c40e-7dcd-94171c7a6f43","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-07-02T09:13:49+00:00","timeResolution":"day","from":"2026-06-27T00:00:00.001000+02:00","to":"2026-06-28T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-07-02T09:12:25.437000"}},{"type":"Feature","id":"dee88808-4dac-07ba-96f8-006fb32e0265","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:57:41+00:00","timeResolution":"day","from":"2026-06-26T00:00:00.001000+02:00","to":"2026-06-27T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:30:56.120000"}},{"type":"Feature","id":"ade77ba8-bfd4-dc75-b780-8671a257034f","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:53:03+00:00","timeResolution":"day","from":"2026-06-25T00:00:00.001000+02:00","to":"2026-06-26T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:27:21.762000"}},{"type":"Feature","id":"9d7a3b89-7ac5-5a44-ce1f-07718e6d39bd","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:49:23+00:00","timeResolution":"day","from":"2026-06-24T00:00:00.001000+02:00","to":"2026-06-25T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:24:14.104000"}},{"type":"Feature","id":"6917359f-e6d1-e79a-a86f-dcbf95e08618","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:44:56+00:00","timeResolution":"day","from":"2026-06-23T00:00:00.001000+02:00","to":"2026-06-24T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:20:26.570000"}},{"type":"Feature","id":"426c4d7d-f9a9-f5b9-1826-94504f217bfe","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:39:24+00:00","timeResolution":"day","from":"2026-06-22T00:00:00.001000+02:00","to":"2026-06-23T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:15:34.480000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5418'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"ab17443f-6be3-cd26-da95-bd7ad3bf7dd4","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-07-02T10:12:14+00:00","timeResolution":"day","from":"2026-07-01T00:00:00.001000+02:00","to":"2026-07-02T00:00:00+02:00","cellId":"10km_632_55","value":10.7,"calculatedAt":"2026-07-01T23:26:23.617000"}},{"type":"Feature","id":"02e8c2f4-e657-e963-e103-21ac473e78ff","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-07-01T13:08:34+00:00","timeResolution":"day","from":"2026-06-30T00:00:00.001000+02:00","to":"2026-07-01T00:00:00+02:00","cellId":"10km_632_55","value":10.7,"calculatedAt":"2026-07-01T09:29:24.020000"}},{"type":"Feature","id":"6035fb44-2703-26d9-982d-bbc1e26d140e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-30T15:13:53+00:00","timeResolution":"day","from":"2026-06-29T00:00:00.001000+02:00","to":"2026-06-30T00:00:00+02:00","cellId":"10km_632_55","value":13.7,"calculatedAt":"2026-06-30T09:49:21.687000"}},{"type":"Feature","id":"6f7ed18b-e600-e84f-c032-0ff60a9dd6b7","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-29T13:33:48+00:00","timeResolution":"day","from":"2026-06-28T00:00:00.001000+02:00","to":"2026-06-29T00:00:00+02:00","cellId":"10km_632_55","value":15.1,"calculatedAt":"2026-06-28T23:27:01.705000"}},{"type":"Feature","id":"72eec5cd-abf2-bfee-90cd-f78a3c3231cf","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-29T13:30:19+00:00","timeResolution":"day","from":"2026-06-27T00:00:00.001000+02:00","to":"2026-06-28T00:00:00+02:00","cellId":"10km_632_55","value":14.7,"calculatedAt":"2026-06-28T00:28:51.718000"}},{"type":"Feature","id":"55f98a60-02d7-bcef-92a3-3535ae78481a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-29T13:27:02+00:00","timeResolution":"day","from":"2026-06-26T00:00:00.001000+02:00","to":"2026-06-27T00:00:00+02:00","cellId":"10km_632_55","value":12.7,"calculatedAt":"2026-06-26T23:26:49.832000"}},{"type":"Feature","id":"101f73d8-7737-0ad0-bd1f-d82c0a1839ae","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-26T15:29:08+00:00","timeResolution":"day","from":"2026-06-25T00:00:00.001000+02:00","to":"2026-06-26T00:00:00+02:00","cellId":"10km_632_55","value":12.8,"calculatedAt":"2026-06-25T23:26:54.012000"}},{"type":"Feature","id":"3d3eec96-6a4d-27ee-3d5d-cb30e01934a2","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-26T15:26:06+00:00","timeResolution":"day","from":"2026-06-24T00:00:00.001000+02:00","to":"2026-06-25T00:00:00+02:00","cellId":"10km_632_55","value":12.7,"calculatedAt":"2026-06-25T08:08:12.086000"}},{"type":"Feature","id":"a5300cd5-3e4d-ca19-3760-84ea01ba9248","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-24T08:45:37+00:00","timeResolution":"day","from":"2026-06-23T00:00:00.001000+02:00","to":"2026-06-24T00:00:00+02:00","cellId":"10km_632_55","value":9.5,"calculatedAt":"2026-06-24T00:26:23.809000"}},{"type":"Feature","id":"a87c2079-852d-de00-3e2d-83a6ba3781ee","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-23T15:14:58+00:00","timeResolution":"day","from":"2026-06-22T00:00:00.001000+02:00","to":"2026-06-23T00:00:00+02:00","cellId":"10km_632_55","value":10.3,"calculatedAt":"2026-06-23T08:28:36.049000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5403'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"00878933-24df-e73a-a7e2-d3fe5a692f25","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-07-02T10:12:14+00:00","timeResolution":"day","from":"2026-07-01T00:00:00.001000+02:00","to":"2026-07-02T00:00:00+02:00","cellId":"10km_632_55","value":28.0,"calculatedAt":"2026-07-01T23:27:04.007000"}},{"type":"Feature","id":"e4ac1c5d-1d5a-3f32-5490-857eb0c8b8f4","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-07-01T13:07:47+00:00","timeResolution":"day","from":"2026-06-30T00:00:00.001000+02:00","to":"2026-07-01T00:00:00+02:00","cellId":"10km_632_55","value":17.8,"calculatedAt":"2026-07-01T09:29:04.152000"}},{"type":"Feature","id":"385c514a-2877-23b8-9cb3-a0fc9b4a58ab","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-30T15:13:55+00:00","timeResolution":"day","from":"2026-06-29T00:00:00.001000+02:00","to":"2026-06-30T00:00:00+02:00","cellId":"10km_632_55","value":25.3,"calculatedAt":"2026-06-29T23:07:16.421000"}},{"type":"Feature","id":"68e8fd3a-ed25-30b4-aa61-385045c08f88","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-29T13:33:49+00:00","timeResolution":"day","from":"2026-06-28T00:00:00.001000+02:00","to":"2026-06-29T00:00:00+02:00","cellId":"10km_632_55","value":16.9,"calculatedAt":"2026-06-28T23:26:23.352000"}},{"type":"Feature","id":"d306bde0-215a-0833-f0b5-882e2be5b9bc","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-29T13:30:19+00:00","timeResolution":"day","from":"2026-06-27T00:00:00.001000+02:00","to":"2026-06-28T00:00:00+02:00","cellId":"10km_632_55","value":23.8,"calculatedAt":"2026-06-28T00:27:28.111000"}},{"type":"Feature","id":"69642bed-6be4-d536-c0b6-0e76c038787a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-29T13:27:03+00:00","timeResolution":"day","from":"2026-06-26T00:00:00.001000+02:00","to":"2026-06-27T00:00:00+02:00","cellId":"10km_632_55","value":26.8,"calculatedAt":"2026-06-26T23:26:47.038000"}},{"type":"Feature","id":"50f124f2-2bec-a52b-0a30-93d0113ea3c7","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-26T15:29:08+00:00","timeResolution":"day","from":"2026-06-25T00:00:00.001000+02:00","to":"2026-06-26T00:00:00+02:00","cellId":"10km_632_55","value":28.4,"calculatedAt":"2026-06-25T23:27:09.035000"}},{"type":"Feature","id":"54133fbe-d7b7-7a09-d651-8cca33756da3","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-26T15:26:07+00:00","timeResolution":"day","from":"2026-06-24T00:00:00.001000+02:00","to":"2026-06-25T00:00:00+02:00","cellId":"10km_632_55","value":25.5,"calculatedAt":"2026-06-25T08:08:10.372000"}},{"type":"Feature","id":"ff5650ab-df66-3b66-d1a0-4e817f029bcc","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-24T08:45:38+00:00","timeResolution":"day","from":"2026-06-23T00:00:00.001000+02:00","to":"2026-06-24T00:00:00+02:00","cellId":"10km_632_55","value":28.6,"calculatedAt":"2026-06-24T00:26:46.438000"}},{"type":"Feature","id":"09d4aaaf-32dc-40b1-f9e0-27d33510a5e1","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-23T15:14:59+00:00","timeResolution":"day","from":"2026-06-22T00:00:00.001000+02:00","to":"2026-06-23T00:00:00+02:00","cellId":"10km_632_55","value":27.0,"calculatedAt":"2026-06-23T08:29:04.742000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5476'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"2169354e-8192-f553-c839-d1387e6e9c3f","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-07-02T10:12:14+00:00","timeResolution":"day","from":"2026-07-01T00:00:00.001000+02:00","to":"2026-07-02T00:00:00+02:00","cellId":"10km_632_55","value":21.8,"calculatedAt":"2026-07-01T23:26:53.328000"}},{"type":"Feature","id":"55a26581-71ae-3415-6096-388963aef450","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-07-01T13:06:23+00:00","timeResolution":"day","from":"2026-06-30T00:00:00.001000+02:00","to":"2026-07-01T00:00:00+02:00","cellId":"10km_632_55","value":20.0,"calculatedAt":"2026-07-01T09:28:30.237000"}},{"type":"Feature","id":"2518d142-fedf-0357-1076-32bf9018cd8c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-30T15:13:53+00:00","timeResolution":"day","from":"2026-06-29T00:00:00.001000+02:00","to":"2026-06-30T00:00:00+02:00","cellId":"10km_632_55","value":21.1,"calculatedAt":"2026-06-30T09:49:20.154000"}},{"type":"Feature","id":"7e495c54-8e4a-7568-fea0-7698335dbbe9","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-29T13:33:48+00:00","timeResolution":"day","from":"2026-06-28T00:00:00.001000+02:00","to":"2026-06-29T00:00:00+02:00","cellId":"10km_632_55","value":27.4,"calculatedAt":"2026-06-28T23:27:04.111000"}},{"type":"Feature","id":"c1527a1d-bc40-8921-729e-2af669c1a0e6","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-29T13:30:19+00:00","timeResolution":"day","from":"2026-06-27T00:00:00.001000+02:00","to":"2026-06-28T00:00:00+02:00","cellId":"10km_632_55","value":30.5,"calculatedAt":"2026-06-28T00:27:33.267000"}},{"type":"Feature","id":"b1b1af5e-a29a-bc85-d0ec-8a26b02e761e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-29T13:27:02+00:00","timeResolution":"day","from":"2026-06-26T00:00:00.001000+02:00","to":"2026-06-27T00:00:00+02:00","cellId":"10km_632_55","value":29.6,"calculatedAt":"2026-06-26T23:26:43.552000"}},{"type":"Feature","id":"55d9fcde-1f5d-b1c4-130f-90b563f08740","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-26T15:29:08+00:00","timeResolution":"day","from":"2026-06-25T00:00:00.001000+02:00","to":"2026-06-26T00:00:00+02:00","cellId":"10km_632_55","value":22.8,"calculatedAt":"2026-06-25T23:27:01.278000"}},{"type":"Feature","id":"8f3e4944-2de5-b2e6-8b34-8a4cd1fcbf34","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-26T15:26:06+00:00","timeResolution":"day","from":"2026-06-24T00:00:00.001000+02:00","to":"2026-06-25T00:00:00+02:00","cellId":"10km_632_55","value":24.4,"calculatedAt":"2026-06-25T08:08:33.955000"}},{"type":"Feature","id":"3a97ba5e-6d76-3432-0503-3b825c9cf18c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-24T08:45:37+00:00","timeResolution":"day","from":"2026-06-23T00:00:00.001000+02:00","to":"2026-06-24T00:00:00+02:00","cellId":"10km_632_55","value":22.1,"calculatedAt":"2026-06-24T00:27:25.873000"}},{"type":"Feature","id":"8eea5266-eccb-457e-c492-c111034f0598","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-23T15:14:58+00:00","timeResolution":"day","from":"2026-06-22T00:00:00.001000+02:00","to":"2026-06-23T00:00:00+02:00","cellId":"10km_632_55","value":18.3,"calculatedAt":"2026-06-23T08:28:47.304000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5488'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"c19e0562-453b-a8c0-41a1-74d8c82bcedc","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-21T00:00:00.001000+02:00","to":"2026-06-22T00:00:00+02:00","cellId":"10km_632_55","value":69.8,"calculatedAt":"2026-06-22T01:06:27.612000"}},{"type":"Feature","id":"865fda32-15d8-4609-4a99-9172186703c1","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-20T00:00:00.001000+02:00","to":"2026-06-21T00:00:00+02:00","cellId":"10km_632_55","value":78.5,"calculatedAt":"2026-06-21T01:07:11.249000"}},{"type":"Feature","id":"3f5a2652-c3fb-9349-f093-a468dd420bc2","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-22T15:12:45+00:00","timeResolution":"day","from":"2026-06-19T00:00:00.001000+02:00","to":"2026-06-20T00:00:00+02:00","cellId":"10km_632_55","value":79.2,"calculatedAt":"2026-06-21T23:48:24.630000"}},{"type":"Feature","id":"7531eec1-6847-ad47-3122-49d125d6504f","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-22T15:05:27+00:00","timeResolution":"day","from":"2026-06-18T00:00:00.001000+02:00","to":"2026-06-19T00:00:00+02:00","cellId":"10km_632_55","value":77.7,"calculatedAt":"2026-06-19T01:28:55.905000"}},{"type":"Feature","id":"eb539df1-c6fa-a276-23c4-ce396ba60561","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-18T13:29:22+00:00","timeResolution":"day","from":"2026-06-17T00:00:00.001000+02:00","to":"2026-06-18T00:00:00+02:00","cellId":"10km_632_55","value":79.2,"calculatedAt":"2026-06-18T01:07:08.662000"}},{"type":"Feature","id":"6b86a428-55d2-3ebe-dd2b-b991d4657782","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-17T14:38:01+00:00","timeResolution":"day","from":"2026-06-16T00:00:00.001000+02:00","to":"2026-06-17T00:00:00+02:00","cellId":"10km_632_55","value":70.1,"calculatedAt":"2026-06-17T01:07:20.388000"}},{"type":"Feature","id":"e79a8d32-a605-548c-c01e-429e66204aa6","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-16T09:25:16+00:00","timeResolution":"day","from":"2026-06-15T00:00:00.001000+02:00","to":"2026-06-16T00:00:00+02:00","cellId":"10km_632_55","value":74.2,"calculatedAt":"2026-06-16T09:07:19.114000"}},{"type":"Feature","id":"83786f2a-b85c-33b3-4f70-6fec0f843aa6","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-15T11:01:52+00:00","timeResolution":"day","from":"2026-06-14T00:00:00.001000+02:00","to":"2026-06-15T00:00:00+02:00","cellId":"10km_632_55","value":81.6,"calculatedAt":"2026-06-15T01:06:33.885000"}},{"type":"Feature","id":"349c2fd4-dd2a-4e1f-b26a-1bd5bfda2182","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-15T10:58:00+00:00","timeResolution":"day","from":"2026-06-13T00:00:00.001000+02:00","to":"2026-06-14T00:00:00+02:00","cellId":"10km_632_55","value":83.3,"calculatedAt":"2026-06-14T01:06:32.891000"}},{"type":"Feature","id":"5b7c45f4-6f0e-1049-6147-0a04b54db8a6","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-15T10:54:43+00:00","timeResolution":"day","from":"2026-06-12T00:00:00.001000+02:00","to":"2026-06-13T00:00:00+02:00","cellId":"10km_632_55","value":84.8,"calculatedAt":"2026-06-13T01:06:43.883000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5522'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"3aa1f8f4-8f7a-31e2-26b3-a0276131be40","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-23T13:01:14+00:00","timeResolution":"day","from":"2026-06-21T00:00:00.001000+02:00","to":"2026-06-22T00:00:00+02:00","cellId":"10km_632_55","value":5.5,"calculatedAt":"2026-06-23T12:23:32.483000"}},{"type":"Feature","id":"a23d6d43-fd31-65d3-d9ae-b343810b5e8c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-20T00:00:00.001000+02:00","to":"2026-06-21T00:00:00+02:00","cellId":"10km_632_55","value":4.9,"calculatedAt":"2026-06-21T00:27:12.422000"}},{"type":"Feature","id":"76da5e90-4678-7ce7-2ab9-bdcbe4e1fe30","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-22T15:12:45+00:00","timeResolution":"day","from":"2026-06-19T00:00:00.001000+02:00","to":"2026-06-20T00:00:00+02:00","cellId":"10km_632_55","value":2.5,"calculatedAt":"2026-06-21T23:48:17.584000"}},{"type":"Feature","id":"2556bd6d-d725-845c-0295-bc98ed494e0e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-22T15:05:31+00:00","timeResolution":"day","from":"2026-06-18T00:00:00.001000+02:00","to":"2026-06-19T00:00:00+02:00","cellId":"10km_632_55","value":5.7,"calculatedAt":"2026-06-19T08:00:22.444000"}},{"type":"Feature","id":"edff0167-0a9f-0880-3c74-04339f382f03","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-19T08:10:14+00:00","timeResolution":"day","from":"2026-06-17T00:00:00.001000+02:00","to":"2026-06-18T00:00:00+02:00","cellId":"10km_632_55","value":5.3,"calculatedAt":"2026-06-19T08:00:16.005000"}},{"type":"Feature","id":"fc13ccd8-1f50-1620-829a-a191421bb486","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-17T14:41:10+00:00","timeResolution":"day","from":"2026-06-16T00:00:00.001000+02:00","to":"2026-06-17T00:00:00+02:00","cellId":"10km_632_55","value":7.0,"calculatedAt":"2026-06-17T14:23:18.397000"}},{"type":"Feature","id":"84475ee9-c859-10f8-897f-abb4c59139ce","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-17T14:40:54+00:00","timeResolution":"day","from":"2026-06-15T00:00:00.001000+02:00","to":"2026-06-16T00:00:00+02:00","cellId":"10km_632_55","value":4.9,"calculatedAt":"2026-06-17T14:23:14.447000"}},{"type":"Feature","id":"a7bb99ff-006b-6a79-d3ec-b5116af3cd2c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-15T11:01:56+00:00","timeResolution":"day","from":"2026-06-14T00:00:00.001000+02:00","to":"2026-06-15T00:00:00+02:00","cellId":"10km_632_55","value":4.8,"calculatedAt":"2026-06-15T09:40:17.904000"}},{"type":"Feature","id":"95388ae2-ce2d-956c-85dd-42126e317ba1","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-15T10:58:04+00:00","timeResolution":"day","from":"2026-06-13T00:00:00.001000+02:00","to":"2026-06-14T00:00:00+02:00","cellId":"10km_632_55","value":5.8,"calculatedAt":"2026-06-15T09:37:52.481000"}},{"type":"Feature","id":"3924374c-c805-19a1-1d10-15013957a34c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-15T10:54:47+00:00","timeResolution":"day","from":"2026-06-12T00:00:00.001000+02:00","to":"2026-06-13T00:00:00+02:00","cellId":"10km_632_55","value":4.8,"calculatedAt":"2026-06-15T09:37:30.688000"}}],"timeStamp":"2026-11-08T09:16:34Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5488'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:34 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"81bfdf6b-0d60-364f-ada1-fdbdf600f628","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-21T00:00:00.001000+02:00","to":"2026-06-22T00:00:00+02:00","cellId":"10km_632_55","value":11.8,"calculatedAt":"2026-06-22T00:30:51.682000"}},{"type":"Feature","id":"adc4b00f-5fc5-127a-7367-f736f813459b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-20T00:00:00.001000+02:00","to":"2026-06-21T00:00:00+02:00","cellId":"10km_632_55","value":15.3,"calculatedAt":"2026-06-21T00:27:23.391000"}},{"type":"Feature","id":"b280fcef-19da-c1e3-22dc-076d4510be4a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-22T15:12:45+00:00","timeResolution":"day","from":"2026-06-19T00:00:00.001000+02:00","to":"2026-06-20T00:00:00+02:00","cellId":"10km_632_55","value":12.8,"calculatedAt":"2026-06-21T23:48:22.656000"}},{"type":"Feature","id":"e20b83d1-dbbb-bb7c-ada0-809c57de1298","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-22T15:05:26+00:00","timeResolution":"day","from":"2026-06-18T00:00:00.001000+02:00","to":"2026-06-19T00:00:00+02:00","cellId":"10km_632_55","value":12.5,"calculatedAt":"2026-06-19T08:08:07.331000"}},{"type":"Feature","id":"e5c2b54f-c31f-01f8-2680-e1afc9b2b9da","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-18T13:29:20+00:00","timeResolution":"day","from":"2026-06-17T00:00:00.001000+02:00","to":"2026-06-18T00:00:00+02:00","cellId":"10km_632_55","value":8.9,"calculatedAt":"2026-06-17T23:27:06.386000"}},{"type":"Feature","id":"2b7d3e5f-09fb-02e9-d788-aa6587f83059","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-17T14:38:01+00:00","timeResolution":"day","from":"2026-06-16T00:00:00.001000+02:00","to":"2026-06-17T00:00:00+02:00","cellId":"10km_632_55","value":9.8,"calculatedAt":"2026-06-16T23:26:42.430000"}},{"type":"Feature","id":"3d8abfd4-3e1b-c252-bc82-60fb6dc83e78","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-16T09:25:22+00:00","timeResolution":"day","from":"2026-06-15T00:00:00.001000+02:00","to":"2026-06-16T00:00:00+02:00","cellId":"10km_632_55","value":9.5,"calculatedAt":"2026-06-16T09:07:21.265000"}},{"type":"Feature","id":"096efd87-6c21-6baf-cb27-489d3fa531d0","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-15T11:01:50+00:00","timeResolution":"day","from":"2026-06-14T00:00:00.001000+02:00","to":"2026-06-15T00:00:00+02:00","cellId":"10km_632_55","value":8.6,"calculatedAt":"2026-06-14T23:26:45.422000"}},{"type":"Feature","id":"83506875-b2c5-cf18-0876-653e94c66ceb","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-15T10:57:59+00:00","timeResolution":"day","from":"2026-06-13T00:00:00.001000+02:00","to":"2026-06-14T00:00:00+02:00","cellId":"10km_632_55","value":9.8,"calculatedAt":"2026-06-13T23:26:52.929000"}},{"type":"Feature","id":"b7e003a1-1f37-70c8-6f7e-b028e9e2d46d","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-15T10:54:43+00:00","timeResolution":"day","from":"2026-06-12T00:00:00.001000+02:00","to":"2026-06-13T00:00:00+02:00","cellId":"10km_632_55","value":5.0,"calculatedAt":"2026-06-12T23:27:15.465000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5408'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"06c31172-3ae9-abc2-0bf3-5546ae073ff3","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:36:42+00:00","timeResolution":"day","from":"2026-06-21T00:00:00.001000+02:00","to":"2026-06-22T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:12:44.440000"}},{"type":"Feature","id":"4b367334-4d88-0345-90ff-3be1a0c75133","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:31:13+00:00","timeResolution":"day","from":"2026-06-20T00:00:00.001000+02:00","to":"2026-06-21T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:08:36.479000"}},{"type":"Feature","id":"07c2b260-0e14-555e-74b6-91cd1b2d19b1","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:27:37+00:00","timeResolution":"day","from":"2026-06-19T00:00:00.001000+02:00","to":"2026-06-20T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:05:23.317000"}},{"type":"Feature","id":"253172be-7dab-cc8a-ff07-703beec9f304","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:24:26+00:00","timeResolution":"day","from":"2026-06-18T00:00:00.001000+02:00","to":"2026-06-19T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T16:02:00.601000"}},{"type":"Feature","id":"836e63e3-c6b2-61ab-9682-e97ea1bcec1c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:19:09+00:00","timeResolution":"day","from":"2026-06-17T00:00:00.001000+02:00","to":"2026-06-18T00:00:00+02:00","cellId":"10km_632_55","value":2.4,"calculatedAt":"2026-06-30T15:58:07.123000"}},{"type":"Feature","id":"6f4f3095-0dc9-c62a-3a68-5ce35360896d","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:16:21+00:00","timeResolution":"day","from":"2026-06-16T00:00:00.001000+02:00","to":"2026-06-17T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T15:54:26.835000"}},{"type":"Feature","id":"97b94723-1c73-cae1-d135-178807c0d74e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:07:45+00:00","timeResolution":"day","from":"2026-06-15T00:00:00.001000+02:00","to":"2026-06-16T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T15:48:23.797000"}},{"type":"Feature","id":"1d900706-59ef-2659-50b5-cde1b1399d3b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:04:07+00:00","timeResolution":"day","from":"2026-06-14T00:00:00.001000+02:00","to":"2026-06-15T00:00:00+02:00","cellId":"10km_632_55","value":2.6,"calculatedAt":"2026-06-30T15:45:18.860000"}},{"type":"Feature","id":"efe93def-3ca0-9c80-8c2f-2f7685ee8c61","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T18:00:19+00:00","timeResolution":"day","from":"2026-06-13T00:00:00.001000+02:00","to":"2026-06-14T00:00:00+02:00","cellId":"10km_632_55","value":3.5,"calculatedAt":"2026-06-30T15:41:58.286000"}},{"type":"Feature","id":"6a11eb63-40fd-3873-cf3a-1949a7eb64b0","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:53:48+00:00","timeResolution":"day","from":"2026-06-12T00:00:00.001000+02:00","to":"2026-06-13T00:00:00+02:00","cellId":"10km_632_55","value":1.6,"calculatedAt":"2026-06-30T15:37:05.189000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5428'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"c9ea7875-bc48-9a3d-4ef4-aa75f662abee","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-21T00:00:00.001000+02:00","to":"2026-06-22T00:00:00+02:00","cellId":"10km_632_55","value":30.2,"calculatedAt":"2026-06-22T00:30:58.488000"}},{"type":"Feature","id":"d67d9146-4508-9a5c-3d07-79b95e43c78b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-20T00:00:00.001000+02:00","to":"2026-06-21T00:00:00+02:00","cellId":"10km_632_55","value":18.5,"calculatedAt":"2026-06-21T00:27:26.207000"}},{"type":"Feature","id":"8e2ded81-6d18-1648-e390-2f99cf0d57b1","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-22T15:12:45+00:00","timeResolution":"day","from":"2026-06-19T00:00:00.001000+02:00","to":"2026-06-20T00:00:00+02:00","cellId":"10km_632_55","value":26.0,"calculatedAt":"2026-06-19T23:26:52.112000"}},{"type":"Feature","id":"ca7562f3-e470-e75e-d547-e85a53100dfb","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-22T15:05:27+00:00","timeResolution":"day","from":"2026-06-18T00:00:00.001000+02:00","to":"2026-06-19T00:00:00+02:00","cellId":"10km_632_55","value":26.6,"calculatedAt":"2026-06-18T23:26:45.277000"}},{"type":"Feature","id":"89156229-ae41-3fce-2881-72fdb15a59fa","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-18T13:29:21+00:00","timeResolution":"day","from":"2026-06-17T00:00:00.001000+02:00","to":"2026-06-18T00:00:00+02:00","cellId":"10km_632_55","value":16.4,"calculatedAt":"2026-06-17T23:26:23.782000"}},{"type":"Feature","id":"20112479-7300-5e29-fe14-7dd813c57e82","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-17T14:38:01+00:00","timeResolution":"day","from":"2026-06-16T00:00:00.001000+02:00","to":"2026-06-17T00:00:00+02:00","cellId":"10km_632_55","value":23.7,"calculatedAt":"2026-06-16T23:26:25.658000"}},{"type":"Feature","id":"d5fa5992-171b-54e2-aca4-95266b087bc5","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-16T09:26:50+00:00","timeResolution":"day","from":"2026-06-15T00:00:00.001000+02:00","to":"2026-06-16T00:00:00+02:00","cellId":"10km_632_55","value":26.1,"calculatedAt":"2026-06-16T09:07:56.281000"}},{"type":"Feature","id":"502535e9-67d6-2de8-8be6-94975cc3879c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-15T11:01:52+00:00","timeResolution":"day","from":"2026-06-14T00:00:00.001000+02:00","to":"2026-06-15T00:00:00+02:00","cellId":"10km_632_55","value":17.5,"calculatedAt":"2026-06-14T23:27:52.745000"}},{"type":"Feature","id":"7d3abac8-a09d-82d4-7884-3675d2cda67e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-15T10:58:00+00:00","timeResolution":"day","from":"2026-06-13T00:00:00.001000+02:00","to":"2026-06-14T00:00:00+02:00","cellId":"10km_632_55","value":15.4,"calculatedAt":"2026-06-13T23:26:44.058000"}},{"type":"Feature","id":"91259562-cbba-7b39-d46b-845268dd94bb","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-15T10:54:43+00:00","timeResolution":"day","from":"2026-06-12T00:00:00.001000+02:00","to":"2026-06-13T00:00:00+02:00","cellId":"10km_632_55","value":12.2,"calculatedAt":"2026-06-12T23:27:11.853000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5486'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"9403c4a7-ef6a-d860-30e5-9787e2ef4371","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-12T09:18:38+00:00","timeResolution":"day","from":"2026-06-11T00:00:00.001000+02:00","to":"2026-06-12T00:00:00+02:00","cellId":"10km_632_55","value":74.5,"calculatedAt":"2026-06-12T01:07:04.821000"}},{"type":"Feature","id":"c6f3a15f-3bcb-aa65-e046-1294c85a3123","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-11T12:04:01+00:00","timeResolution":"day","from":"2026-06-10T00:00:00.001000+02:00","to":"2026-06-11T00:00:00+02:00","cellId":"10km_632_55","value":74.7,"calculatedAt":"2026-06-11T01:06:26.966000"}},{"type":"Feature","id":"242ecc65-8a77-b0ff-3d7c-3654f882057f","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-10T10:46:12+00:00","timeResolution":"day","from":"2026-06-09T00:00:00.001000+02:00","to":"2026-06-10T00:00:00+02:00","cellId":"10km_632_55","value":79.5,"calculatedAt":"2026-06-10T01:07:09.433000"}},{"type":"Feature","id":"388ecf8f-921d-80ed-13ac-84fc12dcce8c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-09T09:17:48+00:00","timeResolution":"day","from":"2026-06-08T00:00:00.001000+02:00","to":"2026-06-09T00:00:00+02:00","cellId":"10km_632_55","value":83.4,"calculatedAt":"2026-06-09T05:50:17.163000"}},{"type":"Feature","id":"e5afb3a8-7890-9ac7-4e4b-4a9b6e058eaf","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-08T13:06:55+00:00","timeResolution":"day","from":"2026-06-07T00:00:00.001000+02:00","to":"2026-06-08T00:00:00+02:00","cellId":"10km_632_55","value":86.2,"calculatedAt":"2026-06-08T11:31:35.614000"}},{"type":"Feature","id":"d3b5db55-1948-e0f4-43c1-004531ad9ab1","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-08T13:02:29+00:00","timeResolution":"day","from":"2026-06-06T00:00:00.001000+02:00","to":"2026-06-07T00:00:00+02:00","cellId":"10km_632_55","value":72.1,"calculatedAt":"2026-06-08T11:31:02.173000"}},{"type":"Feature","id":"3471ade1-b4e8-130a-5e0c-7c876bb47cb0","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-08T12:58:12+00:00","timeResolution":"day","from":"2026-06-05T00:00:00.001000+02:00","to":"2026-06-06T00:00:00+02:00","cellId":"10km_632_55","value":85.0,"calculatedAt":"2026-06-06T01:09:12.980000"}},{"type":"Feature","id":"dd50a5f4-1925-5e87-d766-2b476bb09a07","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-08T12:54:36+00:00","timeResolution":"day","from":"2026-06-04T00:00:00.001000+02:00","to":"2026-06-05T00:00:00+02:00","cellId":"10km_632_55","value":87.5,"calculatedAt":"2026-06-05T01:21:34.503000"}},{"type":"Feature","id":"e542b60d-2f69-046e-89f6-c73a64bd49b6","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-04T10:53:12+00:00","timeResolution":"day","from":"2026-06-03T00:00:00.001000+02:00","to":"2026-06-04T00:00:00+02:00","cellId":"10km_632_55","value":82.9,"calculatedAt":"2026-06-04T01:06:52.446000"}},{"type":"Feature","id":"f4899713-db60-d71b-7cc0-8107bb7451fb","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-03T12:35:39+00:00","timeResolution":"day","from":"2026-06-02T00:00:00.001000+02:00","to":"2026-06-03T00:00:00+02:00","cellId":"10km_632_55","value":78.7,"calculatedAt":"2026-06-03T03:29:48.034000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5522'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"735a3a22-ec44-37d2-75c1-df9b3bddd8ac","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-21T00:00:00.001000+02:00","to":"2026-06-22T00:00:00+02:00","cellId":"10km_632_55","value":19.9,"calculatedAt":"2026-06-22T00:31:05.099000"}},{"type":"Feature","id":"66109b16-6533-f899-3101-709dd68cbfec","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-22T15:16:05+00:00","timeResolution":"day","from":"2026-06-20T00:00:00.001000+02:00","to":"2026-06-21T00:00:00+02:00","cellId":"10km_632_55","value":26.0,"calculatedAt":"2026-06-21T00:27:07.731000"}},{"type":"Feature","id":"d4ba54aa-bc7b-870b-8962-aabc27995615","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-22T15:12:45+00:00","timeResolution":"day","from":"2026-06-19T00:00:00.001000+02:00","to":"2026-06-20T00:00:00+02:00","cellId":"10km_632_55","value":26.3,"calculatedAt":"2026-06-21T23:48:30.363000"}},{"type":"Feature","id":"ebb32142-0482-aea7-e3c9-f80b10c7a202","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-22T15:05:26+00:00","timeResolution":"day","from":"2026-06-18T00:00:00.001000+02:00","to":"2026-06-19T00:00:00+02:00","cellId":"10km_632_55","value":20.8,"calculatedAt":"2026-06-19T07:52:27.817000"}},{"type":"Feature","id":"8753b433-382c-465b-5cfe-a1090d8f0b1a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-18T13:29:20+00:00","timeResolution":"day","from":"2026-06-17T00:00:00.001000+02:00","to":"2026-06-18T00:00:00+02:00","cellId":"10km_632_55","value":17.7,"calculatedAt":"2026-06-17T23:26:41.293000"}},{"type":"Feature","id":"219ee643-02ba-7db9-e723-a053c555c3b0","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-17T14:38:01+00:00","timeResolution":"day","from":"2026-06-16T00:00:00.001000+02:00","to":"2026-06-17T00:00:00+02:00","cellId":"10km_632_55","value":16.3,"calculatedAt":"2026-06-16T23:26:56.241000"}},{"type":"Feature","id":"3c07c6dc-244b-3673-cb7c-926754c6ec51","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-16T09:27:11+00:00","timeResolution":"day","from":"2026-06-15T00:00:00.001000+02:00","to":"2026-06-16T00:00:00+02:00","cellId":"10km_632_55","value":18.4,"calculatedAt":"2026-06-16T09:08:02.798000"}},{"type":"Feature","id":"d96e7a47-3b85-f135-a22a-d94fb700fa2b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-15T11:01:50+00:00","timeResolution":"day","from":"2026-06-14T00:00:00.001000+02:00","to":"2026-06-15T00:00:00+02:00","cellId":"10km_632_55","value":18.1,"calculatedAt":"2026-06-14T23:26:32.976000"}},{"type":"Feature","id":"6d6f27e1-0d01-22f3-e17b-0f53a42b80c0","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-15T10:57:59+00:00","timeResolution":"day","from":"2026-06-13T00:00:00.001000+02:00","to":"2026-06-14T00:00:00+02:00","cellId":"10km_632_55","value":16.4,"calculatedAt":"2026-06-13T23:26:41.478000"}},{"type":"Feature","id":"aadac27a-66ec-921e-e960-07ce5d29f0e2","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-15T10:54:43+00:00","timeResolution":"day","from":"2026-06-12T00:00:00.001000+02:00","to":"2026-06-13T00:00:00+02:00","cellId":"10km_632_55","value":16.9,"calculatedAt":"2026-06-12T23:27:13.373000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=10","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5498'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"272aefa3-5fb2-b82e-315b-6c29bd8fe426","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-15T11:22:09+00:00","timeResolution":"day","from":"2026-06-11T00:00:00.001000+02:00","to":"2026-06-12T00:00:00+02:00","cellId":"10km_632_55","value":2.6,"calculatedAt":"2026-06-15T10:31:07.528000"}},{"type":"Feature","id":"1f7161fa-1ecf-940d-bc5a-4785cec2635f","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-15T11:21:02+00:00","timeResolution":"day","from":"2026-06-10T00:00:00.001000+02:00","to":"2026-06-11T00:00:00+02:00","cellId":"10km_632_55","value":5.5,"calculatedAt":"2026-06-15T10:30:44.387000"}},{"type":"Feature","id":"1392bc1f-b808-c6b9-722f-37dc997aec3b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-11T11:07:24+00:00","timeResolution":"day","from":"2026-06-09T00:00:00.001000+02:00","to":"2026-06-10T00:00:00+02:00","cellId":"10km_632_55","value":7.2,"calculatedAt":"2026-06-11T11:01:11.200000"}},{"type":"Feature","id":"8de14fe9-f545-bd5e-668c-4f767ccb0f0e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-09T09:42:27+00:00","timeResolution":"day","from":"2026-06-08T00:00:00.001000+02:00","to":"2026-06-09T00:00:00+02:00","cellId":"10km_632_55","value":3.6,"calculatedAt":"2026-06-09T09:15:59.406000"}},{"type":"Feature","id":"4e197ba9-285c-d3e6-06b9-8048b3e60b8c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-08T14:03:36+00:00","timeResolution":"day","from":"2026-06-07T00:00:00.001000+02:00","to":"2026-06-08T00:00:00+02:00","cellId":"10km_632_55","value":2.9,"calculatedAt":"2026-06-08T12:16:01.774000"}},{"type":"Feature","id":"c0d4ac6a-38d0-d634-81ca-0ab9e24b20fd","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-08T13:51:34+00:00","timeResolution":"day","from":"2026-06-06T00:00:00.001000+02:00","to":"2026-06-07T00:00:00+02:00","cellId":"10km_632_55","value":3.7,"calculatedAt":"2026-06-08T12:12:01.473000"}},{"type":"Feature","id":"482d8d6c-5be5-f15e-303e-2f1e5f452aa3","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-08T13:38:16+00:00","timeResolution":"day","from":"2026-06-05T00:00:00.001000+02:00","to":"2026-06-06T00:00:00+02:00","cellId":"10km_632_55","value":5.4,"calculatedAt":"2026-06-08T12:07:59.184000"}},{"type":"Feature","id":"886cc313-a9fd-3d2c-6687-559613429ce8","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-08T13:33:20+00:00","timeResolution":"day","from":"2026-06-04T00:00:00.001000+02:00","to":"2026-06-05T00:00:00+02:00","cellId":"10km_632_55","value":4.2,"calculatedAt":"2026-06-08T12:06:38.953000"}},{"type":"Feature","id":"692e3e4f-6205-31fb-9e81-60165b4da375","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-08T13:22:48+00:00","timeResolution":"day","from":"2026-06-03T00:00:00.001000+02:00","to":"2026-06-04T00:00:00+02:00","cellId":"10km_632_55","value":5.2,"calculatedAt":"2026-06-08T12:03:41.267000"}},{"type":"Feature","id":"893f4a92-070f-72bb-3622-769824057f7c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-08T13:22:23+00:00","timeResolution":"day","from":"2026-06-02T00:00:00.001000+02:00","to":"2026-06-03T00:00:00+02:00","cellId":"10km_632_55","value":3.4,"calculatedAt":"2026-06-08T12:03:34.180000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5488'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"97fee7e0-e19c-cb5e-18b6-ed6c51fc0c7c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-12T09:18:37+00:00","timeResolution":"day","from":"2026-06-11T00:00:00.001000+02:00","to":"2026-06-12T00:00:00+02:00","cellId":"10km_632_55","value":21.5,"calculatedAt":"2026-06-11T23:27:07.435000"}},{"type":"Feature","id":"1d7ef0b7-016a-2f12-0f60-1feb5d0b1179","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-11T12:04:01+00:00","timeResolution":"day","from":"2026-06-10T00:00:00.001000+02:00","to":"2026-06-11T00:00:00+02:00","cellId":"10km_632_55","value":22.5,"calculatedAt":"2026-06-10T23:27:05.946000"}},{"type":"Feature","id":"d197cddc-804b-0333-e6ce-734251013708","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-10T10:46:12+00:00","timeResolution":"day","from":"2026-06-09T00:00:00.001000+02:00","to":"2026-06-10T00:00:00+02:00","cellId":"10km_632_55","value":16.2,"calculatedAt":"2026-06-09T23:29:16.113000"}},{"type":"Feature","id":"30bb9bde-39bf-67c6-6e4c-502388d11744","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-09T09:17:47+00:00","timeResolution":"day","from":"2026-06-08T00:00:00.001000+02:00","to":"2026-06-09T00:00:00+02:00","cellId":"10km_632_55","value":11.3,"calculatedAt":"2026-06-09T05:50:22.681000"}},{"type":"Feature","id":"1b4c86ae-b6ac-5a68-e1ff-e69aac568938","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-08T13:06:55+00:00","timeResolution":"day","from":"2026-06-07T00:00:00.001000+02:00","to":"2026-06-08T00:00:00+02:00","cellId":"10km_632_55","value":11.4,"calculatedAt":"2026-06-08T11:31:25.725000"}},{"type":"Feature","id":"ad627aa1-565b-811e-13fa-8af980ce8cfd","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-08T13:02:29+00:00","timeResolution":"day","from":"2026-06-06T00:00:00.001000+02:00","to":"2026-06-07T00:00:00+02:00","cellId":"10km_632_55","value":27.4,"calculatedAt":"2026-06-08T11:30:49.976000"}},{"type":"Feature","id":"b6cd4299-7212-5561-c127-f006b71cb1d2","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-08T12:58:11+00:00","timeResolution":"day","from":"2026-06-05T00:00:00.001000+02:00","to":"2026-06-06T00:00:00+02:00","cellId":"10km_632_55","value":14.2,"calculatedAt":"2026-06-05T23:33:45.325000"}},{"type":"Feature","id":"4e97b94a-74ec-9730-cbc5-589ee9ef481d","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-08T12:54:36+00:00","timeResolution":"day","from":"2026-06-04T00:00:00.001000+02:00","to":"2026-06-05T00:00:00+02:00","cellId":"10km_632_55","value":10.8,"calculatedAt":"2026-06-05T00:05:05.464000"}},{"type":"Feature","id":"68152c3d-f5bf-3263-266d-d4c9c6913489","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-04T09:19:28+00:00","timeResolution":"day","from":"2026-06-03T00:00:00.001000+02:00","to":"2026-06-04T00:00:00+02:00","cellId":"10km_632_55","value":9.4,"calculatedAt":"2026-06-03T23:26:33.162000"}},{"type":"Feature","id":"adc62c86-f803-d71d-f12d-0ca5832fb9a0","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-03T10:33:23+00:00","timeResolution":"day","from":"2026-06-02T00:00:00.001000+02:00","to":"2026-06-03T00:00:00+02:00","cellId":"10km_632_55","value":9.1,"calculatedAt":"2026-06-02T23:26:29.360000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5484'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"4504d765-9ef0-7ac9-868b-e266b8633b54","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-12T09:18:35+00:00","timeResolution":"day","from":"2026-06-11T00:00:00.001000+02:00","to":"2026-06-12T00:00:00+02:00","cellId":"10km_632_55","value":6.5,"calculatedAt":"2026-06-11T23:27:12.528000"}},{"type":"Feature","id":"ae6847fd-01b6-e6a8-7775-38040ee8b048","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-11T12:04:00+00:00","timeResolution":"day","from":"2026-06-10T00:00:00.001000+02:00","to":"2026-06-11T00:00:00+02:00","cellId":"10km_632_55","value":8.4,"calculatedAt":"2026-06-10T23:27:03.921000"}},{"type":"Feature","id":"9340cb6e-b1bd-57e9-2f16-cd80bbe23e52","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-10T10:46:10+00:00","timeResolution":"day","from":"2026-06-09T00:00:00.001000+02:00","to":"2026-06-10T00:00:00+02:00","cellId":"10km_632_55","value":10.5,"calculatedAt":"2026-06-09T23:28:59.874000"}},{"type":"Feature","id":"cf0c3bce-8088-0ae5-03cc-10e0b3dfca1f","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-09T09:17:46+00:00","timeResolution":"day","from":"2026-06-08T00:00:00.001000+02:00","to":"2026-06-09T00:00:00+02:00","cellId":"10km_632_55","value":12.4,"calculatedAt":"2026-06-09T05:49:14.280000"}},{"type":"Feature","id":"cf9b82ae-c634-dede-07c9-a61fe19ca83b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-08T13:06:53+00:00","timeResolution":"day","from":"2026-06-07T00:00:00.001000+02:00","to":"2026-06-08T00:00:00+02:00","cellId":"10km_632_55","value":13.4,"calculatedAt":"2026-06-08T11:31:30.098000"}},{"type":"Feature","id":"3821751d-d9b1-b33a-b7b8-7dde1ce1d756","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-08T13:02:29+00:00","timeResolution":"day","from":"2026-06-06T00:00:00.001000+02:00","to":"2026-06-07T00:00:00+02:00","cellId":"10km_632_55","value":8.2,"calculatedAt":"2026-06-08T11:30:46.995000"}},{"type":"Feature","id":"086e65e4-c6d7-f5cd-7e94-ba2f38a82bd4","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-08T12:58:11+00:00","timeResolution":"day","from":"2026-06-05T00:00:00.001000+02:00","to":"2026-06-06T00:00:00+02:00","cellId":"10km_632_55","value":10.8,"calculatedAt":"2026-06-05T23:33:48.014000"}},{"type":"Feature","id":"aa81dde6-283a-52a9-391f-07564a939723","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-08T12:54:35+00:00","timeResolution":"day","from":"2026-06-04T00:00:00.001000+02:00","to":"2026-06-05T00:00:00+02:00","cellId":"10km_632_55","value":10.4,"calculatedAt":"2026-06-05T00:04:57.727000"}},{"type":"Feature","id":"2ac2571d-bb2b-e67c-137c-b69f505b8946","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-04T09:19:26+00:00","timeResolution":"day","from":"2026-06-03T00:00:00.001000+02:00","to":"2026-06-04T00:00:00+02:00","cellId":"10km_632_55","value":13.3,"calculatedAt":"2026-06-03T23:26:20.775000"}},{"type":"Feature","id":"aaa60748-e5cb-38d6-a44e-9facda81f973","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-03T12:31:46+00:00","timeResolution":"day","from":"2026-06-02T00:00:00.001000+02:00","to":"2026-06-03T00:00:00+02:00","cellId":"10km_632_55","value":10.1,"calculatedAt":"2026-06-03T03:28:54.518000"}}],"timeStamp":"2026-11-08T09:16:35Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5411'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:35 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"154232e4-404e-7bdd-658c-75cca0d98864","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"min_temp","qcStatus":"manual","created":"2026-06-02T10:51:04+00:00","timeResolution":"day","from":"2026-06-01T00:00:00.001000+02:00","to":"2026-06-02T00:00:00+02:00","cellId":"10km_632_55","value":10.6,"calculatedAt":"2026-06-01T23:26:30.664000"}}],"timeStamp":"2026-11-08T09:16:36Z","numberReturned":1,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '1165'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:36 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"f41dcb70-be20-bc58-1bcb-dc38e70b0b49","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:50:15+00:00","timeResolution":"day","from":"2026-06-11T00:00:00.001000+02:00","to":"2026-06-12T00:00:00+02:00","cellId":"10km_632_55","value":5.5,"calculatedAt":"2026-06-30T15:33:26.549000"}},{"type":"Feature","id":"34820e4b-2337-8b85-27be-226f7bdd103b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:46:44+00:00","timeResolution":"day","from":"2026-06-10T00:00:00.001000+02:00","to":"2026-06-11T00:00:00+02:00","cellId":"10km_632_55","value":0.3,"calculatedAt":"2026-06-30T15:30:15.185000"}},{"type":"Feature","id":"a79cc9d7-4892-b96d-172e-42fe2de4e7cf","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:38:02+00:00","timeResolution":"day","from":"2026-06-09T00:00:00.001000+02:00","to":"2026-06-10T00:00:00+02:00","cellId":"10km_632_55","value":13.1,"calculatedAt":"2026-06-30T15:25:52.456000"}},{"type":"Feature","id":"b7c65e04-5707-e83f-4d8a-98c7f316afc3","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:34:05+00:00","timeResolution":"day","from":"2026-06-08T00:00:00.001000+02:00","to":"2026-06-09T00:00:00+02:00","cellId":"10km_632_55","value":0.4,"calculatedAt":"2026-06-30T15:22:19.278000"}},{"type":"Feature","id":"05d30808-d470-da86-fec5-4bf644b80337","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:16:21+00:00","timeResolution":"day","from":"2026-06-07T00:00:00.001000+02:00","to":"2026-06-08T00:00:00+02:00","cellId":"10km_632_55","value":7.5,"calculatedAt":"2026-06-30T15:15:59.648000"}},{"type":"Feature","id":"7bda7a58-34ec-1a52-49c5-8472071b1ad3","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:08:22+00:00","timeResolution":"day","from":"2026-06-06T00:00:00.001000+02:00","to":"2026-06-07T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T15:12:13.243000"}},{"type":"Feature","id":"194b2d90-54cb-c2fa-d6c1-e6ec69f59e7a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T17:01:29+00:00","timeResolution":"day","from":"2026-06-05T00:00:00.001000+02:00","to":"2026-06-06T00:00:00+02:00","cellId":"10km_632_55","value":0.6,"calculatedAt":"2026-06-30T15:10:01.222000"}},{"type":"Feature","id":"5ecbb630-e4bf-d57c-df7a-904c3a2cd5fa","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T16:22:36+00:00","timeResolution":"day","from":"2026-06-04T00:00:00.001000+02:00","to":"2026-06-05T00:00:00+02:00","cellId":"10km_632_55","value":18.0,"calculatedAt":"2026-06-30T15:03:47.564000"}},{"type":"Feature","id":"401ea706-7885-ae83-0bb3-b02b722a728a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T16:17:55+00:00","timeResolution":"day","from":"2026-06-03T00:00:00.001000+02:00","to":"2026-06-04T00:00:00+02:00","cellId":"10km_632_55","value":5.2,"calculatedAt":"2026-06-30T15:00:02.417000"}},{"type":"Feature","id":"9b01fa5c-c84b-47eb-774b-e7b9b0b114a3","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T16:11:45+00:00","timeResolution":"day","from":"2026-06-02T00:00:00.001000+02:00","to":"2026-06-03T00:00:00+02:00","cellId":"10km_632_55","value":0.5,"calculatedAt":"2026-06-30T14:57:35.539000"}}],"timeStamp":"2026-11-08T09:16:36Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5430'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:36 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"1cf157a0-09c0-7bca-5a1c-deab73dd535a","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"acc_precip","qcStatus":"manual","created":"2026-06-30T16:08:55+00:00","timeResolution":"day","from":"2026-06-01T00:00:00.001000+02:00","to":"2026-06-02T00:00:00+02:00","cellId":"10km_632_55","value":0.0,"calculatedAt":"2026-06-30T14:55:36.105000"}}],"timeStamp":"2026-11-08T09:16:36Z","numberReturned":1,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '1170'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:36 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"40ffc570-1b99-aa0a-d757-9cc9dd46cd15","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_relative_hum","qcStatus":"manual","created":"2026-06-02T10:51:06+00:00","timeResolution":"day","from":"2026-06-01T00:00:00.001000+02:00","to":"2026-06-02T00:00:00+02:00","cellId":"10km_632_55","value":75.4,"calculatedAt":"2026-06-02T01:06:33.431000"}}],"timeStamp":"2026-11-08T09:16:36Z","numberReturned":1,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '1192'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:36 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[],"timeStamp":"2026-11-08T09:16:36Z","numberReturned":0,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_relative_hum&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"self","type":"application/geo+json","title":"This
+        document"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '406'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:36 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"01b38ab8-fdfe-71ab-1919-26ad685da2ff","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-12T09:18:35+00:00","timeResolution":"day","from":"2026-06-11T00:00:00.001000+02:00","to":"2026-06-12T00:00:00+02:00","cellId":"10km_632_55","value":17.4,"calculatedAt":"2026-06-11T23:27:10.495000"}},{"type":"Feature","id":"41a54a81-6608-8af0-736a-c2c4b77261b6","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-11T12:04:00+00:00","timeResolution":"day","from":"2026-06-10T00:00:00.001000+02:00","to":"2026-06-11T00:00:00+02:00","cellId":"10km_632_55","value":16.4,"calculatedAt":"2026-06-10T23:27:17.981000"}},{"type":"Feature","id":"30515986-4afb-c1dd-302a-a26de4b9d44b","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-10T10:46:10+00:00","timeResolution":"day","from":"2026-06-09T00:00:00.001000+02:00","to":"2026-06-10T00:00:00+02:00","cellId":"10km_632_55","value":16.5,"calculatedAt":"2026-06-09T23:28:44.414000"}},{"type":"Feature","id":"f8258ecf-a9e0-1a1a-7ecb-61cd236b8814","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-09T09:17:46+00:00","timeResolution":"day","from":"2026-06-08T00:00:00.001000+02:00","to":"2026-06-09T00:00:00+02:00","cellId":"10km_632_55","value":18.6,"calculatedAt":"2026-06-09T05:50:03.946000"}},{"type":"Feature","id":"d11ea94b-b2c5-b3cc-7180-c091ddac1719","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-08T13:06:53+00:00","timeResolution":"day","from":"2026-06-07T00:00:00.001000+02:00","to":"2026-06-08T00:00:00+02:00","cellId":"10km_632_55","value":19.2,"calculatedAt":"2026-06-08T11:31:38.162000"}},{"type":"Feature","id":"080789cc-3009-f71b-321e-90a651879274","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-08T13:02:29+00:00","timeResolution":"day","from":"2026-06-06T00:00:00.001000+02:00","to":"2026-06-07T00:00:00+02:00","cellId":"10km_632_55","value":19.5,"calculatedAt":"2026-06-08T11:30:30.611000"}},{"type":"Feature","id":"a914c5a9-4089-330f-bf19-2c6e137a09ba","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-08T12:58:11+00:00","timeResolution":"day","from":"2026-06-05T00:00:00.001000+02:00","to":"2026-06-06T00:00:00+02:00","cellId":"10km_632_55","value":18.0,"calculatedAt":"2026-06-05T23:34:11.663000"}},{"type":"Feature","id":"62643540-7d65-1b41-f2df-2d672012eb5c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-08T12:54:35+00:00","timeResolution":"day","from":"2026-06-04T00:00:00.001000+02:00","to":"2026-06-05T00:00:00+02:00","cellId":"10km_632_55","value":18.3,"calculatedAt":"2026-06-05T00:04:59.972000"}},{"type":"Feature","id":"c13ce193-690d-06ef-ce52-b3f1809c527c","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-04T09:19:26+00:00","timeResolution":"day","from":"2026-06-03T00:00:00.001000+02:00","to":"2026-06-04T00:00:00+02:00","cellId":"10km_632_55","value":19.1,"calculatedAt":"2026-06-03T23:26:25.425000"}},{"type":"Feature","id":"a5d05ea5-c7b8-44be-b2ee-156777bb8e55","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-04T01:00:27+00:00","timeResolution":"day","from":"2026-06-02T00:00:00.001000+02:00","to":"2026-06-03T00:00:00+02:00","cellId":"10km_632_55","value":21.5,"calculatedAt":"2026-06-03T15:47:47.594000"}}],"timeStamp":"2026-11-08T09:16:36Z","numberReturned":10,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=20","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '5498'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:36 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"0fd67d7a-4397-b72c-e6ef-abf7a547f34e","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_wind_speed","qcStatus":"manual","created":"2026-06-03T19:19:28+00:00","timeResolution":"day","from":"2026-06-01T00:00:00.001000+02:00","to":"2026-06-02T00:00:00+02:00","cellId":"10km_632_55","value":4.1,"calculatedAt":"2026-06-03T10:22:58.346000"}}],"timeStamp":"2026-11-08T09:16:36Z","numberReturned":1,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '1185'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:36 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"ab68600e-33c0-35a1-5cad-16ff6e0417cc","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"mean_radiation","qcStatus":"manual","created":"2026-06-02T10:51:06+00:00","timeResolution":"day","from":"2026-06-01T00:00:00.001000+02:00","to":"2026-06-02T00:00:00+02:00","cellId":"10km_632_55","value":19.6,"calculatedAt":"2026-06-01T23:26:24.166000"}}],"timeStamp":"2026-11-08T09:16:37Z","numberReturned":1,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '1183'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:37 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[],"timeStamp":"2026-11-08T09:16:37Z","numberReturned":0,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_radiation&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"self","type":"application/geo+json","title":"This
+        document"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '403'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:37 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[],"timeStamp":"2026-11-08T09:16:37Z","numberReturned":0,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=min_temp&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"self","type":"application/geo+json","title":"This
+        document"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '397'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:37 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[],"timeStamp":"2026-11-08T09:16:37Z","numberReturned":0,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=acc_precip&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"self","type":"application/geo+json","title":"This
+        document"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '399'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:37 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":"9a363396-e2de-1872-148f-568006399084","geometry":{"type":"Polygon","coordinates":[[[9.8235,57.0208],[9.9882,57.0196],[9.9906,57.1094],[9.8255,57.1106],[9.8235,57.0208]]]},"properties":{"parameterId":"max_temp_w_date","qcStatus":"manual","created":"2026-06-02T10:51:04+00:00","timeResolution":"day","from":"2026-06-01T00:00:00.001000+02:00","to":"2026-06-02T00:00:00+02:00","cellId":"10km_632_55","value":19.8,"calculatedAt":"2026-06-01T23:26:57.714000"}}],"timeStamp":"2026-11-08T09:16:37Z","numberReturned":1,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=30","rel":"self","type":"application/geo+json","title":"This
+        document"},{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"next","type":"application/geo+json","title":"Next
+        set of results"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '1186'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:37 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[],"timeStamp":"2026-11-08T09:16:38Z","numberReturned":0,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=mean_wind_speed&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"self","type":"application/geo+json","title":"This
+        document"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '404'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:38 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - opendataapi.dmi.dk
+      user-agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31
+  response:
+    body:
+      string: '{"type":"FeatureCollection","features":[],"timeStamp":"2026-11-08T09:16:38Z","numberReturned":0,"links":[{"href":"https://opendataapi.dmi.dk/v2/climateData/collections/10kmGridValue/items?cellId=10km_632_55&parameterId=max_temp_w_date&timeResolution=day&datetime=2026-05-31T00%3A00%3A00Z%2F2026-06-30T23%3A59%3A59Z&limit=10&offset=31","rel":"self","type":"application/geo+json","title":"This
+        document"}]}'
+    headers:
+      connection:
+      - keep-alive
+      content-length:
+      - '404'
+      content-type:
+      - application/json
+      date:
+      - Sun, 08 Nov 2026 09:16:38 GMT
+      server:
+      - nginx/1.31.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - origin,access-control-request-method,access-control-request-headers,accept-encoding
+    status:
+      code: 200
+      message: ''
+version: 1
