@@ -34,6 +34,8 @@ PARAMETERS = {
     "wind_speed": "mean_wind_speed",
     "rh": "mean_relative_hum",
 }
+# APSIM cannot run without these columns.
+REQUIRED_COLUMNS = ("maxt", "mint", "rain", "radn")
 
 FIRST_DAY_WITH_GRID_DATA = dt.date(2011, 1, 1)
 PAGE_SIZE = 10_000
@@ -61,6 +63,14 @@ class DmiPagingError(Exception):
     """DMI kept sending "next" links, so the download would never end."""
 
 
+class DmiResponseError(Exception):
+    """DMI sent a page that is not a list of grid features."""
+
+
+class NoWeatherData(Exception):
+    """DMI has no values for a column that APSIM needs, for the whole date range."""
+
+
 @dataclass(frozen=True)
 class WeatherDay:
     """One day of weather in APSIM units. A value is None when DMI has no data."""
@@ -78,6 +88,9 @@ def fetch_daily_weather(
     cell_id: str, start: dt.date, end: dt.date, client: httpx.Client | None = None
 ) -> list[WeatherDay]:
     """Return one WeatherDay per date from start to end, both inclusive.
+
+    A day without data gets None. If a column in REQUIRED_COLUMNS has no value
+    on any day, this raises NoWeatherData.
 
     If you pass a client, you own it and this function leaves it open.
     """
@@ -126,7 +139,15 @@ def fetch_all_parameters(
     finally:
         stop_downloads.set()
         pool.shutdown(wait=True, cancel_futures=True)
-    return merge_days(values_by_column, start, end)
+
+    days = merge_days(values_by_column, start, end)
+    for column in REQUIRED_COLUMNS:
+        if all(getattr(day, column) is None for day in days):
+            raise NoWeatherData(
+                f"DMI has no {PARAMETERS[column]} values for {cell_id} "
+                f"from {start} to {end}"
+            )
+    return days
 
 
 def fetch_features(
@@ -157,7 +178,13 @@ def fetch_features(
     next_links_seen: set[str] = set()
     for _ in range(MAX_PAGES_PER_PARAMETER):
         page = get_page_with_retries(client, url, params, stop_downloads)
-        page_features = page.get("features", [])
+        # An empty "features" list ends the paging, but a page without the key
+        # is an error answer, for example {"message": "..."}.
+        if "features" not in page:
+            raise DmiResponseError(
+                f"No 'features' in the DMI answer for {parameter}: {str(page)[:200]}"
+            )
+        page_features = page["features"]
         if not page_features:
             return features
         features += page_features

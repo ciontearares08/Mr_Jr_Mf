@@ -36,6 +36,8 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Tests must never call DMI. Recording a cassette still reaches the network.
+addopts = ["--block-network"]
 
 [tool.ruff]
 src = ["src"]

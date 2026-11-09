@@ -312,6 +312,20 @@ def test_paging_stops_at_a_page_without_links() -> None:
     assert june_2.rain == 1.0
 
 
+def test_a_page_without_features_is_an_error() -> None:
+    client = client_answering_with(
+        lambda _: httpx.Response(200, json={"message": "oops"})
+    )
+    with pytest.raises(dmi.DmiResponseError):
+        fetch_daily_weather(CELL, JUNE_1, JUNE_1, client=client)
+
+
+def test_a_cell_without_any_data_is_an_error() -> None:
+    client = client_answering_with(serve_pages())  # The first page is empty.
+    with pytest.raises(dmi.NoWeatherData, match=CELL):
+        fetch_daily_weather(CELL, JUNE_1, JUNE_30, client=client)
+
+
 def test_a_missing_value_is_skipped() -> None:
     values = parse_daily_values([feature("2026-06-01", None, "2026-06-02T09:00:00")])
     assert values == {}
