@@ -11,6 +11,7 @@ from api.geometry import area_ha
 from api.routers.auth import CurrentUser
 from api.schemas.field import FieldCreate, FieldRead
 from api.weather.grid import cell_for_geometry
+from api.weather.stations import wind_station_or_none
 
 router = APIRouter(prefix="/fields", tags=["fields"])
 
@@ -25,6 +26,7 @@ def create_field(
         geom=from_shape(polygon, srid=4326),
         area_ha=area_ha(polygon),
         cell_id=cell_for_geometry(polygon),
+        wind_station_id=wind_station_or_none(polygon),
     )
     db.add(field)
     db.flush()  # Assigns field.id so the member row can point to it.

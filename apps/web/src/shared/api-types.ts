@@ -381,7 +381,7 @@ export interface components {
             type: "Polygon";
             /**
              * Coordinates
-             * @description Rings of [lon, lat] points
+             * @description Rings of [lon, lat] points. Extra values, such as altitude, are ignored
              */
             coordinates: [
                 number,

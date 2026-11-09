@@ -3,7 +3,7 @@ from enum import StrEnum
 from functools import cached_property
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, BeforeValidator, Field
 from shapely.geometry import Polygon
 
 
@@ -49,14 +49,28 @@ class Stage(BaseModel):
 # Range checks also reject inf and nan.
 Longitude = Annotated[float, Field(ge=-180, le=180)]
 Latitude = Annotated[float, Field(ge=-90, le=90)]
+
+
+def keep_only_lon_lat(position: object) -> object:
+    """Drop the values after lon and lat, such as altitude.
+
+    GeoJSON allows extra values in a position, for example [lon, lat, altitude].
+    """
+    if isinstance(position, (list, tuple)) and len(position) > 2:
+        return position[:2]
+    return position
+
+
+Position = Annotated[tuple[Longitude, Latitude], BeforeValidator(keep_only_lon_lat)]
 # A closed ring needs at least 3 corners plus the repeated first point.
-Ring = Annotated[list[tuple[Longitude, Latitude]], Field(min_length=4)]
+Ring = Annotated[list[Position], Field(min_length=4)]
 
 
 class GeoJSONPolygon(BaseModel):
     type: Literal["Polygon"] = "Polygon"
     coordinates: list[Ring] = Field(
-        min_length=1, description="Rings of [lon, lat] points"
+        min_length=1,
+        description="Rings of [lon, lat] points. Extra values, such as altitude, are ignored",
     )
 
     @cached_property

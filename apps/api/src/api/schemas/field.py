@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from shapely.validation import explain_validity
 
 from api.schemas.common import GeoJSONPolygon
+from api.weather.grid import is_inside_dmi_grid
 
 
 class FieldCreate(BaseModel):
@@ -19,6 +20,17 @@ class FieldCreate(BaseModel):
             raise ValueError(f"The polygon is not valid: {explain_validity(polygon)}")
         if polygon.area == 0:
             raise ValueError("The polygon has no area")
+        return geometry
+
+    @field_validator("geometry")
+    @classmethod
+    def must_be_inside_dmi_grid(cls, geometry: GeoJSONPolygon) -> GeoJSONPolygon:
+        # Weather comes only from DMI. Outside its grid we get no weather and the
+        # simulation would run on empty values without any error.
+        if not is_inside_dmi_grid(geometry.shape):
+            raise ValueError(
+                "The field is outside Denmark. Weather data from DMI covers only Denmark"
+            )
         return geometry
 
 

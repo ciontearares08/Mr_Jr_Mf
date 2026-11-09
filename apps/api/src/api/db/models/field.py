@@ -17,6 +17,8 @@ class Field(Base):
     )
     area_ha: Mapped[float] = mapped_column(nullable=False)
     cell_id: Mapped[str | None] = mapped_column(String(50), index=True)
+    # The DMI station for the daily min wind. None until DMI answers.
+    wind_station_id: Mapped[str | None] = mapped_column(String(10))
     soil_profile: Mapped[str | None] = mapped_column(String(50))
     sowing_date: Mapped[datetime.date | None] = mapped_column(Date)
     sowing_window_start: Mapped[datetime.date | None] = mapped_column(Date)
