@@ -4,6 +4,7 @@ import MainLayout from "./components/MainLayout";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./components/Dashboard";
+import EmptyState from "./pages/EmptyState";
 import { Spinner } from "@/components/ui/spinner";
 import FieldMap from "./components/map/FieldMap";
 import {
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/start" element={<EmptyState />} />
           <Route
             path="/dev/data"
             element={
