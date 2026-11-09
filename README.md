@@ -46,9 +46,9 @@ PostgreSQL with PostGIS, runs as the `db` service in docker compose on port 5432
 
 Run `make` in the repo root to list every command. These are the ones you'll use most:
 
-- `make api-setup` installs the API dependencies and applies migrations `make web-setup` installs the web dependencies. Run both after pulling. `make sim-setup` installs the sim dependencies. Run them after pulling.
+- `make api-setup` installs the API dependencies and applies migrations, `make web-setup` installs the web dependencies, and `make sim-setup` installs the sim dependencies. Run them after pulling.
 - `make api-dev` starts the API on port 8000, `make web-dev` starts the web app on port 5173, and make sim-dev` starts the sim service on port 8001.
-- `make migration m="describe the change"` generates a migration from your model changes, and `make migrate` applies it, and `make migrate-down` rolls back the latest one.
+- `make migration m="describe the change"` generates a migration from your model changes, `make migrate` applies it, and `make migrate-down` rolls back the latest one.
 
 - `make api-check` and `make web-check` run the same checks as CI. `make sim-check` runs the sim lint and tests.
 - `make api-types` regenerates the frontend API types from the running API.
