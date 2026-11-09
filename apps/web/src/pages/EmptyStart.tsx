@@ -9,11 +9,11 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 
-export default function EmptyState() {
+export default function EmptyStart() {
   return (
     <section className="mx-auto max-w-5xl px-6 py-16">
       <div className="mb-10 text-center">
-        <h1 className="mb-4 text-4xl font-bold text-primary">
+        <h1 className="mb-4 text-3xl font-bold text-primary">
           Welcome to your farm!
         </h1>
 

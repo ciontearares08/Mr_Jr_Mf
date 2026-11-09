@@ -16,18 +16,10 @@ export default function Navbar() {
             Field Map
           </Link>
 
-          <Link
-            to="/fields/new"
-            className={buttonVariants({ variant: "ghost" })}
-          >
-            New Field
+          <Link to="/start" className={buttonVariants({ variant: "ghost" })}>
+            Start Page
           </Link>
-          <Link
-            to="/fields/join"
-            className={buttonVariants({ variant: "ghost" })}
-          >
-            Join Field
-          </Link>
+
           <Link
             to="/dashboard"
             className={buttonVariants({ variant: "ghost" })}
