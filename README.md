@@ -21,7 +21,7 @@ The frontend uses these main libraries for its work:
 - React Router - Used for page routing
 - Leaflet + Geoman - Used for the field map and drawing field boundaries
 - Recharts - Used for charts
-- 
+  
 ## API
 This is where the backend lives
 
