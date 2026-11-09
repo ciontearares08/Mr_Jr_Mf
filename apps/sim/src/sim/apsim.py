@@ -129,7 +129,7 @@ def run_season(
             raise ApsimError(f"APSIM wrote an empty Report.\nSTDOUT: {run.stdout}")
 
     rows = _season_rows(_rename_columns(report))
-    rows["dates"] = pd.to_datetime(rows["dates"])
+    rows["date"] = pd.to_datetime(rows["date"])
     return SeasonResult(rows=rows, sowing_date=rows["date"].iloc[0].date())
 
 
