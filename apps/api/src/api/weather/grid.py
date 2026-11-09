@@ -51,12 +51,12 @@ DMI_GRID_AREA = MultiPolygon([DENMARK_WITHOUT_BORNHOLM, BORNHOLM])
 
 # Building a Transformer is slow, so we build it once at import time.
 # always_xy=True keeps the axis order as (lon, lat) in and (easting, northing) out.
-_WGS84_TO_UTM32 = Transformer.from_crs("EPSG:4326", "EPSG:25832", always_xy=True)
+WGS84_TO_UTM32 = Transformer.from_crs("EPSG:4326", "EPSG:25832", always_xy=True)
 
 
 def cell_for(lat: float, lon: float) -> str:
     """Return the DMI 10 km grid cell ID that contains the WGS84 point."""
-    easting, northing = _WGS84_TO_UTM32.transform(lon, lat)
+    easting, northing = WGS84_TO_UTM32.transform(lon, lat)
     return f"10km_{int(northing // CELL_SIZE_M)}_{int(easting // CELL_SIZE_M)}"
 
 
