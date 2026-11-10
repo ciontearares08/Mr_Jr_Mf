@@ -17,11 +17,18 @@ RUN_TIMEOUT_SECONDS = 300
 
 COLUMNS = {
     "Clock.Today": "date",
+    "SowingDate": "sowing_date",
     "Wheat.LAI": "lai",
     "Wheat.Phenology.Zadok.Stage": "zadoks",
     "Wheat.Phenology.CurrentStageName": "stage",
     "Wheat.AboveGround.Wt": "biomass",
+    "Wheat.AboveGround.N": "biomass_n",
     "Yield": "yield",
+    "Wheat.Grain.Protein": "grain_protein",
+    "Wheat.Grain.Size": "grain_size",
+    "Wheat.Grain.Number": "grain_number",
+    "Wheat.Grain.Total.Wt": "grain_wt",
+    "Wheat.Grain.Total.N": "grain_n",
 }
 # Per-layer columns, for example "Soil.SoilWater.SW(3)" becomes "sw_3"
 LAYER_COLUMN = re.compile(r"^Soil\.SoilWater\.(SW|PAW)\((\d+)\)$")
@@ -83,6 +90,13 @@ def run_season(
     if not weather_path.is_file():
         raise FileNotFoundError(f"Weather file not found: {weather_path}")
 
+    first_day, last_day = _weather_dates(weather_path)
+    if start < first_day or end > last_day:
+        raise ValueError(
+            f"The sowing dates {start} to {end} are outside the weather file, "
+            f"which covers {first_day} to {last_day}."
+        )
+
     with tempfile.TemporaryDirectory() as temp_dir:
         # APSIM writes a .db next to the model, so each run gets its own folder
         temp_model_path = Path(temp_dir) / "wheat.apsimx"
@@ -130,6 +144,7 @@ def run_season(
 
     rows = _season_rows(_rename_columns(report))
     rows["date"] = pd.to_datetime(rows["date"])
+    rows["sowing_date"] = pd.to_datetime(rows["sowing_date"])
     return SeasonResult(rows=rows, sowing_date=rows["date"].iloc[0].date())
 
 
@@ -223,6 +238,9 @@ def _rename_columns(report: pd.DataFrame) -> pd.DataFrame:
         match = LAYER_COLUMN.match(column)
         if match:
             names[column] = f"{match[1].lower()}_{match[2]}"
+    missing = [column for column in names if column not in report.columns]
+    if missing:
+        raise ApsimError(f"The APSIM Report is missing these columns: {missing}")
     return report[list(names)].rename(columns=names)
 
 
