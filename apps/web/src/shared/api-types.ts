@@ -28,10 +28,28 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Fields */
+        get: operations["list_fields_fields_get"];
         put?: never;
         /** Create Field */
         post: operations["create_field_fields_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fields/{field_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Field */
+        get: operations["read_field_fields__field_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -326,6 +344,13 @@ export interface components {
             name: string;
             /** @description Field boundary drawn on the map, in WGS84 */
             geometry: components["schemas"]["GeoJSONPolygon"];
+            /**
+             * Sowing Date
+             * @description The day the farmer sows. Leave out with a window
+             */
+            sowing_date?: string | null;
+            /** @description Let APSIM pick the day. Leave out with a date */
+            sowing_window?: components["schemas"]["SowingWindow"] | null;
         };
         /** FieldInfo */
         FieldInfo: {
@@ -348,17 +373,25 @@ export interface components {
         FieldRead: {
             /** Id */
             id: number;
-            /**
-             * Name
-             * @description The name of the field
-             */
+            /** Name */
             name: string;
+            geometry: components["schemas"]["GeoJSONPolygon"];
             /**
              * Area Ha
              * @description The area of the field in hectares
              */
             area_ha: number;
+            /** Sowing Date */
+            sowing_date: string | null;
+            sowing_window: components["schemas"]["SowingWindow"] | null;
+            /** @description What the current user may do with the field */
+            role: components["schemas"]["FieldRole"];
         };
+        /**
+         * FieldRole
+         * @enum {string}
+         */
+        FieldRole: "owner" | "viewer";
         /**
          * FloatRange
          * @description Spread of a value across the ensemble runs.
@@ -531,6 +564,22 @@ export interface components {
          * @enum {string}
          */
         SowingStatus: "sown" | "planned";
+        /**
+         * SowingWindow
+         * @description Dates between which APSIM picks the sowing day.
+         */
+        SowingWindow: {
+            /**
+             * Start
+             * Format: date
+             */
+            start: string;
+            /**
+             * End
+             * Format: date
+             */
+            end: string;
+        };
         /** Stage */
         Stage: {
             /**
@@ -830,6 +879,26 @@ export interface operations {
             };
         };
     };
+    list_fields_fields_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FieldRead"][];
+                };
+            };
+        };
+    };
     create_field_fields_post: {
         parameters: {
             query?: never;
@@ -845,6 +914,37 @@ export interface operations {
         responses: {
             /** @description Successful Response */
             201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FieldRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_field_fields__field_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                field_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
