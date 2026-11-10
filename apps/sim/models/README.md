@@ -4,13 +4,33 @@
 
 | Item | Value |
 | :--- | :--- |
-| APSIM version | 2026.9.8110.0, set by `APSIM_VERSION` in `apps/sim/Dockerfile`. The model was first built in 2024.6.7516.0. At load time, APSIM upgrades the file to its own version. |
-| Cultivar | Hartog |
-| Sowing date | 15-Apr. `run_season()` replaces it with the date that you give. |
-| Soil | Black Vertosol (clay), Norwin, Queensland, APSoil number 900 |
-| Weather | `tests/fixtures/Copenhagen_Weather.met`, Copenhagen 2025 |
-| Clock | 2025-01-01 to 2025-12-31 |
+| APSIM version | 2026.9.8110.0, set by `APSIM_VERSION` in `apps/sim/Dockerfile`. At load time, APSIM upgrades the file to its own version. |
+| Crop | Winter wheat |
+| Cultivar | Claire (UK Winter Wheat) |
+| Clock | 2025-09-01 to 2026-08-31, one winter wheat season |
+| Weather | `tests/fixtures/Copenhagen_Weather.met` (2025 only) until the 2025/26 file from S2-04 |
+| Soil | Black Vertosol (clay), Norwin, Queensland, APSoil number 900. A Danish default soil comes in S3-09 |
 | Source paper | Not known yet. Rares adds it. |
+
+## Sowing rule
+
+The manager "Sow using a variable rule" sows inside a date window.
+
+| Setting | Value |
+| :--- | :--- |
+| Window | 15-sep to 15-oct |
+| Conditions | Extractable soil water above 10 mm and at least 5 mm of rain in the last 7 days |
+| Last day | If the conditions are never met, the crop is sown on the last day of the window, so every field gets a prediction |
+| Population | 300 plants/m² |
+| Row spacing | 125 mm |
+| Sowing depth | 30 mm |
+
+## Fertiliser
+
+| Manager | When | Amount |
+| :--- | :--- | :--- |
+| Fertilise at sowing | On the sowing day | 20 kg N/ha as NO3N |
+| Fertilise in spring | 20 March | 150 kg N/ha as NO3N |
 
 ## Report output
 
