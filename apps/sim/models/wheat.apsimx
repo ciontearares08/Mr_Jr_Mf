@@ -11,8 +11,8 @@
       "Children": [
         {
           "$type": "Models.Clock, Models",
-          "Start": "2025-01-01T00:00:00",
-          "End": "2025-12-31T00:00:00",
+          "Start": "2025-09-01T00:00:00",
+          "End": "2026-08-31T00:00:00",
           "Name": "Clock",
           "ResourceName": null,
           "Children": [],
@@ -655,10 +655,11 @@
                 "        {",
                 "            accumulatedRain.Update();",
                 "            ",
-                "            if (DateUtilities.WithinDates(StartDate, Clock.Today, EndDate) &&",
-                "                !Crop.IsAlive &&",
-                "                MathUtilities.Sum(waterBalance.ESW) > MinESW &&",
-                "                accumulatedRain.Sum > MinRain)",
+                "            bool inWindow = DateUtilities.WithinDates(StartDate, Clock.Today, EndDate);",
+                "            bool lastDay = DateUtilities.WithinDates(EndDate, Clock.Today, EndDate);",
+                "            bool soilReady = MathUtilities.Sum(waterBalance.ESW) > MinESW &&",
+                "                             accumulatedRain.Sum > MinRain;",
+                "            if (inWindow && !Crop.IsAlive && (soilReady || lastDay))",
                 "            {",
                 "                Crop.Sow(population: Population, cultivar: CultivarName, depth: SowingDepth, rowSpacing: RowSpacing);    ",
                 "            }",
@@ -673,11 +674,11 @@
                 },
                 {
                   "Key": "StartDate",
-                  "Value": "15-apr"
+                  "Value": "15-sep"
                 },
                 {
                   "Key": "EndDate",
-                  "Value": "15-may"
+                  "Value": "15-oct"
                 },
                 {
                   "Key": "MinESW",
@@ -693,7 +694,7 @@
                 },
                 {
                   "Key": "CultivarName",
-                  "Value": "Hartog"
+                  "Value": "Claire"
                 },
                 {
                   "Key": "SowingDepth",
@@ -701,11 +702,11 @@
                 },
                 {
                   "Key": "RowSpacing",
-                  "Value": "250"
+                  "Value": "125"
                 },
                 {
                   "Key": "Population",
-                  "Value": "120"
+                  "Value": "300"
                 }
               ],
               "Name": "Sow using a variable rule",
@@ -760,10 +761,74 @@
                 },
                 {
                   "Key": "Amount",
-                  "Value": "160"
+                  "Value": "20"
                 }
               ],
               "Name": "Fertilise at sowing",
+              "ResourceName": null,
+              "Children": [],
+              "Enabled": true,
+              "ReadOnly": false
+            },
+            {
+              "$type": "Models.Manager, Models",
+              "CodeArray": [
+                "using Models.Core;",
+                "using Models.PMF;",
+                "using Models.Soils;",
+                "using Models.Utilities;",
+                "using APSIM.Shared.Utilities;",
+                "using System;",
+                "",
+                "namespace Models",
+                "{",
+                "    [Serializable]",
+                "    public class Script : Model",
+                "    {",
+                "        [Link] Clock Clock;",
+                "        [Link] Fertiliser Fertiliser;",
+                "",
+                "        [Description(\"Crop to be fertilised\")]",
+                "        public IPlant Crop { get; set; }",
+                "",
+                "        [Description(\"Type of fertiliser to apply\")]",
+                "        [Display(Type = DisplayType.FertiliserType)]",
+                "        public string FertiliserType { get; set; }",
+                "",
+                "        [Description(\"Date to apply (d-mmm)\")]",
+                "        public string ApplyDate { get; set; }",
+                "",
+                "        [Description(\"Amount of fertiliser to be applied (kg/ha)\")]",
+                "        public double Amount { get; set; }",
+                "",
+                "        [EventSubscribe(\"DoManagement\")]",
+                "        private void OnDoManagement(object sender, EventArgs e)",
+                "        {",
+                "            if (Crop.IsAlive && DateUtilities.WithinDates(ApplyDate, Clock.Today, ApplyDate))",
+                "                Fertiliser.Apply(amount: Amount, type: FertiliserType);",
+                "        }",
+                "    }",
+                "}"
+              ],
+              "Parameters": [
+                {
+                  "Key": "Crop",
+                  "Value": "[Wheat]"
+                },
+                {
+                  "Key": "FertiliserType",
+                  "Value": "NO3N"
+                },
+                {
+                  "Key": "ApplyDate",
+                  "Value": "20-mar"
+                },
+                {
+                  "Key": "Amount",
+                  "Value": "150"
+                }
+              ],
+              "Name": "Fertilise in spring",
               "ResourceName": null,
               "Children": [],
               "Enabled": true,
