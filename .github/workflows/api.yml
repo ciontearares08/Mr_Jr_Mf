@@ -27,6 +27,23 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    services:
+      db:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_DB: agriculture
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d agriculture"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/agriculture
+      JWT_SECRET_KEY: ci-only-not-a-secret
     steps:
       - uses: actions/checkout@v5
 
@@ -45,9 +62,8 @@ jobs:
       - name: Ruff format check
         run: uv run ruff format --check .
 
+      - name: Migrations
+        run: uv run alembic upgrade head
+
       - name: Tests
-        env:
-          # Engine creation is lazy, so a dummy URL is enough for tests that don't hit the DB
-          DATABASE_URL: postgresql+psycopg://ci:ci@localhost/ci
-          JWT_SECRET_KEY: ci-only-not-a-secret
         run: uv run pytest
