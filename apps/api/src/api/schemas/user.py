@@ -9,11 +9,11 @@ Password = Annotated[str, Field(min_length=12, max_length=256)]
 
 
 class EmailInput(BaseModel):
-    email: str = Field(...)
+    email: str
 
     @field_validator("email")
     @classmethod
-    def normalize_email(cls, raw_email: str) -> str:
+    def check_email(cls, raw_email: str) -> str:
         try:
             return normalize_email(raw_email)
         except EmailNotValidError as e:
@@ -37,8 +37,8 @@ class UserRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
-    email: str = Field(...)
-    created_at: datetime = Field(...)
+    email: str
+    created_at: datetime
 
 
 class Token(BaseModel):

@@ -48,7 +48,7 @@ api-check: api-lint api-test ## Everything CI runs for the API
 
 ##@ APSIM (run in APSIM devcontainer)
 
-sim-setup: sim-install
+sim-setup: sim-install ## Install deps (run after pulling)
 
 sim-install: ## Install/update Python deps
 	$(call require,uv,$(SIM_HINT))

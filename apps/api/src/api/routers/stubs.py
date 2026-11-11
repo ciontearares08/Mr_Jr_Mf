@@ -8,6 +8,7 @@ the real ensemble does. Replace these routes with /fields/{id}/overview and
 
 import csv
 import datetime
+import json
 from functools import cache
 from pathlib import Path
 from statistics import fmean
@@ -49,26 +50,13 @@ from api.schemas.timeline import (
 router = APIRouter(prefix="/stub", tags=["stubs"])
 
 CSV_PATH = Path(__file__).resolve().parents[1] / "stub_data" / "zealand_cleaned.csv"
+# The stage list from the sim service: APSIM stage name, farmer name and Zadoks code
+STAGES_PATH = Path(__file__).resolve().parents[4] / "sim" / "models" / "stages.json"
 DEMO_DATE = datetime.date(2025, 6, 15)
 UPDATED_AT = datetime.datetime(2025, 6, 15, 6, 0, tzinfo=datetime.UTC)
 FIELD_ID = 1
 # FAKE: assumed ensemble size, the real N is decided in S2-06
 RUNS_TOTAL = 10
-
-# Farmer names until stages.json lands (S1-06)
-STAGE_NAMES = {
-    "Sowing": "Sowing",
-    "Germination": "Germination",
-    "Emergence": "Emergence",
-    "DoubleRidge": "Double ridge",
-    "MaximumSpikeletPrimordia": "Spikelets formed",
-    "FlagLeafAppearance": "Flag leaf",
-    "HeadEmergence": "Heading",
-    "Anthesis": "Flowering",
-    "MaximumGrainLength": "Grain filling",
-    "EndGrainFill": "End of grain fill",
-    "HarvestRipe": "Harvest ripe",
-}
 
 # FAKE: guessed units, the CSV does not say. Confirm with Rares (APSIM report)
 UNITS = {"lai": "m²/m²", "biomass": "g/m²", "grain_yield": "kg/ha", "paw": "mm/mm"}
@@ -92,6 +80,12 @@ def _rows() -> list[dict]:
         ]
 
 
+@cache
+def _farmer_names() -> dict[str, str]:
+    stages = json.loads(STAGES_PATH.read_text(encoding="utf-8"))
+    return {s["stage_name"]: s["farmer_name"] for s in stages}
+
+
 def _row_on(date: datetime.date) -> dict:
     return next(r for r in _rows() if r["date"] == date)
 
@@ -106,7 +100,9 @@ def _stage_starts() -> list[dict]:
 
 def _stage(row: dict) -> Stage:
     return Stage(
-        code=row["stage"], name=STAGE_NAMES[row["stage"]], zadoks=int(row["zadoks"])
+        code=row["stage"],
+        name=_farmer_names()[row["stage"]],
+        zadoks=int(row["zadoks"]),
     )
 
 
