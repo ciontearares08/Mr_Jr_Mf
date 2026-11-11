@@ -80,6 +80,7 @@
                 "[Wheat].LAI",
                 "[Wheat].Phenology.Zadok.Stage",
                 "[Wheat].Phenology.CurrentStageName",
+                "[Wheat].SowingDate as SowingDate",
                 "[Wheat].AboveGround.Wt",
                 "[Wheat].AboveGround.N",
                 "[Wheat].Grain.Total.Wt*10 as Yield",

@@ -42,6 +42,7 @@ The Report node writes one row per day. `run_season()` keeps the rows from sowin
 | `[Wheat].LAI` | `lai` |
 | `[Wheat].Phenology.Zadok.Stage` | `zadoks` |
 | `[Wheat].Phenology.CurrentStageName` | `stage` |
+| `[Wheat].SowingDate as SowingDate` | `SowingDate` (not yet kept by `run_season()`, see below) |
 | `[Wheat].AboveGround.Wt` | `biomass` |
 | `[Wheat].Grain.Total.Wt*10 as Yield` | `yield` |
 | `[Soil].SoilWater.PAW` | `paw_1` to `paw_7` |
