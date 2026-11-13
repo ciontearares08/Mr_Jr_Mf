@@ -62,10 +62,10 @@ class SeedMember:
 
 # --- Seed data --------------------------------------------------------------
 
-FARMER = SeedUser(email="farmer@example.com", password="farmer-password")
-ADVISOR = SeedUser(email="advisor@example.com", password="advisor-password")
+FARMER = SeedUser(email="farmer@example.com", password="password123")
+ADVISOR = SeedUser(email="advisor@example.com", password="password123")
 # Has no fields, for testing the empty state of the app.
-NEWCOMER = SeedUser(email="newcomer@example.com", password="newcomer-password")
+NEWCOMER = SeedUser(email="newcomer@example.com", password="password123")
 
 USERS = [FARMER, ADVISOR, NEWCOMER]
 
