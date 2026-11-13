@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from email_validator import EmailNotValidError, validate_email
@@ -43,7 +43,8 @@ class UserRead(BaseModel):
 
 class Token(BaseModel):
     access_token: str
-    token_type: str = "bearer"
+    token_type: Literal["bearer"] = "bearer"
+    expires_in: int  # seconds until access_token expires
 
 
 def normalize_email(raw_email: str) -> str:
