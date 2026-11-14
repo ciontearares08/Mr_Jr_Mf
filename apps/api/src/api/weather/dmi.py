@@ -46,7 +46,7 @@ PARAMETERS = {
 # Hourly station parameter. The daily wind_min is the lowest hourly value.
 MIN_WIND_PARAMETER = "wind_min_past1h"
 COLUMNS = (*PARAMETERS, "wind_min")
-# APSIM cannot run without these columns.
+# A day is complete only when it has all of these columns.
 REQUIRED_COLUMNS = ("maxt", "mint", "rain", "radn", "wind_min", "wind_max")
 
 # A day with fewer hourly values than this gets no wind_min, because the
@@ -433,14 +433,15 @@ def merge_days(
     values_by_column: dict[str, dict[dt.date, float]], start: dt.date, end: dt.date
 ) -> list[WeatherDay]:
     """Combine the per-column values into one WeatherDay per date."""
-    days = []
-    date = start
-    while date <= end:
-        days.append(
-            WeatherDay(
-                date=date,
-                **{column: values_by_column[column].get(date) for column in COLUMNS},
-            )
+    return [
+        WeatherDay(
+            date=date,
+            **{column: values_by_column[column].get(date) for column in COLUMNS},
         )
-        date += dt.timedelta(days=1)
-    return days
+        for date in dates_between(start, end)
+    ]
+
+
+def dates_between(start: dt.date, end: dt.date) -> list[dt.date]:
+    """Every date from start to end, both inclusive. Empty if start is after end."""
+    return [start + dt.timedelta(days=i) for i in range((end - start).days + 1)]

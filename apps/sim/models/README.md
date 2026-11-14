@@ -8,7 +8,7 @@
 | Crop | Winter wheat |
 | Cultivar | Claire (UK Winter Wheat) |
 | Clock | 2025-09-01 to 2026-08-31, one winter wheat season |
-| Weather | `tests/fixtures/Copenhagen_Weather.met` (2025 only) until the 2025/26 file from S2-04 |
+| Weather | `tests/fixtures/Copenhagen_Weather.met` (2025 only). The 2025/26 DMI file from S2-04 is `tests/fixtures/Copenhagen_2025-26.met` (cell 10km_617_72, 1 Sep 2025 to 31 Aug 2026), not used by the model yet |
 | Soil | Black Vertosol (clay), Norwin, Queensland, APSoil number 900. A Danish default soil comes in S3-09 |
 | Source paper | Not known yet. Rares adds it. |
 
