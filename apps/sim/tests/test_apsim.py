@@ -2,15 +2,15 @@ from pathlib import Path
 
 from sim.apsim import run_season
 
-WEATHER_PATH = Path(__file__).parent / "fixtures" / "Copenhagen_Weather.met"
+WEATHER_PATH = Path(__file__).parent / "fixtures" / "Copenhagen_2025-26.met"
 
 
 def test_run_season_returns_one_row_per_day_of_the_season() -> None:
-    df = run_season(weather_path=WEATHER_PATH, sowing_date="15-Apr")
+    df = run_season(weather_path=WEATHER_PATH, sowing_date="1-Oct")
 
-    # 15-Apr to harvest ripe in early September
-    assert 130 <= len(df) <= 200
-    assert df["date"].iloc[0].startswith("2025-04-15")
+    # 1-Oct to harvest ripe in mid-August 2026 (321 days with this weather)
+    assert 290 <= len(df) <= 350
+    assert df["date"].iloc[0].startswith("2025-10-01")
     assert df["stage"].iloc[0] == "Sowing"
     assert df["stage"].iloc[-1] == "HarvestRipe"
 
