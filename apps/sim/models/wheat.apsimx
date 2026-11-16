@@ -91,7 +91,8 @@
                 "[Wheat].Total.Wt",
                 "[Soil].SoilWater.PAW",
                 "[Soil].SoilWater.SW",
-                "[Wheat].Leaf.LAI"
+                "[Wheat].Leaf.LAI",
+                "[Clock].Today as SowingDate"
               ],
               "EventNames": [
                 "[Clock].EndOfDay"
