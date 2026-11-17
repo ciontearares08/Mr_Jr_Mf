@@ -264,9 +264,10 @@ def fetch_features(
             return features
         features += page_features
 
-        url = find_next_link(page)
-        if url is None:
+        next_url = find_next_link(page)
+        if next_url is None:
             return features
+        url = next_url
         if url in next_links_seen:
             raise DmiPagingError(f"DMI sent the same next link twice: {url}")
         next_links_seen.add(url)

@@ -45,6 +45,9 @@ jobs:
       - name: Ruff format check
         run: uv run ruff format --check .
 
+      - name: Pyright
+        run: uv run pyright
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20

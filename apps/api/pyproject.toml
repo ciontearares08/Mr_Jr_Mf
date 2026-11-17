@@ -30,6 +30,7 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "httpx2>=2.13.1",
+    "pyright>=1.1.414",
     "pytest>=9.1.1",
     "pytest-recording>=0.14.1",
     "ruff>=0.16.8",
@@ -42,3 +43,11 @@ addopts = ["--block-network"]
 
 [tool.ruff]
 src = ["src"]
+
+[tool.ruff.lint]
+# Added to the ruff defaults: import order, likely bugs, old syntax, simpler code.
+extend-select = ["I", "B", "UP", "SIM", "C4", "RUF"]
+
+[tool.pyright]
+# The tests are not type-checked. They pass loose values on purpose.
+include = ["src"]

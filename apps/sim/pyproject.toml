@@ -16,6 +16,8 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "httpx2>=2.16.0",
+    "pandas-stubs>=3.1.0.261029",
+    "pyright>=1.1.414",
     "pytest>=9.1.1",
     "ruff>=0.16.8",
 ]
@@ -25,3 +27,11 @@ testpaths = ["tests"]
 
 [tool.ruff]
 src = ["src"]
+
+[tool.ruff.lint]
+# Added to the ruff defaults: import order, likely bugs, old syntax, simpler code.
+extend-select = ["I", "B", "UP", "SIM", "C4", "RUF"]
+
+[tool.pyright]
+# The tests are not type-checked. They pass loose values on purpose.
+include = ["src"]

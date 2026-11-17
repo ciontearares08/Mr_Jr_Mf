@@ -25,3 +25,6 @@ dist-ssr
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# OpenAPI schema dump, written by make api-openapi for the api-types check
+openapi.json

@@ -4,11 +4,15 @@ on:
   pull_request:
     paths:
       - "apps/api/**"
+      # The stub routes read this file from the sim app
+      - "apps/sim/models/stages.json"
       - ".github/workflows/api.yml"
   push:
     branches: [main]
     paths:
       - "apps/api/**"
+      # The stub routes read this file from the sim app
+      - "apps/sim/models/stages.json"
       - ".github/workflows/api.yml"
 
 # Cancel superseded runs on the same branch/PR to save minutes
@@ -62,8 +66,28 @@ jobs:
       - name: Ruff format check
         run: uv run ruff format --check .
 
+      - name: Pyright
+        run: uv run pyright
+
+      # Two branches that each add a migration give two heads after the merge.
+      - name: One migration head
+        run: |
+          heads=$(uv run alembic heads | wc -l)
+          if [ "$heads" -ne 1 ]; then
+            uv run alembic heads
+            echo "::error::Expected 1 Alembic head, found $heads. Run: uv run alembic merge heads -m 'merge <a> and <b>'"
+            exit 1
+          fi
+
       - name: Migrations
         run: uv run alembic upgrade head
+
+      # Fails when a model changed and no migration has the change.
+      - name: Models match migrations
+        run: uv run alembic check
+
+      - name: Migrations roll back
+        run: uv run alembic downgrade base && uv run alembic upgrade head
 
       - name: Tests
         run: uv run pytest

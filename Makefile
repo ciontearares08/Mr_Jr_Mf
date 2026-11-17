@@ -10,15 +10,17 @@ SIM_HINT := Run sim targets inside the APSIM devcontainer.
 require = @command -v $(1) >/dev/null 2>&1 || { echo "error: '$(1)' not found. $(2)"; exit 1; }
 
 .DEFAULT_GOAL := help
-.PHONY: help api-setup api-install api-dev api-lint api-format api-test api-check \
-	sim-setup sim-install sim-dev sim-lint sim-format sim-test sim-check \
-	migration migrate migrate-down db-reset db-seed db-fresh db-nuke web-setup web-dev web-lint web-typecheck web-build web-check api-types \
+.PHONY: help api-setup api-install api-dev api-lint api-format api-typecheck api-test api-check api-openapi \
+	sim-setup sim-install sim-dev sim-lint sim-format sim-typecheck sim-test sim-check \
+	migration migrate migrate-down migrate-check db-reset db-seed db-fresh db-nuke \
+	web-setup web-dev web-lint web-typecheck web-test web-build web-check api-types \
+	api-check-docker web-check-docker sim-check-docker check-docker \
 	up down logs hooks
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*## "} \
 		/^##@/ {printf "\n\033[1m%s\033[0m\n", substr($$0, 5)} \
-		/^[a-zA-Z_-]+:.*## / {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+		/^[a-zA-Z_-]+:.*## / {printf "  \033[36m%-17s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 ##@ API (run in the API devcontainer)
 
@@ -44,7 +46,15 @@ api-test: ## Run tests, pass pytest flags with args="-k health -x"
 	$(call require,uv,$(API_HINT))
 	cd $(API) && uv run pytest $(args)
 
-api-check: api-lint api-test ## Everything CI runs for the API
+api-typecheck: ## Type-check src with pyright
+	$(call require,uv,$(API_HINT))
+	cd $(API) && uv run pyright
+
+api-check: api-lint api-typecheck migrate-check api-test ## Everything CI runs for the API, except the migration rollback
+
+api-openapi: ## Write the OpenAPI schema to apps/web/openapi.json, no running API needed
+	$(call require,uv,$(API_HINT))
+	cd $(API) && uv run python -c "import json; from api.main import app; print(json.dumps(app.openapi()))" > ../web/openapi.json
 
 ##@ APSIM (run in APSIM devcontainer)
 
@@ -70,7 +80,11 @@ sim-test: ## Run tests, pass pytest flags with args="-k health -x"
 	$(call require,uv,$(SIM_HINT))
 	cd $(SIM) && uv run pytest $(args)
 
-sim-check: sim-lint sim-test ## Everything CI runs for the SIM
+sim-typecheck: ## Type-check src with pyright
+	$(call require,uv,$(SIM_HINT))
+	cd $(SIM) && uv run pyright
+
+sim-check: sim-lint sim-typecheck sim-test ## Everything CI runs for the SIM
 
 ##@ Database (run in the API devcontainer)
 
@@ -86,6 +100,13 @@ migrate: ## Apply all pending migrations
 migrate-down: ## Roll back the latest migration
 	$(call require,uv,$(API_HINT))
 	cd $(API) && uv run alembic downgrade -1
+
+migrate-check: ## Fail on two migration heads, or on model changes that have no migration
+	$(call require,uv,$(API_HINT))
+	@cd $(API) && heads=$$(uv run alembic heads 2>/dev/null | wc -l) && test "$$heads" -eq 1 || { \
+		echo "error: expected exactly 1 Alembic head. List them with: cd $(API) && uv run alembic heads"; \
+		echo "Join them with: uv run alembic merge heads -m 'merge <a> and <b>'"; exit 1; }
+	cd $(API) && uv run alembic check
 
 db-reset: ## Drop everything and re-run all migrations (deletes all data!)
 	$(call require,uv,$(API_HINT))
@@ -117,11 +138,15 @@ web-typecheck: ## Type-check with tsc
 	$(call require,npm,$(WEB_HINT))
 	cd $(WEB) && npm run typecheck
 
+web-test: ## Run the Vitest tests
+	$(call require,npm,$(WEB_HINT))
+	cd $(WEB) && npm test
+
 web-build: ## Production build
 	$(call require,npm,$(WEB_HINT))
 	cd $(WEB) && npm run build
 
-web-check: web-lint web-typecheck web-build ## Everything CI runs for the web app
+web-check: web-lint web-typecheck web-test web-build ## Everything CI runs for the web app
 
 api-types: ## Regenerate src/shared/api-types.ts from the running API, override with url=...
 	$(call require,npm,$(WEB_HINT))
@@ -131,6 +156,26 @@ api-types: ## Regenerate src/shared/api-types.ts from the running API, override 
 
 hooks: ## Enable the git pre-commit hook (devcontainers do this on start)
 	git config core.hooksPath .githooks
+
+##@ Checks through Docker (run on your host machine, no devcontainer needed)
+
+HOST_HINT := Run the docker targets on your host machine, not in a devcontainer.
+# One-off container that is deleted when the command ends
+RUN_ONCE := docker compose run --rm
+
+api-check-docker: ## Run make api-check in a one-off api container (starts the db)
+	$(call require,docker,$(HOST_HINT))
+	$(RUN_ONCE) api sh -c "uv sync --locked && uv run alembic upgrade head && make -C /workspace api-check"
+
+web-check-docker: ## Run make web-check in a one-off web container
+	$(call require,docker,$(HOST_HINT))
+	$(RUN_ONCE) web sh -c "npm install --no-audit --no-fund && make -C /workspace web-check"
+
+sim-check-docker: ## Run make sim-check in a one-off sim container
+	$(call require,docker,$(HOST_HINT))
+	$(RUN_ONCE) sim sh -c "uv sync --locked && make -C /workspace sim-check"
+
+check-docker: api-check-docker web-check-docker sim-check-docker ## Run the checks of all three apps
 
 ##@ Docker (run on your host machine)
 

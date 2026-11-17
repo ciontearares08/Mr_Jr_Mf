@@ -1,0 +1,73 @@
+name: API types
+
+# Fails when apps/web/src/shared/api-types.ts differs from the API schema.
+# To repair it, run `make api-types` in the Web devcontainer while the API runs.
+
+on:
+  pull_request:
+    paths:
+      - "apps/api/**"
+      - "apps/web/src/shared/api-types.ts"
+      - "apps/web/package.json"
+      - "apps/web/package-lock.json"
+      - ".github/workflows/api-types.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/api/**"
+      - "apps/web/src/shared/api-types.ts"
+      - "apps/web/package.json"
+      - "apps/web/package-lock.json"
+      - ".github/workflows/api-types.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  up-to-date:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # The app reads both at import time. Nothing connects to a database here.
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/agriculture
+      JWT_SECRET_KEY: ci-only-not-a-secret
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: apps/api/uv.lock
+          python-version-file: apps/api/.python-version
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 26
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install API dependencies
+        working-directory: apps/api
+        run: uv sync --locked
+
+      - name: Write the OpenAPI schema
+        run: make api-openapi
+
+      - name: Install web dependencies
+        working-directory: apps/web
+        run: npm ci --no-audit --no-fund
+
+      - name: Generate the types
+        working-directory: apps/web
+        run: OPENAPI_URL=openapi.json npm run api-types
+
+      - name: Compare with the committed file
+        run: |
+          if ! git diff --exit-code -- apps/web/src/shared/api-types.ts; then
+            echo "::error::api-types.ts is out of date. Run 'make api-types' in the Web devcontainer and commit the result."
+            exit 1
+          fi

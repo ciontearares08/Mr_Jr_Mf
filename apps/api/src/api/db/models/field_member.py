@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from api.db.base import Base
 
 
-class FieldRole(str, enum.Enum):
+class FieldRole(enum.StrEnum):
     owner = "owner"
     viewer = "viewer"
 
