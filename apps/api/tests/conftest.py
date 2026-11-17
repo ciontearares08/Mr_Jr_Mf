@@ -1,4 +1,5 @@
-from collections.abc import Iterator
+import uuid
+from collections.abc import Callable, Iterator
 
 import pytest
 from fastapi.testclient import TestClient
@@ -31,3 +32,27 @@ def client(db: Session) -> Iterator[TestClient]:
     app.dependency_overrides[get_db] = lambda: db
     yield TestClient(app)
     app.dependency_overrides.clear()
+
+
+SignUp = Callable[..., tuple[str, dict[str, str]]]
+
+
+@pytest.fixture
+def sign_up(client: TestClient) -> SignUp:
+    """Register a new user, log in, and return (email, auth_headers)."""
+
+    def sign_up_user(
+        email: str | None = None, password: str = "correct horse battery staple"
+    ) -> tuple[str, dict[str, str]]:
+        email = email or f"{uuid.uuid4().hex}@example.com"
+        register = client.post(
+            "/auth/register", json={"email": email, "password": password}
+        )
+        assert register.status_code == 201, register.text
+        token = client.post(
+            "/auth/token", data={"username": email, "password": password}
+        )
+        assert token.status_code == 200, token.text
+        return email, {"Authorization": f"Bearer {token.json()['access_token']}"}
+
+    return sign_up_user
