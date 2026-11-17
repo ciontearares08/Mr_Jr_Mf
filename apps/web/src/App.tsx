@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import MainLayout from "./components/MainLayout";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import { Help } from "./pages/Help";
 import Dashboard from "./components/Dashboard";
 import EmptyStart from "./pages/EmptyStart";
 import { Spinner } from "@/components/ui/spinner";
