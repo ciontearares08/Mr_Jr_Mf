@@ -1,48 +1,32 @@
 from datetime import date
-from unittest.mock import Mock
 
 from fastapi.testclient import TestClient
+from sqlalchemy import delete
+from sqlalchemy.orm import Session
 
-from api.db.session import get_db
-from api.main import app
-
-
-def test_returns_demo_date() -> None:
-    mock_db = Mock()
-    mock_db.scalar.return_value = date(2026, 3, 15)
-
-    def override_get_db():
-        yield mock_db
-
-    app.dependency_overrides[get_db] = override_get_db
-
-    try:
-        response = TestClient(app).get("/settings/demo-date")
-
-        assert response.status_code == 200
-        assert response.json() == "2026-03-15"
-        mock_db.scalar.assert_called_once()
-
-    finally:
-        app.dependency_overrides.pop(get_db, None)
+from api.db.models.app_setting import AppSetting
+from api.settings import get_demo_date
 
 
-def test_returns_error_when_demo_date_is_missing() -> None:
-    mock_db = Mock()
-    mock_db.scalar.return_value = None
+def test_returns_the_date_the_migration_seeds(client: TestClient) -> None:
+    response = client.get("/settings/demo-date")
 
-    def override_get_db():
-        yield mock_db
+    assert response.status_code == 200
+    assert response.json() == "2026-03-15"
 
-    app.dependency_overrides[get_db] = override_get_db
 
-    try:
-        response = TestClient(app, raise_server_exceptions=False).get(
-            "/settings/demo-date"
-        )
+def test_returns_the_date_after_it_moves(client: TestClient, db: Session) -> None:
+    db.get(AppSetting, 1).demo_date = date(2026, 4, 1)
+    db.flush()
 
-        assert response.status_code == 500
-        assert response.text == "Internal Server Error"
+    assert client.get("/settings/demo-date").json() == "2026-04-01"
+    assert get_demo_date(db) == date(2026, 4, 1)
 
-    finally:
-        app.dependency_overrides.pop(get_db, None)
+
+def test_returns_503_when_the_date_is_missing(client: TestClient, db: Session) -> None:
+    db.execute(delete(AppSetting))
+
+    response = client.get("/settings/demo-date")
+
+    assert response.status_code == 503
+    assert "Demo date is not set" in response.json()["detail"]
