@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make help)",
+      "Bash(make api-lint)",
+      "Bash(make api-format)",
+      "Bash(make api-typecheck)",
+      "Bash(make api-test:*)",
+      "Bash(make api-check)",
+      "Bash(make api-openapi)",
+      "Bash(make migrate-check)",
+      "Bash(make sim-lint)",
+      "Bash(make sim-format)",
+      "Bash(make sim-typecheck)",
+      "Bash(make sim-test:*)",
+      "Bash(make sim-check)",
+      "Bash(make web-lint)",
+      "Bash(make web-typecheck)",
+      "Bash(make web-test)",
+      "Bash(make web-build)",
+      "Bash(make web-check)",
+      "Bash(make api-check-docker)",
+      "Bash(make web-check-docker)",
+      "Bash(make sim-check-docker)",
+      "Bash(make check-docker)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-edited-file.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

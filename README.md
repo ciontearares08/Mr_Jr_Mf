@@ -50,10 +50,13 @@ Run `make` in the repo root to list every command. These are the ones you'll use
 - `make migration m="describe the change"` generates a migration from your model changes, `make migrate` applies it, and `make migrate-down` rolls back the latest one.
 - `make db-seed` adds the dev users and field from [seed.py](apps/api/src/api/db/seed.py), and `make db-fresh` drops the whole schema, runs all migrations and seeds again. Both need `APP_ENV=development` in `.env` (copy it from `example.env`).
 - When the migrations are stuck, run `make db-nuke` on the host. It deletes the database volume, even with the containers stopped, and the next start creates an empty database.
-- `make api-check` and `make web-check` run the same checks as CI. `make sim-check` runs the sim lint and tests.
+- `make api-check`, `make web-check` and `make sim-check` run the same checks as CI: lint, type check and tests. `make api-check` also runs `make migrate-check`, which fails on two migration heads or on a model change without a migration.
+- `make check-docker` runs the checks of all three apps from the host, without a devcontainer. `make api-check-docker`, `make web-check-docker` and `make sim-check-docker` run one app.
 - `make api-types` regenerates the frontend API types from the running API. Run it in the Web devcontainer while the API is running.
 
 Run API commands in the API devcontainer, Web commands in the Web devcontainer, and Sim commands in the APSIM Simulation devcontainer.
+
+Coding agents read [AGENTS.md](AGENTS.md) for the rules of this repo. Claude Code also loads the skills and the configuration in `.claude/`.
 
 A pre-commit hook lints the files you stage. To skip it for one commit, run `git commit --no-verify`.
 
