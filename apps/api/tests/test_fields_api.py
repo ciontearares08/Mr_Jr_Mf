@@ -1,9 +1,9 @@
 """API tests for creating and reading fields. They need the Postgres database."""
 
 import datetime
-import uuid
 
 import pytest
+from conftest import SignUp
 from fastapi.testclient import TestClient
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -31,20 +31,10 @@ def no_dmi(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("api.routers.fields.wind_station_or_none", lambda _: None)
 
 
-def sign_up(client: TestClient) -> dict[str, str]:
-    """Register a new user and return the headers that authenticate as that user."""
-    email = f"{uuid.uuid4().hex}@example.com"
-    password = "correct horse battery staple"
-    client.post("/auth/register", json={"email": email, "password": password})
-    response = client.post(
-        "/auth/token", data={"username": email, "password": password}
-    )
-    return {"Authorization": f"Bearer {response.json()['access_token']}"}
-
-
 @pytest.fixture
-def owner(client: TestClient) -> dict[str, str]:
-    return sign_up(client)
+def owner(sign_up: SignUp) -> dict[str, str]:
+    _, headers = sign_up()
+    return headers
 
 
 @pytest.fixture
@@ -75,9 +65,9 @@ def test_the_owner_reads_the_field_back(
 
 
 def test_a_viewer_can_read_the_field(
-    client: TestClient, db: Session, field_id: int
+    client: TestClient, db: Session, field_id: int, sign_up: SignUp
 ) -> None:
-    viewer = sign_up(client)
+    _, viewer = sign_up()
     viewer_id = client.get("/auth/me", headers=viewer).json()["id"]
     db.add(FieldMember(field_id=field_id, user_id=viewer_id, role=FieldRole.viewer))
     db.commit()
@@ -88,8 +78,10 @@ def test_a_viewer_can_read_the_field(
     assert response.json()["role"] == "viewer"
 
 
-def test_a_stranger_gets_404(client: TestClient, field_id: int) -> None:
-    stranger = sign_up(client)
+def test_a_stranger_gets_404(
+    client: TestClient, field_id: int, sign_up: SignUp
+) -> None:
+    _, stranger = sign_up()
 
     assert client.get(f"/fields/{field_id}", headers=stranger).status_code == 404
     assert client.get("/fields", headers=stranger).json() == []
