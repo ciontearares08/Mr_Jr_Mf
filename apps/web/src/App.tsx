@@ -44,6 +44,7 @@ export default function App() {
               </Suspense>
             }
           />
+          <Route path="/help" element={<Help />} />
           <Route path="/fieldmap" element={<FieldMap />} />
           {/* FIELD ROUTES */}
           <Route path="/fields/join" element={<JoinField />} />
