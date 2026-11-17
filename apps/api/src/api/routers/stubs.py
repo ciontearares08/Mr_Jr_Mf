@@ -52,6 +52,8 @@ router = APIRouter(prefix="/stub", tags=["stubs"])
 CSV_PATH = Path(__file__).resolve().parents[1] / "stub_data" / "zealand_cleaned.csv"
 # The stage list from the sim service: APSIM stage name, farmer name and Zadoks code
 STAGES_PATH = Path(__file__).resolve().parents[4] / "sim" / "models" / "stages.json"
+# Fixed to a day inside the 2025 CSV, so it does not follow api.settings.get_demo_date.
+# The real routes in S4-01 and S4-02 must use get_demo_date(db) as today.
 DEMO_DATE = datetime.date(2025, 6, 15)
 UPDATED_AT = datetime.datetime(2025, 6, 15, 6, 0, tzinfo=datetime.UTC)
 FIELD_ID = 1
