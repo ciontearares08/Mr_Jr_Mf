@@ -1,6 +1,7 @@
 """API tests for authentication routes. They need the Postgres database."""
 
 import uuid
+from collections.abc import Iterator
 from datetime import UTC, datetime, timedelta
 
 import httpx
@@ -8,11 +9,27 @@ import jwt
 import pytest
 from conftest import SignUp
 from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session
 
+from api.db.models.auth_session import AuthSession
+from api.db.session import get_db
+from api.main import app
+from api.routers import auth
 from api.routers.auth import JWT_ALGORITHM, JWT_ISSUER, JWT_SECRET_KEY
 
 PASSWORD = "correct horse battery staple"
 NEW_PASSWORD = "another long passphrase"
+
+
+@pytest.fixture
+def client(db: Session) -> Iterator[TestClient]:
+    """Like the shared client, but on https so the Secure refresh cookie is sent.
+
+    The shared sign_up fixture also uses this client in this module.
+    """
+    app.dependency_overrides[get_db] = lambda: db
+    yield TestClient(app, base_url="https://testserver")
+    app.dependency_overrides.clear()
 
 
 @pytest.fixture
@@ -33,11 +50,21 @@ def bearer(token_response: httpx.Response) -> dict[str, str]:
     return {"Authorization": f"Bearer {token_response.json()['access_token']}"}
 
 
+def other_device(client: TestClient) -> TestClient:
+    """A second client with its own cookie jar, like another browser."""
+    return TestClient(app, base_url=str(client.base_url))
+
+
+def use_refresh_cookie(client: TestClient, value: str) -> None:
+    client.cookies.clear()
+    client.cookies.set(auth.REFRESH_COOKIE_NAME, value)
+
+
 def forged_token(secret: str, audience: str) -> str:
     now = datetime.now(UTC)
     payload = {
         "sub": str(uuid.uuid4()),
-        "jti": str(uuid.uuid4()),
+        "sid": str(uuid.uuid4()),
         "iat": now,
         "exp": now + timedelta(hours=1),
         "iss": JWT_ISSUER,
@@ -90,6 +117,13 @@ def test_login_user(client: TestClient, sign_up: SignUp, email: str) -> None:
     data = response.json()
     assert "access_token" in data
     assert data["token_type"] == "bearer"
+    assert data["expires_in"] == 15 * 60
+    assert response.headers["cache-control"] == "no-store"
+    cookie = response.headers["set-cookie"]
+    assert cookie.startswith(f"{auth.REFRESH_COOKIE_NAME}=")
+    assert "HttpOnly" in cookie
+    assert "Path=/auth" in cookie
+    assert "Secure" in cookie
 
 
 def test_login_ignores_email_case(
@@ -121,6 +155,25 @@ def test_login_unknown_or_invalid_email_fails(
     assert response.json()["detail"] == "Incorrect email or password"
 
 
+def test_login_deletes_expired_sessions_of_all_users(
+    client: TestClient, sign_up: SignUp, db: Session
+) -> None:
+    """Every sign-in deletes the expired sessions, also those of other users."""
+    sign_up()
+    old_session_id = uuid.UUID(
+        client.cookies[auth.REFRESH_COOKIE_NAME].partition(".")[0]
+    )
+    old_session = db.get(AuthSession, old_session_id)
+    assert old_session is not None
+    old_session.expires_at = datetime.now(UTC) - timedelta(minutes=1)
+    db.commit()
+
+    sign_up()
+
+    db.expire_all()
+    assert db.get(AuthSession, old_session_id) is None
+
+
 # ME
 def test_get_current_user_me(client: TestClient, sign_up: SignUp) -> None:
     """GET /auth/me with a valid token returns 200 and the user's profile."""
@@ -150,7 +203,7 @@ def test_get_current_user_me_without_token_fails(client: TestClient) -> None:
         forged_token(JWT_SECRET_KEY, "some-other-app"),
         forged_token(JWT_SECRET_KEY, "agriculture-web"),
     ],
-    ids=["garbage", "wrong-secret", "wrong-audience", "unknown-jti"],
+    ids=["garbage", "wrong-secret", "wrong-audience", "unknown-session"],
 )
 def test_get_current_user_me_with_bad_token_fails(
     client: TestClient, token: str
@@ -162,24 +215,175 @@ def test_get_current_user_me_with_bad_token_fails(
     assert response.headers["WWW-Authenticate"] == "Bearer"
 
 
-# LOGOUT
-def test_logout_revokes_only_the_current_token(
-    client: TestClient, sign_up: SignUp
+def test_get_current_user_me_with_expired_token_fails(
+    client: TestClient, sign_up: SignUp, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """POST /auth/logout revokes the token it uses, but the user's other tokens work."""
-    email, headers = sign_up()
-    other_headers = bearer(login(client, email))
-
-    assert client.post("/auth/logout", headers=headers).status_code == 204
+    """GET /auth/me with an expired access token returns 401."""
+    monkeypatch.setattr(auth, "ACCESS_TOKEN_LIFETIME", timedelta(seconds=-1))
+    _, headers = sign_up()
 
     assert client.get("/auth/me", headers=headers).status_code == 401
+
+
+# REFRESH
+def test_refresh_gives_a_working_access_token_and_a_new_cookie(
+    client: TestClient, sign_up: SignUp
+) -> None:
+    """POST /auth/refresh with the cookie returns a new access token and cookie."""
+    email, _ = sign_up()
+    old_cookie = client.cookies[auth.REFRESH_COOKIE_NAME]
+
+    response = client.post("/auth/refresh")
+
+    assert response.status_code == 200, response.text
+    assert client.cookies[auth.REFRESH_COOKIE_NAME] != old_cookie
+    assert client.get("/auth/me", headers=bearer(response)).json()["email"] == email
+
+
+@pytest.mark.parametrize(
+    "cookie",
+    [None, "not-a-session.secret", f"{uuid.uuid4()}.secret"],
+    ids=["missing", "malformed", "unknown-session"],
+)
+def test_refresh_with_bad_cookie_fails(client: TestClient, cookie: str | None) -> None:
+    """POST /auth/refresh without a valid cookie returns 401."""
+    if cookie is not None:
+        use_refresh_cookie(client, cookie)
+
+    assert client.post("/auth/refresh").status_code == 401
+
+
+def test_reused_refresh_token_ends_the_session(
+    client: TestClient, sign_up: SignUp, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """An old refresh token after the grace period ends the whole session."""
+    monkeypatch.setattr(auth, "REFRESH_REUSE_GRACE", timedelta(0))
+    _, headers = sign_up()
+    stolen = client.cookies[auth.REFRESH_COOKIE_NAME]
+    client.post("/auth/refresh")
+    current = client.cookies[auth.REFRESH_COOKIE_NAME]
+
+    use_refresh_cookie(client, stolen)
+    response = client.post("/auth/refresh")
+
+    assert response.status_code == 401
+    assert 'refresh_token=""' in response.headers["set-cookie"]
+    # The whole session is gone, for the thief and the real device alike
+    use_refresh_cookie(client, current)
+    assert client.post("/auth/refresh").status_code == 401
+    assert client.get("/auth/me", headers=headers).status_code == 401
+
+
+def test_just_replaced_refresh_token_gets_a_new_cookie(
+    client: TestClient, sign_up: SignUp
+) -> None:
+    """A refresh with the token that was just replaced works and sets a new cookie.
+
+    This happens when two tabs refresh at once, or when a refresh response got lost.
+    """
+    sign_up()
+    shared = client.cookies[auth.REFRESH_COOKIE_NAME]
+    client.post("/auth/refresh")
+
+    # The second request sent the cookie from before the first refresh
+    use_refresh_cookie(client, shared)
+    response = client.post("/auth/refresh")
+
+    assert response.status_code == 200, response.text
+    newest = response.cookies[auth.REFRESH_COOKIE_NAME]
+    assert newest != shared
+    use_refresh_cookie(client, newest)
+    assert client.post("/auth/refresh").status_code == 200
+
+
+def test_wrong_refresh_secret_does_not_end_the_session(
+    client: TestClient, sign_up: SignUp
+) -> None:
+    """A cookie with a real session ID but a wrong secret fails, and nothing else."""
+    _, headers = sign_up()
+    cookie = client.cookies[auth.REFRESH_COOKIE_NAME]
+    session_id = cookie.partition(".")[0]
+
+    use_refresh_cookie(client, f"{session_id}.guessed-secret")
+    assert client.post("/auth/refresh").status_code == 401
+
+    assert client.get("/auth/me", headers=headers).status_code == 200
+    use_refresh_cookie(client, cookie)
+    assert client.post("/auth/refresh").status_code == 200
+
+
+def test_login_again_ends_the_session_of_the_old_cookie(
+    client: TestClient, sign_up: SignUp
+) -> None:
+    """Signing in again on the same browser ends the session that it replaces."""
+    email, old_headers = sign_up()
+    old_cookie = client.cookies[auth.REFRESH_COOKIE_NAME]
+
+    new_headers = bearer(login(client, email))
+
+    assert client.get("/auth/me", headers=old_headers).status_code == 401
+    assert client.get("/auth/me", headers=new_headers).status_code == 200
+    use_refresh_cookie(client, old_cookie)
+    assert client.post("/auth/refresh").status_code == 401
+
+
+# LOGOUT
+def test_logout_revokes_only_the_current_session(
+    client: TestClient, sign_up: SignUp
+) -> None:
+    """POST /auth/logout ends its own session and clears the cookie.
+
+    The user's other sessions still work.
+    """
+    email, headers = sign_up()
+    cookie = client.cookies[auth.REFRESH_COOKIE_NAME]
+    other_headers = bearer(login(other_device(client), email))
+
+    response = client.post("/auth/logout", headers=headers)
+
+    assert response.status_code == 204
+    assert 'refresh_token=""' in response.headers["set-cookie"]
+    assert client.get("/auth/me", headers=headers).status_code == 401
     assert client.get("/auth/me", headers=other_headers).status_code == 200
+    use_refresh_cookie(client, cookie)
+    assert client.post("/auth/refresh").status_code == 401
+
+
+@pytest.mark.parametrize("route", ["/auth/logout", "/auth/logout-all"])
+def test_logout_with_only_the_refresh_cookie(
+    client: TestClient,
+    sign_up: SignUp,
+    monkeypatch: pytest.MonkeyPatch,
+    route: str,
+) -> None:
+    """Sign-out works with the refresh cookie after the access token expired."""
+    monkeypatch.setattr(auth, "ACCESS_TOKEN_LIFETIME", timedelta(seconds=-1))
+    _, expired_headers = sign_up()
+    cookie = client.cookies[auth.REFRESH_COOKIE_NAME]
+
+    assert client.post(route, headers=expired_headers).status_code == 204
+
+    use_refresh_cookie(client, cookie)
+    assert client.post("/auth/refresh").status_code == 401
+
+
+def test_logout_with_a_wrong_refresh_secret_fails(
+    client: TestClient, sign_up: SignUp
+) -> None:
+    """Sign-out with only a session ID and a wrong secret returns 401."""
+    _, headers = sign_up()
+    session_id = client.cookies[auth.REFRESH_COOKIE_NAME].partition(".")[0]
+
+    use_refresh_cookie(client, f"{session_id}.guessed-secret")
+    assert client.post("/auth/logout").status_code == 401
+
+    assert client.get("/auth/me", headers=headers).status_code == 200
 
 
 def test_logout_all_revokes_every_token(client: TestClient, sign_up: SignUp) -> None:
     """POST /auth/logout-all revokes every token of the user."""
     email, headers = sign_up()
-    other_headers = bearer(login(client, email))
+    other_headers = bearer(login(other_device(client), email))
 
     assert client.post("/auth/logout-all", headers=headers).status_code == 204
 
@@ -191,7 +395,7 @@ def test_logout_all_revokes_every_token(client: TestClient, sign_up: SignUp) -> 
 def test_change_password(client: TestClient, sign_up: SignUp) -> None:
     """A password change keeps the current token, revokes others, and swaps passwords."""
     email, headers = sign_up(password=PASSWORD)
-    other_headers = bearer(login(client, email))
+    other_headers = bearer(login(other_device(client), email))
 
     response = client.patch(
         "/auth/password",
@@ -219,7 +423,24 @@ def test_change_password_wrong_current_password_fails(
     )
 
     assert response.status_code == 400
+    assert client.get("/auth/me", headers=headers).status_code == 200
     assert login(client, email, PASSWORD).status_code == 200
+
+
+def test_change_password_to_same_password_fails(
+    client: TestClient, sign_up: SignUp
+) -> None:
+    """A password change to the current password returns 400 and signs nothing out."""
+    _, headers = sign_up(password=PASSWORD)
+
+    response = client.patch(
+        "/auth/password",
+        json={"current_password": PASSWORD, "new_password": PASSWORD},
+        headers=headers,
+    )
+
+    assert response.status_code == 400
+    assert client.get("/auth/me", headers=headers).status_code == 200
 
 
 # CHANGE EMAIL
