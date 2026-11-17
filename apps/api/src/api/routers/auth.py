@@ -57,15 +57,20 @@ REFRESH_COOKIE_NAME = "refresh_token"
 REFRESH_COOKIE_PATH = "/auth"
 # Browsers drop Secure cookies on plain http, except on localhost in most of them.
 # Set REFRESH_COOKIE_SECURE=false for local http setups where the cookie gets lost.
-REFRESH_COOKIE_SECURE = os.environ.get("REFRESH_COOKIE_SECURE", "true") != "false"
-# Two tabs may refresh with the same cookie at once. The slower one sends the
-# token that the faster one just replaced. That is not theft, so allow it briefly.
+REFRESH_COOKIE_SECURE = os.environ.get(
+    "REFRESH_COOKIE_SECURE", "true"
+).strip().lower() not in {"false", "0", "no", "off"}
+# Two tabs may refresh with the same cookie at once, and a refresh response can
+# get lost. Then the browser sends the token that was just replaced. That is not
+# theft, so allow it for a short time.
 REFRESH_REUSE_GRACE = timedelta(seconds=30)
 
 password_hasher = PasswordHash.recommended()
 DUMMY_HASH = password_hasher.hash("dummy-password-needed-for-timing")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
+# For sign-out, which also works with only the refresh cookie
+optional_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token", auto_error=False)
 
 DbSession = Annotated[Session, Depends(get_db)]
 
@@ -123,12 +128,8 @@ def start_session(user_id: UUID, db: Session) -> tuple[AuthSession, str]:
     """Create a session and return it with its refresh cookie value."""
     now = datetime.now(UTC)
 
-    db.execute(
-        delete(AuthSession).where(
-            AuthSession.user_id == user_id,
-            AuthSession.expires_at < now,
-        )
-    )
+    # Clean up the expired sessions of every user, not only this one
+    db.execute(delete(AuthSession).where(AuthSession.expires_at < now))
     auth_session = AuthSession(
         id=uuid4(),
         user_id=user_id,
@@ -214,6 +215,34 @@ def parse_refresh_cookie(value: str | None) -> tuple[UUID, str] | None:
         return None
 
 
+def session_for_refresh_cookie(value: str | None, db: Session) -> AuthSession | None:
+    """The live session that the cookie belongs to, or None.
+
+    The cookie must hold the current or the previous refresh token of the session,
+    so the session ID alone is not enough.
+    """
+    parsed = parse_refresh_cookie(value)
+    if parsed is None:
+        return None
+    session_id, secret = parsed
+
+    auth_session = db.get(AuthSession, session_id)
+    if auth_session is None or auth_session.expires_at <= datetime.now(UTC):
+        return None
+
+    presented_hash = hash_refresh_secret(secret)
+    known_hashes = [
+        auth_session.refresh_token_hash,
+        auth_session.previous_refresh_token_hash,
+    ]
+    if any(
+        known is not None and secrets.compare_digest(presented_hash, known)
+        for known in known_hashes
+    ):
+        return auth_session
+    return None
+
+
 def get_current_session(
     token: Annotated[str, Depends(oauth2_scheme)], db: DbSession
 ) -> AuthSession:
@@ -271,8 +300,30 @@ def commit_unique_email(db: Session) -> None:
         raise
 
 
+def get_signing_out_session(
+    token: Annotated[str | None, Depends(optional_oauth2_scheme)],
+    db: DbSession,
+    refresh_token: Annotated[str | None, Cookie(alias=REFRESH_COOKIE_NAME)] = None,
+) -> AuthSession:
+    """The session from the access token, or else from the refresh cookie.
+
+    A device whose access token expired can still sign out with its cookie.
+    """
+    if token is not None:
+        try:
+            return get_current_session(token, db)
+        except HTTPException:
+            pass
+
+    auth_session = session_for_refresh_cookie(refresh_token, db)
+    if auth_session is None:
+        raise unauthorized("Invalid or expired token")
+    return auth_session
+
+
 CurrentSession = Annotated[AuthSession, Depends(get_current_session)]
 CurrentUser = Annotated[User, Depends(get_current_user)]
+SigningOutSession = Annotated[AuthSession, Depends(get_signing_out_session)]
 
 
 # ROUTES
@@ -298,11 +349,17 @@ def login(
     form: Annotated[OAuth2PasswordRequestForm, Depends()],
     response: Response,
     db: DbSession,
+    refresh_token: Annotated[str | None, Cookie(alias=REFRESH_COOKIE_NAME)] = None,
 ) -> Token:
     user = authenticate_user(form.username, form.password, db)
 
     if user is None:
         raise unauthorized("Incorrect email or password")
+
+    # The new cookie replaces the old one, so end the session of the old cookie
+    old_session = session_for_refresh_cookie(refresh_token, db)
+    if old_session is not None:
+        db.delete(old_session)
 
     auth_session, cookie_value = start_session(user.id, db)
     set_refresh_cookie(response, cookie_value, auth_session.expires_at)
@@ -330,45 +387,55 @@ def refresh(
         raise refresh_failed()
 
     presented_hash = hash_refresh_secret(secret)
+    is_current = secrets.compare_digest(presented_hash, auth_session.refresh_token_hash)
+    is_previous = auth_session.previous_refresh_token_hash is not None and (
+        secrets.compare_digest(presented_hash, auth_session.previous_refresh_token_hash)
+    )
+    just_replaced = (
+        is_previous
+        and auth_session.refreshed_at is not None
+        and now - auth_session.refreshed_at < REFRESH_REUSE_GRACE
+    )
 
-    if secrets.compare_digest(presented_hash, auth_session.refresh_token_hash):
+    if is_current or just_replaced:
+        # For a just-replaced token, another tab refreshed a moment ago or the
+        # response with the new cookie got lost. Give this request a new cookie
+        # too. The replaced token becomes the previous one, so it counts as reuse
+        # if it comes back after the grace period.
         auth_session.previous_refresh_token_hash = auth_session.refresh_token_hash
-        auth_session.refreshed_at = now
+        if is_current:
+            # Only a real rotation restarts the grace period, so it cannot grow
+            auth_session.refreshed_at = now
         cookie_value = new_refresh_secret(auth_session)
         db.commit()
         set_refresh_cookie(response, cookie_value, auth_session.expires_at)
         return token_response(auth_session, response)
 
-    just_replaced = (
-        auth_session.previous_refresh_token_hash is not None
-        and auth_session.refreshed_at is not None
-        and now - auth_session.refreshed_at < REFRESH_REUSE_GRACE
-        and secrets.compare_digest(
-            presented_hash, auth_session.previous_refresh_token_hash
-        )
-    )
-    if just_replaced:
-        # Another tab refreshed a moment ago and the browser already has its new
-        # cookie. Hand out an access token but leave that cookie alone.
-        db.rollback()
-        return token_response(auth_session, response)
+    if is_previous:
+        # An old refresh token came back. It may have been stolen, so end the
+        # session for everyone who holds it.
+        db.delete(auth_session)
+        db.commit()
+        raise refresh_failed()
 
-    # An old refresh token came back. It may have been stolen, so end the session.
-    db.delete(auth_session)
-    db.commit()
+    # A wrong secret. Do not end the session: then anyone who knows a session ID
+    # (it is in every access token) could sign that user out.
+    db.rollback()
     raise refresh_failed()
 
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
-def logout(auth_session: CurrentSession, response: Response, db: DbSession) -> None:
+def logout(auth_session: SigningOutSession, response: Response, db: DbSession) -> None:
     db.delete(auth_session)
     db.commit()
     clear_refresh_cookie(response)
 
 
 @router.post("/logout-all", status_code=status.HTTP_204_NO_CONTENT)
-def logout_everywhere(user: CurrentUser, response: Response, db: DbSession) -> None:
-    db.execute(delete(AuthSession).where(AuthSession.user_id == user.id))
+def logout_everywhere(
+    auth_session: SigningOutSession, response: Response, db: DbSession
+) -> None:
+    db.execute(delete(AuthSession).where(AuthSession.user_id == auth_session.user_id))
     db.commit()
     clear_refresh_cookie(response)
 
