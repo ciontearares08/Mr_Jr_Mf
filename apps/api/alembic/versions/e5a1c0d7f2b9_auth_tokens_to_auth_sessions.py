@@ -1,7 +1,7 @@
 """turn auth tokens into auth sessions with refresh tokens
 
 Revision ID: e5a1c0d7f2b9
-Revises: d41a7c9e3b52
+Revises: 801be2f16e5e
 Create Date: 2026-11-13 12:00:00.000000
 
 """
@@ -13,7 +13,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "e5a1c0d7f2b9"
-down_revision: str | Sequence[str] | None = "d41a7c9e3b52"
+down_revision: str | Sequence[str] | None = "801be2f16e5e"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 

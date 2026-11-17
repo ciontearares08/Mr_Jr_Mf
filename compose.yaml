@@ -1,3 +1,6 @@
+# Pinned so volume names are the same on every machine (see make db-nuke).
+name: agriculture
+
 services:
   api:
     build:

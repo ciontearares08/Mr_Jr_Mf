@@ -12,7 +12,7 @@ require = @command -v $(1) >/dev/null 2>&1 || { echo "error: '$(1)' not found. $
 .DEFAULT_GOAL := help
 .PHONY: help api-setup api-install api-dev api-lint api-format api-test api-check \
 	sim-setup sim-install sim-dev sim-lint sim-format sim-test sim-check \
-	migration migrate migrate-down db-reset web-setup web-dev web-lint web-typecheck web-build web-check api-types \
+	migration migrate migrate-down db-reset db-seed db-fresh db-nuke web-setup web-dev web-lint web-typecheck web-build web-check api-types \
 	up down logs hooks
 
 help: ## Show this help
@@ -91,6 +91,14 @@ db-reset: ## Drop everything and re-run all migrations (deletes all data!)
 	$(call require,uv,$(API_HINT))
 	cd $(API) && uv run alembic downgrade base && uv run alembic upgrade head
 
+db-seed: ## Add the dev seed data from apps/api/src/api/db/seed.py (needs APP_ENV=development)
+	$(call require,uv,$(API_HINT))
+	cd $(API) && uv run python -m api.db.seed
+
+db-fresh: ## Drop the schema, run all migrations, then seed (deletes all data!)
+	$(call require,uv,$(API_HINT))
+	cd $(API) && uv run python -m api.db.dev drop-schema && uv run alembic upgrade head && uv run python -m api.db.seed
+
 ##@ Web (run in the Web devcontainer)
 
 web-setup: ## Install/update npm deps (run after pulling)
@@ -134,3 +142,17 @@ down: ## Stop all services
 
 logs: ## Follow logs, optionally for one service: make logs s=api
 	docker compose logs -f $(s)
+
+# compose.yaml pins the project name, so the volume has the same name on every machine.
+COMPOSE_PROJECT := agriculture
+DB_VOLUME := $(COMPOSE_PROJECT)_postgres-data
+
+db-nuke: ## Delete the database volume; works with the stack stopped (deletes all data!)
+	$(call require,docker,Run db-nuke on your host machine, not in a devcontainer.)
+	docker compose rm --stop --force db
+	@if docker volume inspect $(DB_VOLUME) >/dev/null 2>&1; then \
+		docker volume rm $(DB_VOLUME); \
+		echo "Deleted $(DB_VOLUME). The next start creates an empty database."; \
+	else \
+		echo "No volume $(DB_VOLUME), nothing to delete."; \
+	fi

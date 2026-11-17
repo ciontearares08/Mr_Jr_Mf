@@ -47,19 +47,6 @@ def replay_aalborg_june(test: Callable) -> Callable:
     return pytest.mark.vcr(use_shared_cassette(test))
 
 
-@pytest.fixture(scope="module")
-def vcr_config() -> dict:
-    return {
-        # The parameters download in parallel, so we match each request by
-        # its URL and query and not by the order it arrives in.
-        "match_on": ["method", "scheme", "host", "port", "path", "query"],
-        # Stores the body as plain JSON text instead of gzip bytes.
-        "decode_compressed_response": True,
-        # A test can fetch the same month twice.
-        "allow_playback_repeats": True,
-    }
-
-
 @pytest.fixture(autouse=True)
 def no_retry_waits(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(dmi, "RETRY_WAIT_SECONDS", (0, 0, 0))

@@ -48,6 +48,8 @@ Run `make` in the repo root to list every command. These are the ones you'll use
 - `make api-setup` installs the API dependencies and applies migrations, `make web-setup` installs the web dependencies, and `make sim-setup` installs the sim dependencies. Run them after pulling.
 - `make api-dev` starts the API on port 8000, `make web-dev` starts the web app on port 5173, and `make sim-dev` starts the sim service on port 8001.
 - `make migration m="describe the change"` generates a migration from your model changes, `make migrate` applies it, and `make migrate-down` rolls back the latest one.
+- `make db-seed` adds the dev users and field from [seed.py](apps/api/src/api/db/seed.py), and `make db-fresh` drops the whole schema, runs all migrations and seeds again. Both need `APP_ENV=development` in `.env` (copy it from `example.env`).
+- When the migrations are stuck, run `make db-nuke` on the host. It deletes the database volume, even with the containers stopped, and the next start creates an empty database.
 - `make api-check` and `make web-check` run the same checks as CI. `make sim-check` runs the sim lint and tests.
 - `make api-types` regenerates the frontend API types from the running API. Run it in the Web devcontainer while the API is running.
 

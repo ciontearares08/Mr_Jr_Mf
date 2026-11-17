@@ -1,7 +1,12 @@
 import pytest
 from shapely.geometry import Polygon
 
-from api.weather.grid import cell_for, cell_for_geometry, is_inside_dmi_grid
+from api.weather.grid import (
+    cell_centre,
+    cell_for,
+    cell_for_geometry,
+    is_inside_dmi_grid,
+)
 
 
 @pytest.mark.parametrize(
@@ -15,6 +20,22 @@ def test_cell_for_known_towns(
     town: str, lat: float, lon: float, expected_cell: str
 ) -> None:
     assert cell_for(lat, lon) == expected_cell, town
+
+
+@pytest.mark.parametrize("cell_id", ["10km_632_55", "10km_614_58", "10km_617_72"])
+def test_cell_centre_lies_in_its_own_cell(cell_id: str) -> None:
+    assert cell_for(*cell_centre(cell_id)) == cell_id
+
+
+def test_cell_centre_of_the_copenhagen_cell() -> None:
+    lat, lon = cell_centre("10km_617_72")
+    assert (round(lat, 2), round(lon, 2)) == (55.67, 12.58)
+
+
+@pytest.mark.parametrize("cell_id", ["", "10km_617", "1km_617_72", "10km_a_72"])
+def test_cell_centre_rejects_a_bad_cell_id(cell_id: str) -> None:
+    with pytest.raises(ValueError, match="not a DMI 10 km cell ID"):
+        cell_centre(cell_id)
 
 
 def test_points_in_the_same_cell_share_an_id() -> None:

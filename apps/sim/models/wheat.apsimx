@@ -22,7 +22,7 @@
         {
           "$type": "Models.Climate.Weather, Models",
           "ConstantsFile": null,
-          "FileName": "Copenhagen_Weather.met",
+          "FileName": "../tests/fixtures/Copenhagen_2025-26.met",
           "ExcelWorkSheetName": "",
           "Name": "Weather",
           "ResourceName": null,
