@@ -8,6 +8,7 @@ import json
 import logging
 import math
 import threading
+import time
 from dataclasses import dataclass
 
 import httpx
@@ -23,6 +24,12 @@ from api.weather.dmi import (
 from api.weather.grid import WGS84_TO_UTM32
 
 STATION_URL = "https://opendataapi.dmi.dk/v2/metObs/collections/station/items"
+# DMI adds or closes a station a few times a year, so one download a day is enough.
+STATION_CACHE_SECONDS = 24 * 60 * 60
+# If a refresh fails, we keep the old list and try again after this time.
+STATION_RETRY_SECONDS = 60 * 60
+# The errors that mean DMI did not give us a usable station list.
+DMI_ERRORS = (httpx.HTTPError, json.JSONDecodeError, DmiResponseError, DmiPagingError)
 
 logger = logging.getLogger(__name__)
 
@@ -45,9 +52,40 @@ def find_wind_station(
     if client is not None:
         stations = fetch_min_wind_stations(client)
     else:
-        with httpx.Client(timeout=REQUEST_TIMEOUT_SECONDS) as own_client:
-            stations = fetch_min_wind_stations(own_client)
+        stations = cached_min_wind_stations()
     return nearest_station(stations, lat=point.y, lon=point.x).station_id
+
+
+# The last good download, and the time.monotonic() value of the next refresh.
+_station_cache: list[Station] | None = None
+_next_refresh = 0.0
+# Sync routes run in a threadpool. The lock makes concurrent requests wait for
+# one download instead of each starting its own.
+_station_lock = threading.Lock()
+
+
+def cached_min_wind_stations() -> list[Station]:
+    """Return the min wind stations, downloaded at most once a day.
+
+    If a refresh fails, this returns the old list and tries again in an hour.
+    If there is no old list, the error goes to the caller.
+    """
+    global _station_cache, _next_refresh
+    with _station_lock:
+        if _station_cache is not None and time.monotonic() < _next_refresh:
+            return _station_cache
+        try:
+            with httpx.Client(timeout=REQUEST_TIMEOUT_SECONDS) as client:
+                _station_cache = fetch_min_wind_stations(client)
+            _next_refresh = time.monotonic() + STATION_CACHE_SECONDS
+        except DMI_ERRORS as error:
+            if _station_cache is None:
+                raise
+            logger.warning(
+                "Station list refresh failed, keeping the old list: %s", error
+            )
+            _next_refresh = time.monotonic() + STATION_RETRY_SECONDS
+        return _station_cache
 
 
 def wind_station_or_none(geometry: BaseGeometry) -> str | None:
@@ -58,12 +96,7 @@ def wind_station_or_none(geometry: BaseGeometry) -> str | None:
     """
     try:
         return find_wind_station(geometry)
-    except (
-        httpx.HTTPError,
-        json.JSONDecodeError,
-        DmiResponseError,
-        DmiPagingError,
-    ) as error:
+    except DMI_ERRORS as error:
         logger.warning("No min wind station for the field: %s", error)
         return None
 

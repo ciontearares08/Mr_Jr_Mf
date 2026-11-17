@@ -4,7 +4,7 @@ import httpx
 import pytest
 from shapely.geometry import Point
 
-from api.weather import dmi
+from api.weather import dmi, stations
 from api.weather.dmi import DmiResponseError
 from api.weather.stations import (
     Station,
@@ -24,6 +24,13 @@ STATIONS = [TYLSTRUP, BORNHOLM, AALBORG]
 @pytest.fixture(autouse=True)
 def no_retry_waits(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(dmi, "RETRY_WAIT_SECONDS", (0, 0, 0))
+
+
+@pytest.fixture(autouse=True)
+def empty_station_cache(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Start every test with no cached station list, so no test leaks into the next."""
+    monkeypatch.setattr(stations, "_station_cache", None)
+    monkeypatch.setattr(stations, "_next_refresh", 0.0)
 
 
 def station_feature(
@@ -91,3 +98,48 @@ def test_no_station_when_dmi_is_down(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("api.weather.stations.find_wind_station", dmi_is_down)
 
     assert wind_station_or_none(Point(9.92, 57.05)) is None
+
+
+def test_the_station_list_is_downloaded_once(monkeypatch: pytest.MonkeyPatch) -> None:
+    downloads = []
+
+    def fetch(client: httpx.Client) -> list[Station]:
+        downloads.append(client)
+        return STATIONS
+
+    monkeypatch.setattr(stations, "fetch_min_wind_stations", fetch)
+
+    assert find_wind_station(Point(9.92, 57.05)) == AALBORG.station_id
+    assert find_wind_station(Point(14.70, 55.10)) == BORNHOLM.station_id
+    assert len(downloads) == 1
+
+
+def test_a_failed_refresh_keeps_the_old_list(monkeypatch: pytest.MonkeyPatch) -> None:
+    answers: list[list[Station] | Exception] = [
+        STATIONS,
+        DmiResponseError("DMI is down"),
+    ]
+
+    def fetch(_: httpx.Client) -> list[Station]:
+        answer = answers.pop(0)
+        if isinstance(answer, Exception):
+            raise answer
+        return answer
+
+    monkeypatch.setattr(stations, "fetch_min_wind_stations", fetch)
+    assert find_wind_station(Point(9.92, 57.05)) == AALBORG.station_id
+
+    monkeypatch.setattr(stations, "_next_refresh", 0.0)  # The day is over.
+    assert find_wind_station(Point(9.92, 57.05)) == AALBORG.station_id
+    # The next try waits an hour, so this call does not download again.
+    assert find_wind_station(Point(9.92, 57.05)) == AALBORG.station_id
+    assert answers == []
+
+
+def test_a_failed_first_download_is_an_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fetch(_: httpx.Client) -> list[Station]:
+        raise DmiResponseError("DMI is down")
+
+    monkeypatch.setattr(stations, "fetch_min_wind_stations", fetch)
+    with pytest.raises(DmiResponseError):
+        find_wind_station(Point(9.92, 57.05))

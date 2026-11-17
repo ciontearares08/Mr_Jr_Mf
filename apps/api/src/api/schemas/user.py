@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from email_validator import EmailNotValidError, validate_email
@@ -9,11 +9,11 @@ Password = Annotated[str, Field(min_length=12, max_length=256)]
 
 
 class EmailInput(BaseModel):
-    email: str = Field(...)
+    email: str
 
     @field_validator("email")
     @classmethod
-    def normalize_email(cls, raw_email: str) -> str:
+    def check_email(cls, raw_email: str) -> str:
         try:
             return normalize_email(raw_email)
         except EmailNotValidError as e:
@@ -37,13 +37,14 @@ class UserRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
-    email: str = Field(...)
-    created_at: datetime = Field(...)
+    email: str
+    created_at: datetime
 
 
 class Token(BaseModel):
     access_token: str
-    token_type: str = "bearer"
+    token_type: Literal["bearer"] = "bearer"
+    expires_in: int  # seconds until access_token expires
 
 
 def normalize_email(raw_email: str) -> str:

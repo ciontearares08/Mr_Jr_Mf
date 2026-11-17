@@ -6,7 +6,7 @@ import pytest
 
 from sim.apsim import run_season
 
-WEATHER_PATH = Path(__file__).parent / "fixtures" / "Copenhagen_Weather.met"
+WEATHER_PATH = Path(__file__).parent / "fixtures" / "Copenhagen_2025-26.met"
 
 
 def test_run_season_returns_one_row_per_day_of_the_season() -> None:

@@ -1,21 +1,28 @@
 #!/bin/sh
-# Lints staged files before each commit. Checks whose tools aren't installed in the
-# current environment are skipped (CI still runs them). Enabled with `make hooks`,
-# which the devcontainers run on start. Bypass once with `git commit --no-verify`.
+# Lints staged api, sim and web files before each commit. Checks whose tools aren't
+# installed in the current environment are skipped (CI still runs them). Enabled with
+# `make hooks`, which the devcontainers run on start. Bypass once with `git commit --no-verify`.
 
 root=$(git rev-parse --show-toplevel)
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
 fail=0
 
-api_files=$(echo "$staged" | grep '^apps/api/.*\.py$' | sed 's|^apps/api/||')
-if [ -n "$api_files" ]; then
-  if command -v uv >/dev/null 2>&1; then
-    echo "pre-commit: ruff on staged api files"
-    (cd "$root/apps/api" && uv run --quiet ruff check $api_files && uv run --quiet ruff format --check $api_files) || fail=1
+# Runs ruff on the staged Python files of one app, for example "api" or "sim".
+check_python_app() {
+  app=$1
+  files=$(echo "$staged" | grep "^apps/$app/.*\.py$" | sed "s|^apps/$app/||")
+  [ -z "$files" ] && return
+  ruff="$root/apps/$app/.venv/bin/ruff"
+  if [ -x "$ruff" ]; then
+    echo "pre-commit: ruff on staged $app files"
+    (cd "$root/apps/$app" && "$ruff" check $files && "$ruff" format --check $files) || fail=1
   else
-    echo "pre-commit: uv not found, skipping api checks (CI will run them)"
+    echo "pre-commit: ruff not installed for $app here, skipping (CI will run it)"
   fi
-fi
+}
+
+check_python_app api
+check_python_app sim
 
 web_files=$(echo "$staged" | grep -E '^apps/web/.*\.(ts|tsx|js|jsx)$' | sed 's|^apps/web/||')
 if [ -n "$web_files" ]; then
@@ -29,6 +36,6 @@ fi
 
 if [ "$fail" -ne 0 ]; then
   echo
-  echo "pre-commit: commit blocked. Fix the issues above (make api-format fixes most ruff errors)."
+  echo "pre-commit: commit blocked. Fix the issues above (make api-format or make sim-format fixes most ruff errors)."
   exit 1
 fi

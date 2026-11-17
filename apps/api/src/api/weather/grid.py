@@ -60,6 +60,22 @@ def cell_for(lat: float, lon: float) -> str:
     return f"10km_{int(northing // CELL_SIZE_M)}_{int(easting // CELL_SIZE_M)}"
 
 
+def cell_centre(cell_id: str) -> tuple[float, float]:
+    """Return the (lat, lon) in WGS84 of the middle of a cell, the inverse of cell_for."""
+    try:
+        prefix, northing, easting = cell_id.split("_")
+        if prefix != "10km":
+            raise ValueError
+        centre_northing = (int(northing) + 0.5) * CELL_SIZE_M
+        centre_easting = (int(easting) + 0.5) * CELL_SIZE_M
+    except ValueError:
+        raise ValueError(f"{cell_id!r} is not a DMI 10 km cell ID") from None
+    lon, lat = WGS84_TO_UTM32.transform(
+        centre_easting, centre_northing, direction="INVERSE"
+    )
+    return lat, lon
+
+
 def is_inside_dmi_grid(geometry: BaseGeometry) -> bool:
     """Return True when the whole WGS84 (lon, lat) geometry is in the DMI grid area."""
     return DMI_GRID_AREA.covers(geometry)

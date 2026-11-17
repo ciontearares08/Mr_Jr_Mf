@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from sim.routers.health import router as health_router
 
-app = FastAPI(title="APSIM Simulaton")
+app = FastAPI(title="APSIM Simulation")
 
 app.add_middleware(
     CORSMiddleware,

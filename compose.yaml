@@ -1,3 +1,6 @@
+# Pinned so volume names are the same on every machine (see make db-nuke).
+name: agriculture
+
 services:
   api:
     build:
@@ -25,6 +28,7 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/agriculture
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
+      REFRESH_COOKIE_SECURE: ${REFRESH_COOKIE_SECURE:-true}
 
     ports:
       - "8000:8000"

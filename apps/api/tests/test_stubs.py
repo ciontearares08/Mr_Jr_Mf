@@ -1,10 +1,16 @@
 from fastapi.testclient import TestClient
 
 from api.main import app
+from api.routers.stubs import _farmer_names, _rows
 from api.schemas.overview import Overview
 from api.schemas.timeline import Timeline, TimelineDetails
 
 client = TestClient(app)
+
+
+def test_every_stub_stage_has_a_farmer_name() -> None:
+    missing = {r["stage"] for r in _rows()} - _farmer_names().keys()
+    assert not missing, f"Add these stages to apps/sim/models/stages.json: {missing}"
 
 
 def test_overview_matches_model() -> None:
