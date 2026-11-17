@@ -11,23 +11,22 @@ WEATHER_PATH = Path(__file__).parent / "fixtures" / "Copenhagen_2025-26.met"
 
 def test_run_season_returns_one_row_per_day_of_the_season() -> None:
     # 1. Pass a real dt.date object
-    sowing = dt.date(2025, 4, 15)
+    sowing = dt.date(2025, 10, 1)
 
     # 2. Extract the dataframe from the SeasonResult dataclass
     result = run_season(weather_path=WEATHER_PATH, sowing_date=sowing)
     df = result.rows
 
-    # 15-Apr to harvest ripe in early September
-    assert 130 <= len(df) <= 200
+    # 1-Oct to harvest ripe in mid-August 2026 (321 days with this weather)
+    assert 290 <= len(df) <= 350
     assert result.sowing_date == sowing
 
     # 3. Compare against a pd.Timestamp, since the column was converted
-    assert df["date"].iloc[0] == pd.Timestamp("2025-04-15")
+    assert df["date"].iloc[0] == pd.Timestamp("2025-10-1")
     assert df["stage"].iloc[0] == "Sowing"
     assert df["stage"].iloc[-1] == "HarvestRipe"
 
-    assert {"date", "lai", "zadoks", "stage",
-            "biomass", "yield"} <= set(df.columns)
+    assert {"date", "lai", "zadoks", "stage", "biomass", "yield"} <= set(df.columns)
     assert [f"sw_{n}" for n in range(1, 8)] == [
         c for c in df.columns if c.startswith("sw_")
     ]
@@ -37,8 +36,8 @@ def test_run_season_returns_one_row_per_day_of_the_season() -> None:
 
 
 def test_run_season_sows_inside_the_sowing_window() -> None:
-    window_start = dt.date(2025, 4, 1)
-    window_end = dt.date(2025, 4, 30)
+    window_start = dt.date(2025, 9, 15)
+    window_end = dt.date(2025, 10, 15)
 
     result = run_season(
         weather_path=WEATHER_PATH, sowing_window=(window_start, window_end)
@@ -58,8 +57,7 @@ def test_run_season_rejects_both_sowing_date_and_sowing_window() -> None:
     window = (dt.date(2025, 4, 1), dt.date(2025, 4, 30))
 
     with pytest.raises(ValueError, match="not both"):
-        run_season(weather_path=WEATHER_PATH,
-                   sowing_date=sowing, sowing_window=window)
+        run_season(weather_path=WEATHER_PATH, sowing_date=sowing, sowing_window=window)
 
 
 def test_run_season_needs_a_sowing_date_or_a_sowing_window() -> None:
@@ -82,7 +80,7 @@ def test_run_season_rejects_a_missing_weather_file(tmp_path: Path) -> None:
 
 
 def test_run_season_rejects_sowing_dates_outside_the_weather_file() -> None:
-    # The weather file only covers 2025
+    # The weather file covers 1 Sep 2025 to 31 Aug 2026
     sowing = dt.date(2024, 10, 1)
 
     with pytest.raises(ValueError, match="outside the weather file"):

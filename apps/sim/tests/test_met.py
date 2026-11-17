@@ -182,7 +182,7 @@ def test_apsim_runs_with_a_written_file(tmp_path: Path) -> None:
     path = tmp_path / "weather.met"
 
     write_met(days, latitude=55.67, longitude=12.58, path=path)
-    season = run_season(weather_path=path, sowing_date="1-Oct")
+    season = run_season(weather_path=path, sowing_date=dt.date(2025, 10, 1))
 
-    assert season["date"].iloc[0].startswith("2025-10-01")
-    assert season["stage"].iloc[-1] == "HarvestRipe"
+    assert season.sowing_date == dt.date(2025, 10, 1)
+    assert season.rows["stage"].iloc[-1] == "HarvestRipe"
