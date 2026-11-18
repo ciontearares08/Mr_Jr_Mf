@@ -1,9 +1,11 @@
 import datetime as dt
+import os
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
+from sim import simulate
 from sim.main import app
 
 client = TestClient(app)
@@ -145,3 +147,62 @@ def test_rejects_a_wrong_request(changes: dict) -> None:
 
     response = client.post("/sim/simulate", json=body)
     assert response.status_code == 422
+
+
+# How many members run at the same time (worker_count)
+
+
+def cpu_limit_file(tmp_path: Path, text: str) -> Path:
+    """Write a fake cgroup cpu.max file and return its path."""
+    path = tmp_path / "cpu.max"
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+def test_worker_count_uses_sim_workers_first(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setenv("SIM_WORKERS", "3")
+    # The container limit is 2 CPUs, but the setting wins
+    monkeypatch.setattr(
+        simulate, "CPU_LIMIT_FILE", cpu_limit_file(tmp_path, "200000 100000")
+    )
+
+    assert simulate.worker_count() == 3
+
+
+def test_worker_count_rejects_sim_workers_below_one(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SIM_WORKERS", "0")
+
+    with pytest.raises(ValueError, match="at least 1"):
+        simulate.worker_count()
+
+
+@pytest.mark.parametrize(
+    ("cpu_max", "workers"),
+    [
+        pytest.param("200000 100000", 2, id="2 CPUs"),
+        pytest.param("150000 100000", 1, id="1.5 CPUs rounds down"),
+        pytest.param("50000 100000", 1, id="half a CPU still gets one worker"),
+    ],
+)
+def test_worker_count_follows_the_container_cpu_limit(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, cpu_max: str, workers: int
+) -> None:
+    monkeypatch.delenv("SIM_WORKERS", raising=False)
+    monkeypatch.setattr(simulate, "CPU_LIMIT_FILE", cpu_limit_file(tmp_path, cpu_max))
+
+    assert simulate.worker_count() == workers
+
+
+def test_worker_count_without_a_limit_uses_the_cpus_of_the_process(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.delenv("SIM_WORKERS", raising=False)
+    monkeypatch.setattr(
+        simulate, "CPU_LIMIT_FILE", cpu_limit_file(tmp_path, "max 100000")
+    )
+
+    assert simulate.worker_count() == os.process_cpu_count()

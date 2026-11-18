@@ -27,13 +27,17 @@ from sim.schemas import (
     SowingWindow,
 )
 
+# Where Linux shows the CPU limit of the container (cgroup v2), for example
+# "200000 100000" for 2 CPUs, or "max 100000" when there is no limit
+CPU_LIMIT_FILE = Path("/sys/fs/cgroup/cpu.max")
+
 
 def run_members(request: SimulateRequest) -> list[MemberResult]:
     """Run every member of the request and return the results in request order.
 
-    APSIM uses one CPU core per run, so up to one member per core runs at a time.
+    One APSIM run uses about one CPU, so up to one member per CPU runs at a time.
     """
-    workers = min(len(request.members), os.cpu_count() or 1)
+    workers = min(len(request.members), worker_count())
     # "spawn" starts each worker as a fresh Python process. The default on Linux
     # ("fork") copies the web server process with its threads, which can hang.
     spawn = multiprocessing.get_context("spawn")
@@ -55,6 +59,42 @@ def run_members(request: SimulateRequest) -> list[MemberResult]:
             _result_of(future, member)
             for future, member in zip(futures, request.members, strict=True)
         ]
+
+
+def worker_count() -> int:
+    """Return how many APSIM runs may run at the same time.
+
+    1. SIM_WORKERS, when it is set.
+    2. Otherwise the CPU limit of the container, rounded down, at least 1.
+    3. Otherwise (no limit) the CPUs this process may use.
+
+    os.cpu_count() is not used on its own because it shows all CPUs of the
+    machine, not the container's limit. In S3-05 a 2-CPU container showed 8,
+    and 4 workers on 2 CPUs made a run almost 3 times slower than 2 workers.
+    """
+    setting = os.getenv("SIM_WORKERS")
+    if setting:
+        workers = int(setting)
+        if workers < 1:
+            raise ValueError(f"SIM_WORKERS must be at least 1, not {workers}")
+        return workers
+
+    limit = _container_cpu_limit()
+    if limit is not None:
+        return max(1, int(limit))
+
+    return os.process_cpu_count() or 1
+
+
+def _container_cpu_limit() -> float | None:
+    """Return the container's CPU limit, or None when it has no limit."""
+    try:
+        quota, period = CPU_LIMIT_FILE.read_text(encoding="utf-8").split()
+    except (OSError, ValueError):
+        return None  # Not Linux, or not cgroup v2
+    if quota == "max":
+        return None
+    return int(quota) / int(period)
 
 
 def _result_of(future: Future[MemberResult], member: Member) -> MemberResult:
