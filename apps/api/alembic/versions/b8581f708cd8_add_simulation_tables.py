@@ -1,8 +1,8 @@
 """add simulation tables
 
-Revision ID: 9728c1f4193a
-Revises: d41a7c9e3b52
-Create Date: 2026-11-16 15:51:32.850245
+Revision ID: b8581f708cd8
+Revises: e5a1c0d7f2b9
+Create Date: 2026-11-18 12:51:12.147575
 
 """
 
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "9728c1f4193a"
-down_revision: str | Sequence[str] | None = "d41a7c9e3b52"
+revision: str = "b8581f708cd8"
+down_revision: str | Sequence[str] | None = "e5a1c0d7f2b9"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
