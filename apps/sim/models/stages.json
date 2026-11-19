@@ -3,66 +3,66 @@
     "stage_name": "Sowing",
     "farmer_name": "Sowing",
     "zadoks": 0.0,
-    "note": ""
+    "note": "Sow into a moist, firm seedbed. Late sowing lowers yield potential, early sowing raises the risk of aphids and disease."
   },
   {
     "stage_name": "Germination",
     "farmer_name": "Germination",
     "zadoks": 5.0,
-    "note": ""
+    "note": "The seed needs moist soil to germinate; a dry seedbed delays it and gives an uneven crop."
   },
   {
     "stage_name": "Emergence",
     "farmer_name": "Emergence",
     "zadoks": 10.0,
-    "note": ""
+    "note": "Shoots break the soil surface; uniform emergence sets up an even canopy for optimal light interception."
   },
   {
-    "stage_name": "DoubleRidge",
-    "farmer_name": "Double ridge",
-    "zadoks": 12.0,
-    "note": ""
+    "stage_name": "Tillering",
+    "farmer_name": "Tillering",
+    "zadoks": 21.0,
+    "note": "Plants develop side shoots to build ear number capacity; manage nitrogen early to support tiller survival."
   },
   {
-    "stage_name": "MaximumSpikeletPrimordia",
-    "farmer_name": "Spikelets formed",
-    "zadoks": 14.0,
-    "note": ""
+    "stage_name": "StemExtension",
+    "farmer_name": "Stem Extension",
+    "zadoks": 30.0,
+    "note": "Rapid stem elongation begins, demanding high water and nutrient uptake; protect against lodging and early fungal diseases."
   },
   {
-    "stage_name": "FlagLeafAppearance",
-    "farmer_name": "Flag leaf",
-    "zadoks": 39.0,
-    "note": ""
+    "stage_name": "Booting",
+    "farmer_name": "Booting",
+    "zadoks": 45.0,
+    "note": "The flag leaf expands and the ear swells within the sheath; keeping the flag leaf healthy is critical for grain filling."
   },
   {
-    "stage_name": "HeadEmergence",
+    "stage_name": "Heading",
     "farmer_name": "Heading",
     "zadoks": 55.0,
-    "note": ""
+    "note": "Ears emerge from the sheath; flowering timing dictates potential grain count, requiring protection from Fusarium head blight."
   },
   {
-    "stage_name": "Anthesis",
+    "stage_name": "Flowering",
     "farmer_name": "Flowering",
     "zadoks": 65.0,
-    "note": ""
+    "note": "Flowering is extremely sensitive to drought and heat; stress here causes severe sterile florets and slashes final yield."
   },
   {
-    "stage_name": "MaximumGrainLength",
-    "farmer_name": "Grain filling",
+    "stage_name": "MilkDevelopment",
+    "farmer_name": "Milk Development",
     "zadoks": 71.0,
-    "note": ""
+    "note": "Grains contain milky fluid; steady soil moisture is vital to prevent shrivelled kernels and secure grain weight."
   },
   {
-    "stage_name": "EndGrainFill",
-    "farmer_name": "End of grain fill",
-    "zadoks": 87.0,
-    "note": ""
+    "stage_name": "DoughDevelopment",
+    "farmer_name": "Dough Development",
+    "zadoks": 83.0,
+    "note": "Grains solidify into a starchy dough; dry down begins, and final kernel dry mass is largely locked in."
   },
   {
     "stage_name": "HarvestRipe",
-    "farmer_name": "Harvest ripe",
+    "farmer_name": "Harvest Ripe",
     "zadoks": 90.0,
-    "note": ""
+    "note": "Grain moisture drops to harvest levels, signalling that the crop is ready to be combined before wet weather ruins quality."
   }
 ]
