@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function Help() {
+export default function Help() {
   return (
     <div className="container mx-auto py-8 px-4 max-w-5xl space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Agricultural Terms Help</h1>
+        <h1 className="text-3xl font-bold text-primary">Agricultural Terms Help</h1>
         <p className="text-muted-foreground mt-2">
           Plain-language explanations of the crop terms, soil water limits, and satellite indices used across the app.
         </p>
@@ -22,7 +22,7 @@ export function Help() {
       {/* Crop Terms */}
       <Card>
         <CardHeader>
-          <CardTitle>Crop Terms</CardTitle>
+          <CardTitle className="text-lg font-semibold">Crop Terms</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -91,7 +91,7 @@ export function Help() {
       {/* Soil Water Limits */}
       <Card>
         <CardHeader>
-          <CardTitle>Soil Water Terms & Limits</CardTitle>
+          <CardTitle className="text-lg font-semibold">Soil Water Terms & Limits</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -105,9 +105,14 @@ export function Help() {
             <TableBody>
               <TableRow>
                 <TableCell className="font-medium">CLL (Crop Lower Limit / Wilting Point)</TableCell>
-                <TableCell>The driest soil layer can get before roots can extract water.</TableCell>
+                <TableCell>The driest the soil can get while roots can still take water from it.</TableCell>
                 <TableCell>Below this point, the crop enters drought stress and wilts.</TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">LL15 (Lower Limit 15 bar)</TableCell>
+                <TableCell>The soil water content at 15 bar suction pressure, representing the permanent wilting point.</TableCell>
+                <TableCell>Defines the lower bound of available water capacity in crop and hydrological models.</TableCell>
+                </TableRow>
               <TableRow>
                 <TableCell className="font-medium">DUL (Drained Upper Limit / Field Capacity)</TableCell>
                 <TableCell>Water retained after heavy rain has drained away (2–3 days).</TableCell>
@@ -123,6 +128,11 @@ export function Help() {
                 <TableCell>Total storable water available for the crop ((DUL - CLL) × depth).</TableCell>
                 <TableCell>Indicates how long the crop can survive without rain.</TableCell>
               </TableRow>
+              <TableRow>
+              <TableCell className="font-medium">PAW (Plant Available Water)</TableCell>
+              <TableCell>The amount of water currently stored in the root zone above the lower limit.</TableCell>
+              <TableCell>Measures real-time water availability to assess immediate drought stress.</TableCell>
+            </TableRow>
             </TableBody>
           </Table>
         </CardContent>
@@ -131,7 +141,7 @@ export function Help() {
       {/* Satellite Indices */}
       <Card>
         <CardHeader>
-          <CardTitle>Satellite Indices (Sentinel-2)</CardTitle>
+          <CardTitle className="text-lg font-semibold">Satellite Indices (Sentinel-2)</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -181,5 +191,3 @@ export function Help() {
     </div>
   );
 }
-
-export default Help;

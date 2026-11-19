@@ -15,7 +15,7 @@ export default function Navbar() {
           <Link to="/fieldmap" className={buttonVariants({ variant: "ghost" })}>
             Field Map
           </Link>
-            <Link to="/help" className={buttonVariants({ variant: "ghost" })}>
+        <Link to="/help" className={buttonVariants({ variant: "ghost" })}>
             Help
           </Link>
           <Link to="/start" className={buttonVariants({ variant: "ghost" })}>
