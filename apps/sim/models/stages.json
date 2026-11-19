@@ -3,66 +3,66 @@
     "stage_name": "Sowing",
     "farmer_name": "Sowing",
     "zadoks": 0.0,
-    "note": ""
+    "note": "Seeds are placed in the soil to establish the winter crop ahead of the growing season."
   },
   {
     "stage_name": "Germination",
     "farmer_name": "Germination",
     "zadoks": 5.0,
-    "note": ""
+    "note": "Moisture triggers the seed to awaken and begin root and shoot development."
   },
   {
     "stage_name": "Emergence",
     "farmer_name": "Emergence",
     "zadoks": 10.0,
-    "note": ""
+    "note": "Young shoots break through the soil surface to establish plant population density."
   },
   {
     "stage_name": "DoubleRidge",
     "farmer_name": "Double ridge",
     "zadoks": 12.0,
-    "note": ""
+    "note": "The growing point transitions from vegetative growth to reproductive spike development."
   },
   {
     "stage_name": "MaximumSpikeletPrimordia",
     "farmer_name": "Spikelets formed",
     "zadoks": 14.0,
-    "note": ""
+    "note": "The total number of potential spikelets and yield capacity begin to take shape."
   },
   {
     "stage_name": "FlagLeafAppearance",
     "farmer_name": "Flag leaf",
     "zadoks": 39.0,
-    "note": ""
+    "note": "The final leaf emerges, acting as the primary solar panel to power grain filling."
   },
   {
     "stage_name": "HeadEmergence",
     "farmer_name": "Heading",
     "zadoks": 55.0,
-    "note": ""
+    "note": "The wheat head emerges from the sheath as the crop nears flowering."
   },
   {
     "stage_name": "Anthesis",
     "farmer_name": "Flowering",
     "zadoks": 65.0,
-    "note": ""
+    "note": "Critical stage where stress from drought and heat severely impacts final grain number."
   },
   {
     "stage_name": "MaximumGrainLength",
     "farmer_name": "Grain filling",
     "zadoks": 71.0,
-    "note": ""
+    "note": "Starch and proteins accumulate in the kernels, driving total yield and grain size."
   },
   {
     "stage_name": "EndGrainFill",
     "farmer_name": "End of grain fill",
     "zadoks": 87.0,
-    "note": ""
+    "note": "Kernels reach maturity and dry down as the crop finishes active growth."
   },
   {
     "stage_name": "HarvestRipe",
     "farmer_name": "Harvest ripe",
     "zadoks": 90.0,
-    "note": ""
+    "note": "Grain moisture drops to harvest levels, signalling that the crop is ready to be combined."
   }
 ]
