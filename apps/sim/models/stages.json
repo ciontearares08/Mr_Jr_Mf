@@ -1,68 +1,130 @@
 [
   {
     "stage_name": "Sowing",
+    "apsim_stage": "Sowing",
     "farmer_name": "Sowing",
     "zadoks": 0.0,
-    "note": ""
+    "show_farmer": true,
+    "note": "Sow into a moist, firm seedbed. Late sowing lowers yield potential, early sowing raises the risk of aphids and disease."
   },
   {
     "stage_name": "Germination",
+    "apsim_stage": "Germination",
     "farmer_name": "Germination",
     "zadoks": 5.0,
-    "note": ""
+    "show_farmer": true,
+    "note": "The seed needs moist soil to germinate, a dry seedbed delay the germination and gives an uneven crop."
   },
   {
     "stage_name": "Emergence",
+    "apsim_stage": "Emergence",
     "farmer_name": "Emergence",
     "zadoks": 10.0,
-    "note": ""
+    "show_farmer": true,
+    "note": "Shoots begin to break the surfaceof the soil, a uniform emergence sets up an even canopy for optimal light interception."
   },
   {
     "stage_name": "DoubleRidge",
+    "apsim_stage": "DoubleRidge",
     "farmer_name": "Double ridge",
     "zadoks": 12.0,
-    "note": ""
+    "show_farmer": false,
+    "note": "The growing point transitions from vegetative growth to reproductive spike development."
   },
   {
     "stage_name": "MaximumSpikeletPrimordia",
+    "apsim_stage": "MaximumSpikeletPrimordia",
     "farmer_name": "Spikelets formed",
     "zadoks": 14.0,
-    "note": ""
+    "show_farmer": false,
+    "note": "The total number of potential spikelets and yield capacity begin to take shape."
+  },
+  {
+    "stage_name": "Tillering",
+    "apsim_stage": null,
+    "farmer_name": "Tillering",
+    "zadoks": 21.0,
+    "show_farmer": true,
+    "note": "Plants develop side shoots to build ear number capacity, important to manage nitrogen early to support tiller survival."
+  },
+  {
+    "stage_name": "StemExtension",
+    "apsim_stage": null,
+    "farmer_name": "Stem extension",
+    "zadoks": 30.0,
+    "show_farmer": true,
+    "note": "Deman in high water and nutrient uptake increase as rapid stem elongation begins, protect against lodging and early fungal diseases."
   },
   {
     "stage_name": "FlagLeafAppearance",
+    "apsim_stage": "FlagLeafAppearance",
     "farmer_name": "Flag leaf",
     "zadoks": 39.0,
-    "note": ""
+    "show_farmer": true,
+    "note": "The flag leaf is fully out and powers most of the grain filling, critical time to protect it from leaf diseases."
+  },
+  {
+    "stage_name": "Booting",
+    "apsim_stage": null,
+    "farmer_name": "Booting",
+    "zadoks": 45.0,
+    "show_farmer": true,
+    "note": "The ear swells within the flag leaf sheath, critical to keep the fag leaf healthy for grain filling."
   },
   {
     "stage_name": "HeadEmergence",
+    "apsim_stage": "HeadEmergence",
     "farmer_name": "Heading",
     "zadoks": 55.0,
-    "note": ""
+    "show_farmer": true,
+    "note": "Ears begin to emerge from the sheath and flowering follows soon, be prepared to protect the ears from Fusarium head blight."
   },
   {
     "stage_name": "Anthesis",
+    "apsim_stage": "Anthesis",
     "farmer_name": "Flowering",
     "zadoks": 65.0,
-    "note": ""
+    "show_farmer": true,
+    "note": "Flowering is extremely sensitive to drought and heat, stress here causes sterile florets and cuts final yield. This is also the main risk window for Fusarium head blight."
   },
   {
     "stage_name": "MaximumGrainLength",
+    "apsim_stage": "MaximumGrainLength",
     "farmer_name": "Grain filling",
     "zadoks": 71.0,
-    "note": ""
+    "show_farmer": false,
+    "note": "Starch and proteins accumulate in the kernels, driving total yield and grain size."
+  },
+  {
+    "stage_name": "MilkDevelopment",
+    "apsim_stage": null,
+    "farmer_name": "Milk development",
+    "zadoks": 73.0,
+    "show_farmer": true,
+    "note": "Grains contain milky fluid, it is crucial to maintain steady soil moisture to prevent shrivelled kernels and secure grain weight."
+  },
+  {
+    "stage_name": "DoughDevelopment",
+    "apsim_stage": null,
+    "farmer_name": "Dough development",
+    "zadoks": 83.0,
+    "show_farmer": true,
+    "note": "Grains solidify into a starchy dough, dry down begins, and final kernel dry mass is largely locked in."
   },
   {
     "stage_name": "EndGrainFill",
+    "apsim_stage": "EndGrainFill",
     "farmer_name": "End of grain fill",
     "zadoks": 87.0,
-    "note": ""
+    "show_farmer": false,
+    "note": "Kernels reach maturity and dry down as the crop finishes active growth."
   },
   {
     "stage_name": "HarvestRipe",
+    "apsim_stage": "HarvestRipe",
     "farmer_name": "Harvest ripe",
     "zadoks": 90.0,
-    "note": ""
+    "show_farmer": true,
+    "note": "Grain moisture drops to harvest levels, signalling that the crop is ready to be combined before wet weather ruins quality."
   }
 ]
