@@ -36,7 +36,7 @@ export default function EmptyStart() {
               to="/fields/new"
               className={buttonVariants({ className: "w-full" })}
             >
-              Create a field
+              Create a new field
             </Link>
           </CardFooter>
         </Card>
