@@ -1,5 +1,7 @@
 import type { Polygon as GeoJSONPolygon } from "geojson";
 import type { components } from "@/shared/api-types";
+import { isBoundaryValid } from "../validations/boundaryValidation";
+import { isInsideDenmark } from "../validations/denmarkAreaValidation";
 
 export type WizardStep = 1 | 2 | 3 | 4;
 
@@ -9,6 +11,7 @@ export interface CreateFieldWizardState {
   step: WizardStep;
   name: string;
   geometry: GeoJSONPolygon | null;
+  outsideDenmark: boolean; //returns true when field is outside of DK (*** after next is pressed)
   sowingDate: string | null;
   sowingWindow: SowingWindow | null;
 }
@@ -29,15 +32,19 @@ export const initialWizardState: CreateFieldWizardState = {
   step: 1,
   name: "",
   geometry: null,
+  outsideDenmark: false,
   sowingDate: null,
   sowingWindow: null,
 };
 
+// function to check if the name has valid characters and is of length <=50
 export function isNameStepValid(name: string): boolean {
   const trimmed = name.trim();
   return trimmed.length >= 1 && trimmed.length <= 50;
 }
 
+/* function to check if there exists a valid input to be able to go to the next step
+returns false if not returns the check which advances to next step. */
 export function canAdvanceFromStep(
   state: CreateFieldWizardState,
   step: WizardStep = state.step,
@@ -45,9 +52,57 @@ export function canAdvanceFromStep(
   if (step === 1) {
     return isNameStepValid(state.name);
   }
+  if (step === 2) {
+    return isBoundaryValid(state.geometry) && !state.outsideDenmark;
+  }
   return false;
 }
 
+// helper function for canReachStep (may put in separate file later)
+function isStepComplete(
+  state: CreateFieldWizardState,
+  step: WizardStep,
+): boolean {
+  if (step === 2) {
+    return (
+      canAdvanceFromStep(state, 2) &&
+      state.geometry !== null &&
+      isInsideDenmark(state.geometry)
+    );
+  }
+  return canAdvanceFromStep(state, step);
+}
+
+// return true when every step before the "target" is complete, allows the user to jump to it.
+export function canReachStep(
+  state: CreateFieldWizardState,
+  target: WizardStep = state.step,
+): boolean {
+  for (let step = 1; step < target; step++) {
+    if (!isStepComplete(state, step as WizardStep)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/* Called when the user tries to leave step 2. Returns the state with the
+  outside-Denmark error set when the field is outside Denmark, otherwise null. */
+function rejectOutsideDenmark(
+  state: CreateFieldWizardState,
+): CreateFieldWizardState | null {
+  if (
+    state.step === 2 &&
+    state.geometry !== null &&
+    isBoundaryValid(state.geometry) &&
+    !isInsideDenmark(state.geometry)
+  ) {
+    return { ...state, outsideDenmark: true };
+  }
+  return null;
+}
+
+// function that helps create the field
 export function createFieldWizardReducer(
   state: CreateFieldWizardState,
   action: CreateFieldWizardAction,
@@ -62,6 +117,7 @@ export function createFieldWizardReducer(
       return {
         ...state,
         geometry: action.geometry,
+        outsideDenmark: false,
       };
     case "SET_SOWING":
       return {
@@ -72,6 +128,10 @@ export function createFieldWizardReducer(
     case "NEXT_STEP": {
       if (state.step >= 4 || !canAdvanceFromStep(state, state.step)) {
         return state;
+      }
+      const rejected = rejectOutsideDenmark(state);
+      if (rejected) {
+        return rejected;
       }
       return {
         ...state,
@@ -88,22 +148,13 @@ export function createFieldWizardReducer(
       };
     }
     case "GO_TO_STEP": {
-      if (action.step === state.step) {
-        return state;
-      }
-      if (action.step < state.step) {
+      if (canReachStep(state, action.step)) {
         return {
           ...state,
           step: action.step,
         };
       }
-      if (action.step === 2 && isNameStepValid(state.name)) {
-        return {
-          ...state,
-          step: 2,
-        };
-      }
-      return state;
+      return rejectOutsideDenmark(state) ?? state;
     }
     default:
       return state;
