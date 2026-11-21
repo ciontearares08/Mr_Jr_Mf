@@ -70,9 +70,13 @@ class SimulationDaily(Base):
     zadoks: Mapped[float | None] = mapped_column(Float)
     lai: Mapped[float | None] = mapped_column(Float)
     biomass: Mapped[float | None] = mapped_column(Float)
+    biomass_n: Mapped[float | None] = mapped_column(Float)
+    grain_yield: Mapped[float | None] = mapped_column(Float)
+    grain_protein: Mapped[float | None] = mapped_column(Float)
+    grain_size: Mapped[float | None] = mapped_column(Float)
+    grain_number: Mapped[float | None] = mapped_column(Float)
     grain_wt: Mapped[float | None] = mapped_column(Float)
-    # "yield" is a Python keyword, so the attribute has a trailing underscore.
-    yield_: Mapped[float | None] = mapped_column("yield", Float)
+    grain_n: Mapped[float | None] = mapped_column(Float)
     n: Mapped[float | None] = mapped_column(Float)
     # One value per soil layer, top layer first.
     paw: Mapped[list[float] | None] = mapped_column(ARRAY(Float))

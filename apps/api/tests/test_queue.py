@@ -133,7 +133,7 @@ def test_daily_rows_keep_the_soil_layers_and_go_with_the_field(
             run_id=run.id,
             date=dt.date(2025, 10, 1),
             stage="Sowing",
-            yield_=0.0,
+            grain_yield=0.0,
             paw=[10.5, 20.0, 30.25],
             sw=[0.3, 0.28, 0.25],
         )
@@ -144,7 +144,7 @@ def test_daily_rows_keep_the_soil_layers_and_go_with_the_field(
     daily = db.scalars(select(SimulationDaily)).one()
     assert daily.paw == [10.5, 20.0, 30.25]
     assert daily.sw == [0.3, 0.28, 0.25]
-    assert daily.yield_ == 0.0
+    assert daily.grain_yield == 0.0
 
     db.delete(db.get(Field, field_id))
     db.flush()
