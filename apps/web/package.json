@@ -17,6 +17,7 @@
     "@geoman-io/leaflet-geoman-free": "^2.20.5",
     "@tailwindcss/vite": "^4.3.3",
     "@turf/area": "^7.4.0",
+    "@turf/kinks": "^7.4.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.0",
     "leaflet": "^1.9.4",
