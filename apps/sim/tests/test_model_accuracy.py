@@ -27,7 +27,6 @@ FIXTURES = Path(__file__).parent / "fixtures"
 WEATHER_PATH = FIXTURES / "Flakkebjerg_2015-2020.met"
 TRIALS_PATH = FIXTURES / "kumar2023_flakkebjerg.csv"
 
-# Calibrated model on these 48 points: see apsim model investigation/check_model.py.
 # Kumar et al. 2023 report an RMSE of 1296 to 1491 kg/ha for their calibrated model.
 MAX_RMSE = 1150  # kg/ha
 MAX_ABS_BIAS = 600  # kg/ha
@@ -42,7 +41,7 @@ namespace Models { [Serializable] public class Script : Model {
   string today = Clock.Today.ToString("yyyy-MM-dd");
   foreach (string item in Schedule.Split(';')) {
    string[] p = item.Split(':');
-      if (p[0].Trim() == today) Fertiliser.Apply(amount: double.Parse(p[1]), type: "NH4NO3N");
+    if (p[0].Trim() == today) Fertiliser.Apply(amount: double.Parse(p[1]), type: "NH4NO3N");
   } } } }"""
 
 MONTHS = [
