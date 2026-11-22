@@ -1,0 +1,64 @@
+{
+  "name": "Soil",
+  "soil_type": "Clay",
+  "jb_class": "N/A (APSIM default Clay; closest Danish equivalent: JB7)",
+  "source": "CSIRO Sustainable Ecosystems, Toowoomba; Characteriesd as part of the GRDC funded project\"Doing it better, doing it smarter, managing soil water in Australian agriculture' 2011",
+  "layers": [
+    {
+      "layer": 1,
+      "depth_cm": "0-15",
+      "thickness_mm": 150.0,
+      "ll15": 0.2605,
+      "dul": 0.521,
+      "sat": 0.5887
+    },
+    {
+      "layer": 2,
+      "depth_cm": "15-30",
+      "thickness_mm": 150.0,
+      "ll15": 0.2484,
+      "dul": 0.4967,
+      "sat": 0.5657
+    },
+    {
+      "layer": 3,
+      "depth_cm": "30-60",
+      "thickness_mm": 300.0,
+      "ll15": 0.28,
+      "dul": 0.4884,
+      "sat": 0.5572
+    },
+    {
+      "layer": 4,
+      "depth_cm": "60-90",
+      "thickness_mm": 300.0,
+      "ll15": 0.28,
+      "dul": 0.4803,
+      "sat": 0.5328
+    },
+    {
+      "layer": 5,
+      "depth_cm": "90-120",
+      "thickness_mm": 300.0,
+      "ll15": 0.28,
+      "dul": 0.4716,
+      "sat": 0.5274
+    },
+    {
+      "layer": 6,
+      "depth_cm": "120-150",
+      "thickness_mm": 300.0,
+      "ll15": 0.28,
+      "dul": 0.4571,
+      "sat": 0.5312
+    },
+    {
+      "layer": 7,
+      "depth_cm": "150-180",
+      "thickness_mm": 300.0,
+      "ll15": 0.28,
+      "dul": 0.4523,
+      "sat": 0.5219
+    }
+  ]
+}
