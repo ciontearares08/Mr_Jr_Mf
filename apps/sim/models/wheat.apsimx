@@ -114,24 +114,24 @@
             },
             {
               "$type": "Models.Soils.Soil, Models",
-              "RecordNumber": 104,
-              "ASCOrder": "Vertosol",
-              "ASCSubOrder": "Black",
-              "SoilType": "Clay",
+              "RecordNumber": 0,
+              "ASCOrder": null,
+              "ASCSubOrder": null,
+              "SoilType": "Sandy loam (77% sand topsoil)",
               "LocalName": null,
-              "Site": "Norwin",
-              "NearestTown": "Norwin",
-              "Region": "Darling Downs and Granite Belt",
-              "State": "Queensland",
-              "Country": "Australia",
-              "NaturalVegetation": "Qld. Bluegrass, possible Qld. Blue gum",
-              "ApsoilNumber": "900",
-              "Latitude": -27.581836,
-              "Longitude": 151.320206,
-              "LocationAccuracy": " +/- 20m",
-              "YearOfSampling": "0",
-              "DataSource": "CSIRO Sustainable Ecosystems, Toowoomba; Characteriesd as part of the GRDC funded project\"Doing it better, doing it smarter, managing soil water in Australian agriculture' 2011",
-              "Comments": "Clay - OC, CLL for all crops estimated-based on Bongeen Mywybilla Soil No1",
+              "Site": "Flakkebjerg",
+              "NearestTown": "Flakkebjerg",
+              "Region": null,
+              "State": null,
+              "Country": "Denmark",
+              "NaturalVegetation": null,
+              "ApsoilNumber": null,
+              "Latitude": 55.32,
+              "Longitude": 11.39,
+              "LocationAccuracy": "approx. town centre",
+              "YearOfSampling": 0,
+              "DataSource": "Kumar et al. 2023, Plants 12:986, Table 4 (topsoil + 50/60/70-160 cm subsoil)",
+              "Comments": "Layer 2 = mean of top/subsoil; layers 3-5 = subsoil. SWCON, KS, CN2, KL, FBiom/FInert, U/Cona are texture-based assumptions, not measured. Re-layered to 7 layers (0-180 cm) for the sim service.",
               "Name": "Soil",
               "ResourceName": null,
               "Children": [
@@ -146,64 +146,88 @@
                     300.0,
                     300.0
                   ],
-                  "ParticleSizeSand": null,
-                  "ParticleSizeSilt": null,
-                  "ParticleSizeClay": null,
-                  "Rocks": null,
-                  "Texture": null,
-                  "BD": [
-                    1.01056473311131,
-                    1.07145631083388,
-                    1.09393858528057,
-                    1.15861335018721,
-                    1.17301160318016,
-                    1.16287303586874,
-                    1.18749547755906
+                  "ParticleSizeSand": [
+                    77.0,
+                    74.3333,
+                    71.6667,
+                    69.0,
+                    69.0,
+                    69.0,
+                    69.0
                   ],
-                  "AirDry": [
-                    0.130250054518252,
-                    0.198689390775399,
-                    0.28,
-                    0.28,
-                    0.28,
-                    0.28,
-                    0.28
-                  ],
-                  "LL15": [
-                    0.260500109036505,
-                    0.248361738469248,
-                    0.28,
-                    0.28,
-                    0.28,
-                    0.28,
-                    0.28
-                  ],
-                  "DUL": [
-                    0.52100021807301,
-                    0.496723476938497,
-                    0.488437607673005,
-                    0.480296969355493,
-                    0.471583596524955,
-                    0.457070570557793,
-                    0.452331759845006
-                  ],
-                  "SAT": [
-                    0.588654817693846,
-                    0.565676863836273,
-                    0.557192986686577,
-                    0.532787415023694,
-                    0.527354112007486,
-                    0.531179986464627,
-                    0.521888499034317
-                  ],
-                  "KS": [
-                    20.0,
-                    20.0,
-                    20.0,
+                  "ParticleSizeSilt": [
+                    17.0,
+                    18.0,
+                    19.0,
                     20.0,
                     20.0,
                     20.0,
                     20.0
+                  ],
+                  "ParticleSizeClay": [
+                    7.0,
+                    8.3333,
+                    9.6667,
+                    11.0,
+                    11.0,
+                    11.0,
+                    11.0
+                  ],
+                  "Rocks": null,
+                  "Texture": null,
+                  "BD": [
+                    1.53,
+                    1.59,
+                    1.65,
+                    1.71,
+                    1.71,
+                    1.71,
+                    1.71
+                  ],
+                  "AirDry": [
+                    0.045,
+                    0.071,
+                    0.096,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12
+                  ],
+                  "LL15": [
+                    0.09,
+                    0.1,
+                    0.11,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12
+                  ],
+                  "DUL": [
+                    0.26,
+                    0.2633,
+                    0.2667,
+                    0.27,
+                    0.27,
+                    0.27,
+                    0.27
+                  ],
+                  "SAT": [
+                    0.4,
+                    0.3893,
+                    0.3727,
+                    0.35,
+                    0.35,
+                    0.35,
+                    0.35
+                  ],
+                  "KS": [
+                    500.0,
+                    300.0,
+                    200.0,
+                    200.0,
+                    200.0,
+                    200.0,
+                    200.0
                   ],
                   "BDMetadata": null,
                   "AirDryMetadata": null,
@@ -222,22 +246,22 @@
                     {
                       "$type": "Models.Soils.SoilCrop, Models",
                       "LL": [
-                        0.261,
-                        0.248,
-                        0.28,
-                        0.306,
-                        0.36,
-                        0.392,
-                        0.446
+                        0.09,
+                        0.1,
+                        0.11,
+                        0.12,
+                        0.12,
+                        0.12,
+                        0.12
                       ],
                       "KL": [
                         0.06,
                         0.06,
-                        0.06,
-                        0.04,
-                        0.04,
-                        0.02,
-                        0.01
+                        0.0533,
+                        0.0377,
+                        0.03,
+                        0.0203,
+                        0.02
                       ],
                       "XF": [
                         1.0,
@@ -263,16 +287,16 @@
                 },
                 {
                   "$type": "Models.WaterModel.WaterBalance, Models",
-                  "SummerDate": "1-Nov",
-                  "SummerU": 5.0,
-                  "SummerCona": 5.0,
-                  "WinterDate": "1-Apr",
-                  "WinterU": 5.0,
-                  "WinterCona": 5.0,
+                  "SummerDate": "1-Apr",
+                  "SummerU": 6.0,
+                  "SummerCona": 3.5,
+                  "WinterDate": "1-Oct",
+                  "WinterU": 4.0,
+                  "WinterCona": 2.5,
                   "DiffusConst": 40.0,
                   "DiffusSlope": 16.0,
-                  "Salb": 0.12,
-                  "CN2Bare": 73.0,
+                  "Salb": 0.13,
+                  "CN2Bare": 68.0,
                   "CNRed": 20.0,
                   "CNCov": 0.8,
                   "DischargeWidth": "NaN",
@@ -288,13 +312,13 @@
                     300.0
                   ],
                   "SWCON": [
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3
+                    0.6,
+                    0.5333,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5
                   ],
                   "KLAT": null,
                   "Name": "SoilWater",
@@ -316,50 +340,50 @@
                     300.0
                   ],
                   "Carbon": [
-                    1.2,
-                    0.96,
+                    1.4,
+                    1.0,
                     0.6,
-                    0.3,
-                    0.18,
-                    0.12,
-                    0.12
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
                   ],
                   "CarbonUnits": 0,
                   "SoilCNRatio": [
-                    12.0,
-                    12.0,
-                    12.0,
-                    12.0,
-                    12.0,
-                    12.0,
-                    12.0
+                    10.0,
+                    10.0,
+                    10.0,
+                    10.0,
+                    10.0,
+                    10.0,
+                    10.0
                   ],
                   "FBiom": [
                     0.04,
-                    0.02,
-                    0.02,
-                    0.02,
+                    0.0267,
+                    0.0167,
+                    0.01,
                     0.01,
                     0.01,
                     0.01
                   ],
                   "FInert": [
+                    0.2,
+                    0.2,
                     0.4,
-                    0.6,
-                    0.8,
-                    1.0,
+                    0.8467,
                     1.0,
                     1.0,
                     1.0
                   ],
                   "FOM": [
-                    347.1290323127564,
-                    270.3443621919937,
-                    163.97214434990104,
-                    99.45413288704063,
-                    60.32198083112468,
-                    36.58713082867487,
-                    22.1912165985086
+                    111.547,
+                    66.928,
+                    71.51,
+                    30.382,
+                    11.742,
+                    4.078,
+                    3.814
                   ],
                   "CarbonMetadata": null,
                   "FOMMetadata": null,
@@ -381,13 +405,13 @@
                     300.0
                   ],
                   "PH": [
-                    8.0,
-                    8.0,
-                    8.0,
-                    8.0,
-                    8.0,
-                    8.0,
-                    8.0
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
                   ],
                   "PHUnits": 0,
                   "EC": null,
@@ -416,13 +440,13 @@
                     300.0
                   ],
                   "InitialValues": [
-                    0.52100021807301,
-                    0.496723476938497,
-                    0.488437607673005,
-                    0.480296969355493,
-                    0.471583596524955,
-                    0.457070570557793,
-                    0.452331759845006
+                    0.192,
+                    0.198,
+                    0.204,
+                    0.21,
+                    0.21,
+                    0.21,
+                    0.21
                   ],
                   "FilledFromTop": false,
                   "Name": "Water",
@@ -451,15 +475,15 @@
                     300.0
                   ],
                   "InitialValues": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
+                    16.25,
+                    10.231,
+                    12.694,
+                    8.378,
+                    5.702,
+                    3.412,
+                    3.333
                   ],
-                  "InitialValuesUnits": 0,
+                  "InitialValuesUnits": 1,
                   "WaterTableConcentration": 0.0,
                   "D0": 0.0,
                   "Exco": null,
@@ -487,15 +511,15 @@
                     300.0
                   ],
                   "InitialValues": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
+                    1.419,
+                    0.788,
+                    0.774,
+                    0.417,
+                    0.373,
+                    0.364,
+                    0.364
                   ],
-                  "InitialValuesUnits": 0,
+                  "InitialValuesUnits": 1,
                   "WaterTableConcentration": 0.0,
                   "D0": 0.0,
                   "Exco": null,
@@ -566,12 +590,12 @@
               "$type": "Models.Surface.SurfaceOrganicMatter, Models",
               "SurfOM": [],
               "Canopies": [],
-              "InitialResidueName": "wheat_stubble",
+              "InitialResidueName": "wheat_straw",
               "InitialResidueType": "wheat",
-              "InitialResidueMass": 500.0,
+              "InitialResidueMass": 1000.0,
               "InitialStandingFraction": 0.0,
               "InitialCPR": 0.0,
-              "InitialCNR": 100.0,
+              "InitialCNR": 80.0,
               "Name": "SurfaceOrganicMatter",
               "ResourceName": "SurfaceOrganicMatter",
               "Children": [],
@@ -582,7 +606,36 @@
               "$type": "Models.PMF.Plant, Models",
               "Name": "Wheat",
               "ResourceName": "Wheat",
-              "Children": [],
+              "Children": [
+                {
+                  "$type": "Models.PMF.Cultivar, Models",
+                  "Command": [
+                    "[Phenology].HeadEmergencePpSensitivity.FixedValue = 2",
+                    "[Phenology].Phyllochron.BasePhyllochron.FixedValue = 100",
+                    "[Phenology].CAMP.FLNparams.MinLN = 9",
+                    "[Phenology].CAMP.FLNparams.PpLN = 5",
+                    "[Phenology].CAMP.FLNparams.VrnLN = 4",
+                    "[Phenology].CAMP.FLNparams.VxPLN = 4",
+                    "[Phenology].HeadEmergenceLongDayBase.FixedValue = 150",
+                    "[Phenology].CAMP.EnvData.VrnTreatTemp = 6",
+                    "[Phenology].CAMP.EnvData.VrnTreatDuration = 60",
+                    "[Phenology].GrainFilling.Target.FixedValue = 750",
+                    "[Grain].MaximumPotentialGrainSize.FixedValue = 0.045",
+                    "[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate.XYPairs.Y = 0,0,0.5,0.5,0.5,0.5,0.5,0.5",
+                    "[Grain].NumberFunction.GrainNumber.GrainsPerGramOfStem.FixedValue = 26",
+                    "[Leaf].CohortParameters.SenescenceAcceleration.Stress.StressResponseCoefficient.FixedValue = 0.0",
+                    "[Leaf].CohortParameters.LagAcceleration.Stress.StressResponseCoefficient.FixedValue = 0.0",
+                    "[Leaf].CohortParameters.CriticalNConc.CriticalNConcAt350ppm.XYPairs.Y = 0.0340,0.0340,0.0340,0.0234,0.0150,0.0150",
+                    "[Root].KNO3.FixedValue = 0.04",
+                    "[Leaf].CohortParameters.MaxArea.AreaLargestLeaves.FixedValue = 1600"
+                  ],
+                  "Name": "DK_Winter",
+                  "ResourceName": null,
+                  "Children": [],
+                  "Enabled": true,
+                  "ReadOnly": false
+                }
+              ],
               "Enabled": true,
               "ReadOnly": false
             },
@@ -695,7 +748,7 @@
                 },
                 {
                   "Key": "CultivarName",
-                  "Value": "Claire"
+                  "Value": "DK_Winter"
                 },
                 {
                   "Key": "SowingDepth",
