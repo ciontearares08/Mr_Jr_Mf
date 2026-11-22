@@ -128,4 +128,4 @@ Known limits:
 
 ## Stages
 
-`stages.json` lists each stage name in the `stage` column, with a short farmer name and its Zadoks code. The `note` fields stay empty until S2-15.
+`stages.json` lists each stage name in the `stage` column, with a short farmer name and its Zadoks code.
