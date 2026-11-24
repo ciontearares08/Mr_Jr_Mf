@@ -539,7 +539,8 @@ export interface components {
              * @description True when the data is too old to trust at as_of
              */
             stale: boolean;
-            value: components["schemas"]["FloatRange"];
+            /** @description None when no run has a value */
+            value: components["schemas"]["FloatRange"] | null;
             /** Unit */
             unit: string;
             /** @description None until the rating scales exist (S4-37) */

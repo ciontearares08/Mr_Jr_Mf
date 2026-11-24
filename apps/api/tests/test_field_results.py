@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from api.db.models.app_setting import AppSetting
 from api.db.models.simulation import RunStatus, SimulationDaily, SimulationRun
 from api.db.models.weather_daily import WeatherDaily
-from api.results import ROOT_ZONE_LAYERS, daily_series, stage_dates
+from api.results import RESULTS_VERSION, ROOT_ZONE_LAYERS, daily_series, stage_dates
 
 SQUARE = [
     [10.38, 55.40],
@@ -103,6 +103,7 @@ def add_run(
     final_yield: float = 7000.0,
     demo_date: dt.date = DEMO_DATE,
     created_at: dt.datetime | None = None,
+    results_version: int = RESULTS_VERSION,
 ) -> SimulationRun:
     """Add one finished run. shift_days moves every stage after 1 March later."""
     run = SimulationRun(
@@ -110,7 +111,7 @@ def add_run(
         field_id=field_id,
         season=season,
         inputs_hash="x" * 64,
-        inputs={"demo_date": demo_date.isoformat()},
+        inputs={"demo_date": demo_date.isoformat(), "results_version": results_version},
         status=status,
         sowing_date=SOWN if status == RunStatus.done else None,
         runtime_ms=2500,
@@ -451,3 +452,29 @@ def test_timeline_details_has_one_row_per_simulated_day(
         == "Germination"
     )
     assert data["units"]["paw"] == "mm"
+
+
+def test_a_job_from_an_older_sim_output_is_stale(
+    client: TestClient, db: Session, field_id: int, owner: dict[str, str]
+) -> None:
+    add_run(db, field_id, uuid.uuid4(), results_version=1)
+
+    data = overview(client, field_id, owner)
+
+    assert data["stage"]["stale"] is True
+    assert data["metrics"]["paw"]["stale"] is True
+
+
+def test_a_metric_without_data_is_null_and_not_zero(
+    client: TestClient, db: Session, field_id: int, owner: dict[str, str]
+) -> None:
+    run = add_run(db, field_id, uuid.uuid4())
+    # Layer 3 is missing on every day, so the root zone has no value
+    for day in run_days(db, run):
+        day.paw = [15.0, 18.0, None, 45.0, 42.0, 39.0, 36.0]
+    db.flush()
+
+    paw = overview(client, field_id, owner)["metrics"]["paw"]
+
+    assert paw["value"] is None
+    assert paw["unit"] == "mm"

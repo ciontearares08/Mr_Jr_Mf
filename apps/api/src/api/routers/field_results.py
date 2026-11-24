@@ -17,6 +17,7 @@ from api.db.models.field import Field
 from api.db.models.field_member import FieldRole
 from api.db.models.weather_daily import WeatherDaily
 from api.results import (
+    RESULTS_VERSION,
     UNITS,
     FinishedJob,
     StageDef,
@@ -69,7 +70,10 @@ def finished_job_or_409(db: DbSession, field_id: int) -> FinishedJob:
 
 
 def is_stale(job: FinishedJob, demo_date: dt.date) -> bool:
-    """A job is stale when it was run for another demo date than today's."""
+    """A job is stale when it ran for another demo date than today's, or when
+    it was stored from an older sim output (see RESULTS_VERSION)."""
+    if job.results_version != RESULTS_VERSION:
+        return True
     return job.demo_date is not None and job.demo_date != demo_date
 
 
@@ -133,8 +137,9 @@ def field_overview(field_id: int, user: CurrentUser, db: DbSession) -> Overview:
         return Metric(
             updated_at=updated_at,
             stale=stale,
-            # A run without any value gives 0, so the card still renders
-            value=value or float_range([0.0]),
+            # None when no run has a value: 0 would look like a real reading,
+            # for example bone-dry soil
+            value=value,
             unit=UNITS[column],
             rating=None,
         )
