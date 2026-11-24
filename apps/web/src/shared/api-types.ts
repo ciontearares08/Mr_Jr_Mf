@@ -107,6 +107,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/jobs/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Job */
+        get: operations["read_job_jobs__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fields/{field_id}/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Field Runs
+         * @description The field's last 20 jobs, newest first.
+         */
+        get: operations["field_runs_fields__field_id__runs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/register": {
         parameters: {
             query?: never;
@@ -437,6 +474,30 @@ export interface components {
             /** @description Let APSIM pick the day. Leave out with a date */
             sowing_window?: components["schemas"]["SowingWindow"] | null;
         };
+        /** FieldCreated */
+        FieldCreated: {
+            /** Id */
+            id: number;
+            /** Name */
+            name: string;
+            geometry: components["schemas"]["GeoJSONPolygon"];
+            /**
+             * Area Ha
+             * @description The area of the field in hectares
+             */
+            area_ha: number;
+            /** Sowing Date */
+            sowing_date: string | null;
+            sowing_window: components["schemas"]["SowingWindow"] | null;
+            /** @description What the current user may do with the field */
+            role: components["schemas"]["FieldRole"];
+            /**
+             * Job Id
+             * Format: uuid
+             * @description The field's first simulation job. Poll GET /jobs/{job_id}
+             */
+            job_id: string;
+        };
         /** FieldInfo */
         FieldInfo: {
             /** Id */
@@ -526,6 +587,75 @@ export interface components {
             /** Text */
             text: string;
             source: components["schemas"]["SummarySource"];
+        };
+        /**
+         * JobRead
+         * @description One simulation job: all runs of a field with the same inputs.
+         */
+        JobRead: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Field Id */
+            field_id: number;
+            /** @description running while any run is running, queued while any run waits, done when every run is done, otherwise failed */
+            status: components["schemas"]["JobStatus"];
+            /**
+             * Error
+             * @description Why the job failed, from its first failed run
+             */
+            error: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Finished At
+             * @description When the last run finished, None while the job is not finished
+             */
+            finished_at: string | null;
+        };
+        /**
+         * JobStatus
+         * @enum {string}
+         */
+        JobStatus: "queued" | "running" | "done" | "failed";
+        /**
+         * JobSummary
+         * @description One row of a field's run history.
+         */
+        JobSummary: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            status: components["schemas"]["JobStatus"];
+            /**
+             * Demo Date
+             * @description The demo date the job ran for
+             */
+            demo_date: string | null;
+            /**
+             * N Runs
+             * @description How many weather seasons the job runs
+             */
+            n_runs: number;
+            /**
+             * Runtime Ms
+             * @description How long the APSIM run took, None until it finished
+             */
+            runtime_ms: number | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Finished At */
+            finished_at: string | null;
         };
         /** Metric */
         Metric: {
@@ -1017,7 +1147,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FieldRead"];
+                    "application/json": components["schemas"]["FieldCreated"];
                 };
             };
             /** @description Validation Error */
@@ -1142,6 +1272,68 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TimelineDetails"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_job_jobs__job_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    field_runs_fields__field_id__runs_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                field_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobSummary"][];
                 };
             };
             /** @description Validation Error */

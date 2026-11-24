@@ -12,7 +12,10 @@ Run it next to the API, from apps/api:
 Several workers can run at the same time: each one locks the runs it takes
 with SELECT ... FOR UPDATE SKIP LOCKED, so no job runs twice.
 
-Weather: each season is the stored DMI weather of that season's dates, 1
+Weather: before a job runs, the worker downloads the days the field's cell is
+missing (S4-32). It does this here and not in POST /fields, because a new cell
+needs about 11 years from DMI, and a DMI outage must not stop a field from being
+created. Each season is the stored DMI weather of that season's dates, 1
 September to 31 August. That is the observed 2025/26 season for a one-run job.
 The ensemble weather (observed weather up to the demo date, then a past season)
 replaces season_weather in S5-31.
@@ -33,7 +36,14 @@ from sqlalchemy.orm import Session
 
 from api.db.models.field import Field
 from api.db.models.simulation import RunStatus, SimulationDaily, SimulationRun
-from api.weather.store import MET_COLUMNS, dates_without_values, stored_rows
+from api.weather.dmi import NoWeatherData
+from api.weather.stations import DMI_ERRORS, wind_station_or_none
+from api.weather.store import (
+    MET_COLUMNS,
+    dates_without_values,
+    fetch_missing,
+    stored_rows,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +59,8 @@ STUCK_AFTER = dt.timedelta(minutes=15)
 MAX_ATTEMPTS = 2
 # How many of the oldest queued jobs a worker tries before it gives up
 CANDIDATE_JOBS = 10
+# The last day of weather a job needs: the end of the replayed 2025/26 season
+WEATHER_UNTIL = dt.date(2026, 8, 31)
 # Errors are stored in the run, so keep them short enough to read on a page
 MAX_ERROR_LENGTH = 1000
 
@@ -210,6 +222,7 @@ def simulate_request(db: Session, runs: Sequence[SimulationRun]) -> dict[str, An
         raise JobError("The field of this job no longer exists.")
     if field.cell_id is None:
         raise JobError("The field has no DMI weather cell.")
+    load_weather(db, field)
 
     point = to_shape(field.geom).representative_point()
     body: dict[str, Any] = {
@@ -223,6 +236,27 @@ def simulate_request(db: Session, runs: Sequence[SimulationRun]) -> dict[str, An
     }
     body.update(sowing(runs[0].inputs or {}, field))
     return body
+
+
+def load_weather(db: Session, field: Field) -> None:
+    """Download the days the field's cell is missing, up to WEATHER_UNTIL.
+
+    Does nothing when every day is stored. Needs the field's min wind station,
+    and looks it up when field creation could not reach DMI.
+    """
+    if field.wind_station_id is None:
+        field.wind_station_id = wind_station_or_none(to_shape(field.geom))
+    if field.wind_station_id is None:
+        raise JobError(
+            "The field has no DMI wind station, because DMI did not answer. "
+            "The job can run again when DMI is back."
+        )
+    try:
+        saved = fetch_missing(db, field.cell_id, field.wind_station_id, WEATHER_UNTIL)
+    except (*DMI_ERRORS, NoWeatherData) as error:
+        raise JobError(f"Could not load the weather from DMI: {error}") from error
+    if saved:
+        logger.info("Loaded %d days of weather for %s", saved, field.cell_id)
 
 
 def sowing(inputs: dict[str, Any], field: Field) -> dict[str, Any]:
@@ -258,8 +292,8 @@ def season_weather(db: Session, cell_id: str, season: str) -> list[dict[str, Any
     """Return the stored weather of one season as the sim's weather rows.
 
     A single missing day is sent as None, and the sim fills it. Raises JobError
-    when the season has no stored weather at all, because then the weather was
-    never loaded (POST /fields loads it in S4-32).
+    when the season has no stored weather at all, for example a season that
+    DMI has no data for yet.
     """
     start, end = season_dates(season)
     rows = stored_rows(db, cell_id, start, end)
