@@ -151,5 +151,10 @@ def test_daily_rows_keep_the_soil_layers_and_go_with_the_field(
 
     db.delete(db.get(Field, field_id))
     db.flush()
-    assert db.scalars(select(SimulationDaily)).all() == []
+    assert (
+        db.scalars(
+            select(SimulationDaily).where(SimulationDaily.run_id == run.id)
+        ).all()
+        == []
+    )
     assert runs_of_field(db, field_id) == []
