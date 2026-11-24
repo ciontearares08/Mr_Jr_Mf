@@ -95,6 +95,21 @@ class SimulateRequest(BaseModel):
             raise ValueError(f"Each season can only be sent once: {repeated}")
         return self
 
+    @model_validator(mode="after")
+    def members_cover_the_same_dates(self) -> Self:
+        # The ensemble compares the members day by day, so a member with other
+        # dates is a bug in the API, not a weather gap
+        ranges = {
+            (min(row.date for row in member.met), max(row.date for row in member.met))
+            for member in self.members
+        }
+        if len(ranges) > 1:
+            raise ValueError(
+                "Every member must cover the same dates, but they cover "
+                + ", ".join(f"{first} to {last}" for first, last in sorted(ranges))
+            )
+        return self
+
 
 # RESPONSE
 
@@ -123,8 +138,9 @@ class DailyRow(BaseModel):
     grain_wt: float | None = Field(description="Grain dry weight, g/m²")
     grain_n: float | None = Field(description="Nitrogen in the grain, g/m²")
     # One value per soil layer, top layer first, as stored in simulation_daily
-    sw: list[float] = Field(description="Soil water per layer, mm/mm")
-    paw: list[float] = Field(description="Plant available water per layer, mm")
+    # A layer value is None when APSIM wrote no value for that layer on that day
+    sw: list[float | None] = Field(description="Soil water per layer, mm/mm")
+    paw: list[float | None] = Field(description="Plant available water per layer, mm")
 
 
 class MemberResult(BaseModel):
@@ -132,7 +148,14 @@ class MemberResult(BaseModel):
 
     season: str
     status: MemberStatus
-    runtime_ms: int = Field(ge=0, description="How long the run took")
+    runtime_ms: int = Field(
+        ge=0,
+        description=(
+            "How long the APSIM run took. All members run in one APSIM process, "
+            "so every member that reached APSIM has the same value. 0 when the "
+            "member failed before APSIM ran"
+        ),
+    )
     error: str | None = Field(default=None, description="Why the run failed")
     sowing_date: dt.date | None = Field(
         default=None, description="The day APSIM sowed, None when the run failed"

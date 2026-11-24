@@ -1,172 +1,129 @@
 """Run the members of an ensemble: one APSIM season per member.
 
-run_members runs several members at the same time, each in its own process.
-run_member runs one of them: it writes the member's weather file and runs
-APSIM once. It is a top-level function, so the worker processes can import it.
+run_members writes one weather file per member and runs all members in one
+APSIM process (run_seasons). APSIM spends most of a run on fixed start-up work,
+so one process for the whole ensemble is much faster than one per member, and
+APSIM spreads the simulations over the CPUs of the container by itself.
 """
 
 import datetime as dt
-import multiprocessing
-import os
+import logging
 import tempfile
+import threading
 import time
-from concurrent.futures import Future, ProcessPoolExecutor
-from concurrent.futures.process import BrokenProcessPool
 from pathlib import Path
 
 import pandas as pd
 
-from sim.apsim import run_season
+from sim.apsim import SeasonResult, run_seasons
 from sim.met import WeatherDay, write_met
-from sim.schemas import (
-    DailyRow,
-    Member,
-    MemberResult,
-    MemberStatus,
-    SimulateRequest,
-    SowingWindow,
-)
+from sim.schemas import DailyRow, Member, MemberResult, MemberStatus, SimulateRequest
 
-# Where Linux shows the CPU limit of the container (cgroup v2), for example
-# "200000 100000" for 2 CPUs, or "max 100000" when there is no limit
-CPU_LIMIT_FILE = Path("/sys/fs/cgroup/cpu.max")
+logger = logging.getLogger(__name__)
+
+# One ensemble at a time. APSIM already uses every CPU for one ensemble, so a
+# second one at the same time would only make both slower and need twice the
+# memory. FastAPI runs this sync code in a thread pool, so a thread lock is
+# enough as long as the service runs one uvicorn process.
+_one_ensemble_at_a_time = threading.Lock()
 
 
 def run_members(request: SimulateRequest) -> list[MemberResult]:
     """Run every member of the request and return the results in request order.
 
-    One APSIM run uses about one CPU, so up to one member per CPU runs at a time.
+    A member that fails gets status "failed" and an error message; the other
+    members are not affected.
     """
-    workers = min(len(request.members), worker_count())
-    # "spawn" starts each worker as a fresh Python process. The default on Linux
-    # ("fork") copies the web server process with its threads, which can hang.
-    spawn = multiprocessing.get_context("spawn")
+    if request.sowing_window is None:
+        window = None
+    else:
+        window = (request.sowing_window.start, request.sowing_window.end)
 
-    with ProcessPoolExecutor(max_workers=workers, mp_context=spawn) as pool:
-        futures = [
-            pool.submit(
-                run_member,
-                member,
-                request.latitude,
-                request.longitude,
-                request.sowing_date,
-                request.sowing_window,
-            )
-            for member in request.members
-        ]
-        # Reading the futures in submit order keeps the results in request order
-        return [
-            _result_of(future, member)
-            for future, member in zip(futures, request.members, strict=True)
-        ]
+    # The .met files only live as long as this request
+    with tempfile.TemporaryDirectory() as temp_dir:
+        met_paths: dict[str, Path] = {}
+        write_errors: dict[str, Exception] = {}
+        for number, member in enumerate(request.members):
+            path = Path(temp_dir) / f"member_{number}.met"
+            try:
+                write_met(
+                    [WeatherDay(**row.model_dump()) for row in member.met],
+                    latitude=request.latitude,
+                    path=path,
+                    longitude=request.longitude,
+                )
+            # WeatherGapError (a gap of more than one day) is a ValueError
+            except ValueError as error:
+                write_errors[member.season] = error
+                continue
+            met_paths[member.season] = path
 
+        with _one_ensemble_at_a_time:
+            # Started inside the lock: waiting for another ensemble is not run time
+            started = time.perf_counter()
+            seasons = _run_or_fail_all(met_paths, request.sowing_date, window)
+        runtime_ms = _milliseconds_since(started)
 
-def worker_count() -> int:
-    """Return how many APSIM runs may run at the same time.
-
-    1. SIM_WORKERS, when it is set.
-    2. Otherwise the CPU limit of the container, rounded down, at least 1.
-    3. Otherwise (no limit) the CPUs this process may use.
-
-    os.cpu_count() is not used on its own because it shows all CPUs of the
-    machine, not the container's limit. In S3-05 a 2-CPU container showed 8,
-    and 4 workers on 2 CPUs made a run almost 3 times slower than 2 workers.
-    """
-    setting = os.getenv("SIM_WORKERS")
-    if setting:
-        workers = int(setting)
-        if workers < 1:
-            raise ValueError(f"SIM_WORKERS must be at least 1, not {workers}")
-        return workers
-
-    limit = _container_cpu_limit()
-    if limit is not None:
-        return max(1, int(limit))
-
-    return os.process_cpu_count() or 1
+    return [
+        _result_of(member, write_errors.get(member.season), seasons, runtime_ms)
+        for member in request.members
+    ]
 
 
-def _container_cpu_limit() -> float | None:
-    """Return the container's CPU limit, or None when it has no limit."""
-    try:
-        quota, period = CPU_LIMIT_FILE.read_text(encoding="utf-8").split()
-    except (OSError, ValueError):
-        return None  # Not Linux, or not cgroup v2
-    if quota == "max":
-        return None
-    return int(quota) / int(period)
-
-
-def _result_of(future: Future[MemberResult], member: Member) -> MemberResult:
-    """Wait for one member. run_member never raises, so only a crash gets here."""
-    try:
-        return future.result()
-    except BrokenProcessPool:
-        # A worker process died, for example because it ran out of memory. The
-        # pool cannot be used after that, so every member still waiting fails too.
-        return MemberResult(
-            season=member.season,
-            status=MemberStatus.failed,
-            runtime_ms=0,  # unknown: the process died before it could report it
-            error="The process running this member stopped unexpectedly",
-        )
-
-
-def run_member(
-    member: Member,
-    latitude: float,
-    longitude: float,
+def _run_or_fail_all(
+    met_paths: dict[str, Path],
     sowing_date: dt.date | None,
-    sowing_window: SowingWindow | None,
-) -> MemberResult:
-    """Run APSIM for one member and return its result.
-
-    Never raises: any error becomes a failed result with the error message, so
-    one bad member does not fail the whole request.
-    """
-    started = time.perf_counter()
+    sowing_window: tuple[dt.date, dt.date] | None,
+) -> dict[str, SeasonResult | Exception]:
+    """Run the seasons. If APSIM itself fails, every season gets that error."""
+    if not met_paths:
+        return {}
+    # Catch everything on purpose: the request still answers with a result per
+    # member, and the API stores the error on each run
     try:
-        days = [
-            WeatherDay(
-                date=row.date,
-                radn=row.radn,
-                maxt=row.maxt,
-                mint=row.mint,
-                rain=row.rain,
-            )
-            for row in member.met
-        ]
-        if sowing_window is None:
-            window = None
-        else:
-            window = (sowing_window.start, sowing_window.end)
-
-        # The .met file only lives as long as this run
-        with tempfile.TemporaryDirectory() as temp_dir:
-            met_path = Path(temp_dir) / "weather.met"
-            write_met(days, latitude=latitude, path=met_path, longitude=longitude)
-            season = run_season(
-                weather_path=met_path, sowing_date=sowing_date, sowing_window=window
-            )
-        daily = daily_rows(season.rows)
-
-    # Catch everything on purpose: even an unexpected error should fail only
-    # this member. Expected errors are WeatherGapError (a gap of more than one
-    # day), ValueError (sowing dates outside the weather) and ApsimError.
-    except Exception as error:  # noqa: BLE001
-        return MemberResult(
-            season=member.season,
-            status=MemberStatus.failed,
-            runtime_ms=_milliseconds_since(started),
-            error=f"{type(error).__name__}: {error}",
+        return run_seasons(
+            met_paths, sowing_date=sowing_date, sowing_window=sowing_window
         )
+    except Exception as error:
+        logger.exception("APSIM did not run the ensemble")
+        return dict.fromkeys(met_paths, error)
+
+
+def _result_of(
+    member: Member,
+    write_error: Exception | None,
+    seasons: dict[str, SeasonResult | Exception],
+    runtime_ms: int,
+) -> MemberResult:
+    """Return the result of one member."""
+    if write_error is not None:
+        # The member failed before APSIM ran, so it has no run time
+        return _failed(member, write_error, runtime_ms=0)
+
+    season = seasons[member.season]
+    if isinstance(season, Exception):
+        return _failed(member, season, runtime_ms)
+
+    try:
+        daily = daily_rows(season.rows)
+    except Exception as error:  # noqa: BLE001
+        return _failed(member, error, runtime_ms)
 
     return MemberResult(
         season=member.season,
         status=MemberStatus.ok,
-        runtime_ms=_milliseconds_since(started),
+        runtime_ms=runtime_ms,
         sowing_date=season.sowing_date,
         daily=daily,
+    )
+
+
+def _failed(member: Member, error: Exception, runtime_ms: int) -> MemberResult:
+    return MemberResult(
+        season=member.season,
+        status=MemberStatus.failed,
+        runtime_ms=runtime_ms,
+        error=f"{type(error).__name__}: {error}",
     )
 
 

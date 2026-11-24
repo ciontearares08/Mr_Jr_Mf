@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from sim.apsim import run_season
+from sim.apsim import ApsimError, run_season, run_seasons
 
 WEATHER_PATH = Path(__file__).parent / "fixtures" / "Copenhagen_2025-26.met"
 
@@ -49,6 +49,55 @@ def test_run_season_sows_inside_the_sowing_window() -> None:
     assert (df["sowing_date"] == pd.Timestamp(result.sowing_date)).all()
     assert df["stage"].iloc[0] == "Sowing"
     assert df["stage"].iloc[-1] == "HarvestRipe"
+
+
+def broken_weather_file(tmp_path: Path) -> Path:
+    """A copy of the weather file with text instead of a number in the middle.
+
+    The checks before APSIM only read the dates, so APSIM itself fails on it.
+    """
+    lines = WEATHER_PATH.read_text(encoding="utf-8").splitlines()
+    year, day_of_year, radn, maxt, mint, _rain = lines[-100].split()
+    lines[-100] = f"{year} {day_of_year} {radn} {maxt} {mint} oops"
+    path = tmp_path / "broken.met"
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return path
+
+
+def test_run_seasons_runs_every_season_and_keeps_failures_apart(
+    tmp_path: Path,
+) -> None:
+    results = run_seasons(
+        {
+            "2018/19": WEATHER_PATH,
+            "broken": broken_weather_file(tmp_path),
+            "missing": tmp_path / "missing.met",
+            "2019/20": WEATHER_PATH,
+        },
+        sowing_date=dt.date(2025, 10, 1),
+    )
+
+    # One result per name, in the order of the request
+    assert list(results) == ["2018/19", "broken", "missing", "2019/20"]
+    for name in ("2018/19", "2019/20"):
+        assert results[name].sowing_date == dt.date(2025, 10, 1)
+        assert results[name].rows["stage"].iloc[-1] == "HarvestRipe"
+    # The same weather and sowing date give the same season
+    assert results["2018/19"].rows.equals(results["2019/20"].rows)
+
+    assert isinstance(results["broken"], ApsimError)
+    assert str(results["broken"]).startswith("APSIM failed:")
+    # The .NET stack trace is left out of the message
+    assert " at " not in str(results["broken"])
+    assert isinstance(results["missing"], FileNotFoundError)
+
+
+def test_run_season_raises_the_apsim_error(tmp_path: Path) -> None:
+    with pytest.raises(ApsimError, match="APSIM failed"):
+        run_season(
+            weather_path=broken_weather_file(tmp_path),
+            sowing_date=dt.date(2025, 10, 1),
+        )
 
 
 # The tests below fail before APSIM starts, so they run quickly
