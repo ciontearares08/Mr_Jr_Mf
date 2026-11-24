@@ -7,6 +7,7 @@ returns a canned response.
 import datetime as dt
 from typing import Any
 
+import httpx
 import pytest
 from geoalchemy2 import WKTElement
 from sqlalchemy import select, update
@@ -35,6 +36,20 @@ def no_other_jobs(db: Session) -> None:
         .where(SimulationRun.status.in_([RunStatus.queued, RunStatus.running]))
         .values(status=RunStatus.failed)
     )
+
+
+@pytest.fixture(autouse=True)
+def no_dmi(monkeypatch: pytest.MonkeyPatch) -> list[tuple]:
+    """Never call DMI. Returns the fetch_missing calls the worker made."""
+    calls: list[tuple] = []
+
+    def fake_fetch_missing(db, cell_id, wind_station_id, until):
+        calls.append((cell_id, wind_station_id, until))
+        return 0
+
+    monkeypatch.setattr(worker, "fetch_missing", fake_fetch_missing)
+    monkeypatch.setattr(worker, "wind_station_or_none", lambda geometry: "06180")
+    return calls
 
 
 @pytest.fixture
@@ -327,6 +342,51 @@ def test_a_job_another_worker_holds_is_skipped(db: Session, field: Field) -> Non
         other_worker.rollback()
 
 
+def test_the_worker_loads_missing_weather_before_the_run(
+    db: Session, field: Field, no_dmi: list[tuple]
+) -> None:
+    add_season_weather(db)
+    queue_job(db, field.id, [SEASON], INPUTS)
+
+    worker.work_once(db, FakeSim())
+
+    assert no_dmi == [(CELL, "06180", dt.date(2026, 8, 31))]
+    # The station that the worker looked up is kept on the field
+    assert field.wind_station_id == "06180"
+
+
+def test_a_dmi_error_fails_the_job_with_a_clear_message(
+    db: Session, field: Field, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    queue_job(db, field.id, [SEASON], INPUTS)
+
+    def dmi_is_down(db, cell_id, wind_station_id, until):
+        raise httpx.ConnectError("connection refused")
+
+    monkeypatch.setattr(worker, "fetch_missing", dmi_is_down)
+    sim = FakeSim()
+
+    worker.work_once(db, sim)
+
+    [run] = runs_of(db, field)
+    assert run.status == RunStatus.failed
+    assert run.error == "Could not load the weather from DMI: connection refused"
+    assert sim.requests == []
+
+
+def test_a_field_without_a_wind_station_fails_while_dmi_is_down(
+    db: Session, field: Field, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    queue_job(db, field.id, [SEASON], INPUTS)
+    monkeypatch.setattr(worker, "wind_station_or_none", lambda geometry: None)
+
+    worker.work_once(db, FakeSim())
+
+    [run] = runs_of(db, field)
+    assert run.status == RunStatus.failed
+    assert "no DMI wind station" in run.error
+
+
 def test_results_are_dropped_for_a_run_another_worker_took_over(
     db: Session, field: Field
 ) -> None:
@@ -378,3 +438,46 @@ def test_the_worker_loop_survives_an_error() -> None:
         raise ConnectionError("the database is down")
 
     assert worker.work_safely(broken_session_factory, FakeSim()) is None
+
+
+def test_the_weather_download_is_kept_when_the_run_fails_later(
+    db: Session, field: Field, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    add_season_weather(db)
+    queue_job(db, field.id, [SEASON], INPUTS)
+
+    def fetch_one_new_day(db, cell_id, wind_station_id, until):
+        db.add(WeatherDaily(cell_id=cell_id, date=dt.date(2026, 9, 1), maxt=1.0))
+        return 1
+
+    def broken_sim(body: dict[str, Any]) -> dict[str, Any]:
+        return {"not members": []}
+
+    monkeypatch.setattr(worker, "fetch_missing", fetch_one_new_day)
+
+    worker.work_once(db, broken_sim)
+
+    [run] = runs_of(db, field)
+    assert run.status == RunStatus.failed
+    # The weather was committed before the run, so the rollback kept it
+    assert db.get(WeatherDaily, (CELL, dt.date(2026, 9, 1))) is not None
+
+
+def test_the_download_time_does_not_count_toward_stuck(
+    db: Session, field: Field
+) -> None:
+    add_season_weather(db)
+    queue_job(db, field.id, [SEASON], INPUTS)
+    started = []
+
+    def sim_that_reads_started_at(body: dict[str, Any]) -> dict[str, Any]:
+        [run] = runs_of(db, field)
+        started.append((run.created_at, run.started_at))
+        return FakeSim()(body)
+
+    worker.work_once(db, sim_that_reads_started_at)
+
+    [(created_at, started_at)] = started
+    # take_job set started_at to the start of the transaction, the same as
+    # created_at here. After the weather, it is renewed to the real time.
+    assert started_at > created_at

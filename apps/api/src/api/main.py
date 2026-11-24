@@ -11,6 +11,7 @@ from api.routers.auth import router as auth_router
 from api.routers.field_results import router as field_results_router
 from api.routers.fields import router as fields_router
 from api.routers.health import router as health_router
+from api.routers.jobs import router as jobs_router
 from api.routers.settings import router as settings_router
 from api.routers.stubs import router as stubs_router
 
@@ -27,6 +28,7 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(fields_router)
 app.include_router(field_results_router)
+app.include_router(jobs_router)
 app.include_router(auth_router)
 app.include_router(stubs_router)
 app.include_router(settings_router)

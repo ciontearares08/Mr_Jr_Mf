@@ -1,4 +1,5 @@
 import datetime
+import uuid
 from typing import Self
 
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -73,3 +74,9 @@ class FieldRead(BaseModel):
     sowing_date: datetime.date | None
     sowing_window: SowingWindow | None
     role: FieldRole = Field(description="What the current user may do with the field")
+
+
+class FieldCreated(FieldRead):
+    job_id: uuid.UUID = Field(
+        description="The field's first simulation job. Poll GET /jobs/{job_id}"
+    )

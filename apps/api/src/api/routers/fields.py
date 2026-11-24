@@ -7,9 +7,11 @@ from api.auth.permissions import require_role
 from api.db.models.field import Field
 from api.db.models.field_member import FieldMember, FieldRole
 from api.geometry import area_ha
+from api.jobs.field_jobs import queue_field_job
 from api.routers.auth import CurrentUser, DbSession
 from api.schemas.common import GeoJSONPolygon
-from api.schemas.field import FieldCreate, FieldRead, SowingWindow
+from api.schemas.field import FieldCreate, FieldCreated, FieldRead, SowingWindow
+from api.settings import get_demo_date
 from api.weather.grid import cell_for_geometry
 from api.weather.stations import wind_station_or_none
 
@@ -34,8 +36,8 @@ def to_read(field: Field, role: FieldRole) -> FieldRead:
     )
 
 
-@router.post("", response_model=FieldRead, status_code=status.HTTP_201_CREATED)
-def create_field(data: FieldCreate, user: CurrentUser, db: DbSession) -> FieldRead:
+@router.post("", response_model=FieldCreated, status_code=status.HTTP_201_CREATED)
+def create_field(data: FieldCreate, user: CurrentUser, db: DbSession) -> FieldCreated:
     polygon = data.geometry.shape
     window = data.sowing_window
     field = Field(
@@ -51,9 +53,11 @@ def create_field(data: FieldCreate, user: CurrentUser, db: DbSession) -> FieldRe
     db.add(field)
     db.flush()  # Assigns field.id so the member row can point to it.
     db.add(FieldMember(field_id=field.id, user_id=user.id, role=FieldRole.owner))
+    # The worker runs the first simulation and loads the weather it needs
+    job_id = queue_field_job(db, field, get_demo_date(db))
     # Build the response before commit() expires the field, so that it is not
     # loaded again from the database.
-    result = to_read(field, FieldRole.owner)
+    result = FieldCreated(**to_read(field, FieldRole.owner).model_dump(), job_id=job_id)
     db.commit()
     return result
 

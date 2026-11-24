@@ -12,7 +12,10 @@ Run it next to the API, from apps/api:
 Several workers can run at the same time: each one locks the runs it takes
 with SELECT ... FOR UPDATE SKIP LOCKED, so no job runs twice.
 
-Weather: each season is the stored DMI weather of that season's dates, 1
+Weather: before a job runs, the worker downloads the days the field's cell is
+missing (S4-32). It does this here and not in POST /fields, because a new cell
+needs about 11 years from DMI, and a DMI outage must not stop a field from being
+created. Each season is the stored DMI weather of that season's dates, 1
 September to 31 August. That is the observed 2025/26 season for a one-run job.
 The ensemble weather (observed weather up to the demo date, then a past season)
 replaces season_weather in S5-31.
@@ -33,7 +36,14 @@ from sqlalchemy.orm import Session
 
 from api.db.models.field import Field
 from api.db.models.simulation import RunStatus, SimulationDaily, SimulationRun
-from api.weather.store import MET_COLUMNS, dates_without_values, stored_rows
+from api.weather.dmi import NoWeatherData
+from api.weather.stations import DMI_ERRORS, wind_station_or_none
+from api.weather.store import (
+    MET_COLUMNS,
+    dates_without_values,
+    fetch_missing,
+    stored_rows,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +59,8 @@ STUCK_AFTER = dt.timedelta(minutes=15)
 MAX_ATTEMPTS = 2
 # How many of the oldest queued jobs a worker tries before it gives up
 CANDIDATE_JOBS = 10
+# The last day of weather a job needs: the end of the replayed 2025/26 season
+WEATHER_UNTIL = dt.date(2026, 8, 31)
 # Errors are stored in the run, so keep them short enough to read on a page
 MAX_ERROR_LENGTH = 1000
 
@@ -262,6 +274,58 @@ def simulate_request(db: Session, runs: Sequence[SimulationRun]) -> dict[str, An
     return body
 
 
+def load_job_weather(
+    db: Session, runs: Sequence[SimulationRun], taken: dict[int, int]
+) -> bool:
+    """Load the weather of the job's field in its own short transaction.
+
+    Commits the weather, so no weather or field row stays locked while APSIM
+    runs, and a later error does not throw the download away. Then it renews
+    started_at, so a long DMI download does not make the job count as stuck.
+
+    Returns False when the weather could not be loaded. Then the runs are
+    failed and committed, and the job must not run.
+    """
+    field = db.get(Field, runs[0].field_id)
+    if field is None or field.cell_id is None:
+        return True  # simulate_request fails the job with the reason
+    try:
+        load_weather(db, field)
+        db.commit()
+    except JobError as error:
+        db.rollback()
+        fail_runs(owned_runs(db, taken), str(error))
+        db.commit()
+        return False
+
+    # clock_timestamp, not now(): now() is the start of the transaction
+    for run in owned_runs(db, taken):
+        run.started_at = func.clock_timestamp()
+    db.commit()
+    return True
+
+
+def load_weather(db: Session, field: Field) -> None:
+    """Download the days the field's cell is missing, up to WEATHER_UNTIL.
+
+    Does nothing when every day is stored. Needs the field's min wind station,
+    and looks it up when field creation could not reach DMI.
+    """
+    if field.wind_station_id is None:
+        field.wind_station_id = wind_station_or_none(to_shape(field.geom))
+    if field.wind_station_id is None:
+        raise JobError(
+            "The field has no DMI wind station, because DMI did not answer. "
+            "The job can run again when DMI is back."
+        )
+    try:
+        saved = fetch_missing(db, field.cell_id, field.wind_station_id, WEATHER_UNTIL)
+    except (*DMI_ERRORS, NoWeatherData) as error:
+        raise JobError(f"Could not load the weather from DMI: {error}") from error
+    if saved:
+        logger.info("Loaded %d days of weather for %s", saved, field.cell_id)
+
+
 def sowing(inputs: dict[str, Any], field: Field) -> dict[str, Any]:
     """Return the sowing date or window of the job.
 
@@ -295,8 +359,8 @@ def season_weather(db: Session, cell_id: str, season: str) -> list[dict[str, Any
     """Return the stored weather of one season as the sim's weather rows.
 
     A single missing day is sent as None, and the sim fills it. Raises JobError
-    when the season has no stored weather at all, because then the weather was
-    never loaded (POST /fields loads it in S4-32).
+    when the season has no stored weather at all, for example a season that
+    DMI has no data for yet.
     """
     start, end = season_dates(season)
     rows = stored_rows(db, cell_id, start, end)
@@ -346,9 +410,9 @@ def fail_runs(runs: Sequence[SimulationRun], message: str) -> None:
 def work_once(db: Session, sim: SimClient = http_sim_client) -> uuid.UUID | None:
     """Run the oldest queued job, if there is one, and return its job_id.
 
-    Commits twice: once after taking the job, so other workers skip it, and
-    once with the results. The sim call happens between the two, and no row is
-    locked while APSIM runs.
+    Commits after taking the job, so other workers skip it, after loading the
+    weather (see load_job_weather), and with the results. No row is locked
+    while DMI or APSIM runs.
     """
     requeue_stuck_runs(db)
     runs = take_job(db)
@@ -362,7 +426,8 @@ def work_once(db: Session, sim: SimClient = http_sim_client) -> uuid.UUID | None
     logger.info("Running job %s with %d runs", job_id, len(runs))
     started = time.perf_counter()
     try:
-        run_job(db, runs, sim, taken)
+        if load_job_weather(db, runs, taken):
+            run_job(db, runs, sim, taken)
         db.commit()
     except Exception as error:
         # Anything unexpected fails the job instead of leaving it running until
