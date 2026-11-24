@@ -323,3 +323,56 @@ def test_a_job_another_worker_holds_is_skipped(db: Session, field: Field) -> Non
         )
         assert worker.take_job(db) == []
         other_worker.rollback()
+
+
+def test_results_are_dropped_for_a_run_another_worker_took_over(
+    db: Session, field: Field
+) -> None:
+    add_season_weather(db)
+    queue_job(db, field.id, [SEASON], INPUTS)
+
+    def slow_sim(body: dict[str, Any]) -> dict[str, Any]:
+        # While APSIM runs, the run counts as stuck and a second worker takes it
+        db.execute(
+            update(SimulationRun)
+            .where(SimulationRun.field_id == field.id)
+            .values(attempts=SimulationRun.attempts + 1)
+        )
+        return FakeSim()(body)
+
+    worker.work_once(db, slow_sim)
+
+    [run] = runs_of(db, field)
+    db.refresh(run)
+    # The second worker owns the run now, so this worker wrote nothing
+    assert run.status == RunStatus.running
+    assert run.attempts == 2
+    daily = db.scalars(select(SimulationDaily).where(SimulationDaily.run_id == run.id))
+    assert daily.all() == []
+
+
+def test_a_field_deleted_during_the_job_does_not_crash_the_worker(
+    db: Session, field: Field
+) -> None:
+    add_season_weather(db)
+    job_id = queue_job(db, field.id, [SEASON], INPUTS)
+    field_id = field.id
+
+    def sim_while_the_user_deletes_the_field(body: dict[str, Any]) -> dict[str, Any]:
+        db.delete(db.get(Field, field_id))
+        db.flush()
+        return FakeSim()(body)
+
+    assert worker.work_once(db, sim_while_the_user_deletes_the_field) == job_id
+
+    assert (
+        db.scalars(select(SimulationRun).where(SimulationRun.job_id == job_id)).all()
+        == []
+    )
+
+
+def test_the_worker_loop_survives_an_error() -> None:
+    def broken_session_factory() -> Session:
+        raise ConnectionError("the database is down")
+
+    assert worker.work_safely(broken_session_factory, FakeSim()) is None

@@ -58,6 +58,9 @@ services:
         uv sync &&
         exec uv run python -m api.jobs.worker
 
+    # Start again after a crash, so queued jobs do not wait forever
+    restart: unless-stopped
+
     environment:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/agriculture
       SIM_URL: http://sim:8001
