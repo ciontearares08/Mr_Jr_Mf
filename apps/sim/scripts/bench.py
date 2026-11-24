@@ -1,4 +1,4 @@
-"""Time APSIM seasons, one after another and in a process pool (S3-05).
+"""Time APSIM seasons in three ways (S3-05).
 
 The numbers decide the ensemble size N and which cloud we pick (S3-07).
 
@@ -6,8 +6,13 @@ What it does:
 1. Prints the CPU and memory limits the container really has.
 2. Runs one warm-up season that is not counted (.NET is slow)
 3. Runs --runs seasons one after another and times each one.
-4. Runs the same seasons in a pool of --workers processes, and times each run and the whole batch.
-5. Prints the times, the speed-up of the pool and the peak memory.
+4. Runs the same seasons in a pool of --workers processes, and times each run
+   and the whole batch. This is how the sim service ran an ensemble before #47,
+   kept for comparison.
+5. Runs the same seasons in one APSIM process with run_seasons(), the way the
+   sim service runs an ensemble since #47, and times the whole batch.
+6. Prints the times, the speed-up of the pool and of one process, and the peak
+   memory.
 
 Every run uses the same weather file. The run time depends very little on the
 weather, so that is enough for timing.
@@ -16,7 +21,9 @@ Run it from apps/sim:
 
     uv run python scripts/bench.py --runs 20 --workers 2
 
-Add --output results.json to also save the numbers to a file.
+Add --output results.json to also save the numbers to a file. To see how the
+time and memory of one process grow with the ensemble size, run it with the
+sizes you plan to use, for example --runs 10, 14 and 20.
 """
 
 import argparse
@@ -30,7 +37,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
-from sim.apsim import run_season
+from sim.apsim import run_season, run_seasons
 
 SIM_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_WEATHER = SIM_DIR / "tests" / "fixtures" / "Copenhagen_2025-26.met"
@@ -62,7 +69,7 @@ def time_one_season(weather_path: Path, sowing_date: dt.date) -> tuple[float, fl
     return seconds, peak_kb / 1024
 
 
-# 2 ways to run many seasons
+# 3 ways to run many seasons
 
 
 def run_one_after_another(
@@ -88,14 +95,17 @@ def run_one_after_another(
 def run_in_pool(
     runs: int, workers: int, weather_path: Path, sowing_date: dt.date
 ) -> tuple[list[float], float, float]:
-    """Run the seasons in a pool of worker processes, like the sim service.
+    """Run the seasons in a pool of worker processes, one APSIM process each.
+
+    This is how the sim service ran an ensemble before #47. It is kept to
+    compare with run_in_one_process.
 
     Returns the seconds of each run, the total seconds and the peak MB of one
     APSIM run. The total includes starting the worker processes, because an
-    ensemble request pays for that too.
+    ensemble request paid for that too.
     """
     # "spawn" starts every worker as a fresh Python process, the same way the
-    # sim service does (see run_members in sim/simulate.py)
+    # sim service did before #47
     spawn = multiprocessing.get_context("spawn")
     started = time.perf_counter()
 
@@ -111,6 +121,31 @@ def run_in_pool(
     for number, seconds in enumerate(times, start=1):
         print(f"  run {number:>2} of {runs}: {seconds:5.2f} s")
     return times, total, peak_mb
+
+
+def run_in_one_process(
+    runs: int, weather_path: Path, sowing_date: dt.date
+) -> tuple[float, float, int]:
+    """Run all seasons in one APSIM process, like the sim service since #47.
+
+    Returns the total seconds, the peak MB and how many seasons failed. There
+    are no times per run, because all seasons share one APSIM run.
+
+    The peak MB is the largest APSIM process run so far by this script. This
+    mode runs last and its process holds every season, so it is normally the
+    peak of this mode.
+    """
+    started = time.perf_counter()
+    results = run_seasons(
+        {f"run_{number}": weather_path for number in range(1, runs + 1)},
+        sowing_date=sowing_date,
+    )
+    total = time.perf_counter() - started
+
+    failed = sum(isinstance(result, Exception) for result in results.values())
+    peak_kb = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+    print(f"  {runs} seasons in {total:5.2f} s, {failed} failed")
+    return total, peak_kb / 1024, failed
 
 
 # Container limits
@@ -243,6 +278,9 @@ def main() -> None:
     print(f"\nProcess pool: {runs} runs with {workers} workers")
     pooled, pooled_total, pooled_peak = run_in_pool(runs, workers, weather, sowing_date)
 
+    print(f"\nOne APSIM process: {runs} runs")
+    one_total, one_peak, one_failed = run_in_one_process(runs, weather, sowing_date)
+
     print_summary(
         "One after another", sequential, sequential_total, runs, sequential_peak
     )
@@ -250,9 +288,18 @@ def main() -> None:
         f"Process pool ({workers} workers)", pooled, pooled_total, runs, pooled_peak
     )
 
-    # How many times faster the pool finished the same work
+    print("\nOne APSIM process")
+    print(
+        f"  per run:  {one_total / runs:.2f} s on average (all runs share one process)"
+    )
+    print(f"  total:    {one_total:.1f} s for {runs} runs, {one_failed} failed")
+    print(f"  peak memory of the APSIM process: {one_peak:.0f} MB")
+
+    # How many times faster each way finished the same work than one after another
     speed_up = sequential_total / pooled_total
-    print(f"\nSpeed-up of the pool: {speed_up:.2f}x")
+    one_speed_up = sequential_total / one_total
+    print(f"\nSpeed-up of the pool:           {speed_up:.2f}x")
+    print(f"Speed-up of one APSIM process: {one_speed_up:.2f}x")
 
     container_peak = container_memory_peak_mb()
     if container_peak is not None:
@@ -276,7 +323,14 @@ def main() -> None:
                 "total_s": pooled_total,
                 "peak_run_mb": pooled_peak,
             },
+            "one_process": {
+                "mean_s": one_total / runs,
+                "total_s": one_total,
+                "failed": one_failed,
+                "peak_process_mb": one_peak,
+            },
             "speed_up": speed_up,
+            "one_process_speed_up": one_speed_up,
             "container_peak_mb": container_peak,
         }
         arguments.output.write_text(json.dumps(results, indent=2), encoding="utf-8")
