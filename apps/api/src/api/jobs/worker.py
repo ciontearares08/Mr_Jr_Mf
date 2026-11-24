@@ -67,6 +67,7 @@ DAILY_COLUMNS = (
     "grain_n",
     "sw",
     "paw",
+    "stems",
 )
 
 # Takes the request body of POST /sim/simulate and returns the response body.
@@ -319,7 +320,8 @@ def store_result(db: Session, run: SimulationRun, result: dict[str, Any]) -> Non
             {
                 "run_id": run.id,
                 "date": dt.date.fromisoformat(day["date"]),
-                **{column: day[column] for column in DAILY_COLUMNS},
+                # .get: a sim without the stem count (before PR #50) sends no stems
+                **{column: day.get(column) for column in DAILY_COLUMNS},
             }
             for day in result["daily"]
         ],

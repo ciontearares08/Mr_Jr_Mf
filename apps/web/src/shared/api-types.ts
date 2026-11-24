@@ -56,6 +56,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/fields/{field_id}/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Field Overview */
+        get: operations["field_overview_fields__field_id__overview_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fields/{field_id}/timeline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Field Timeline */
+        get: operations["field_timeline_fields__field_id__timeline_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/fields/{field_id}/timeline/details": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Field Timeline Details */
+        get: operations["field_timeline_details_fields__field_id__timeline_details_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/register": {
         parameters: {
             query?: never;
@@ -488,10 +539,12 @@ export interface components {
              * @description True when the data is too old to trust at as_of
              */
             stale: boolean;
-            value: components["schemas"]["FloatRange"];
+            /** @description None when no run has a value */
+            value: components["schemas"]["FloatRange"] | null;
             /** Unit */
             unit: string;
-            rating: components["schemas"]["Rating"];
+            /** @description None until the rating scales exist (S4-37) */
+            rating: components["schemas"]["Rating"] | null;
         };
         /** Metrics */
         Metrics: {
@@ -527,10 +580,13 @@ export interface components {
             field: components["schemas"]["FieldInfo"];
             stage: components["schemas"]["StageInfo"];
             metrics: components["schemas"]["Metrics"];
-            weather: components["schemas"]["Weather"];
+            /** @description None when no weather is stored for as_of */
+            weather: components["schemas"]["Weather"] | null;
             alerts: components["schemas"]["Alerts"];
-            summary: components["schemas"]["HealthSummary"];
-            satellite: components["schemas"]["Satellite"];
+            /** @description None until the health summary exists (S9-05) */
+            summary: components["schemas"]["HealthSummary"] | null;
+            /** @description None until S6-37 */
+            satellite: components["schemas"]["Satellite"] | null;
         };
         /** PasswordChange */
         PasswordChange: {
@@ -866,7 +922,8 @@ export interface components {
              * Format: date
              */
             date: string;
-            condition: components["schemas"]["WeatherCondition"];
+            /** @description None when the data cannot tell, DMI's daily grid has no clouds */
+            condition: components["schemas"]["WeatherCondition"] | null;
             /** Temp C */
             temp_c: number;
             /** Temp Min C */
@@ -875,10 +932,16 @@ export interface components {
             temp_max_c: number;
             /** Rain Mm */
             rain_mm: number;
-            /** Wind Ms */
-            wind_ms: number;
-            /** Humidity Pct */
-            humidity_pct: number;
+            /**
+             * Wind Ms
+             * @description None when DMI has no value
+             */
+            wind_ms: number | null;
+            /**
+             * Humidity Pct
+             * @description None when DMI has no value
+             */
+            humidity_pct: number | null;
         };
         /**
          * WeatherCondition
@@ -987,6 +1050,99 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["FieldRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    field_overview_fields__field_id__overview_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                field_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Overview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    field_timeline_fields__field_id__timeline_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                field_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Timeline"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    field_timeline_details_fields__field_id__timeline_details_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                field_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TimelineDetails"];
                 };
             };
             /** @description Validation Error */

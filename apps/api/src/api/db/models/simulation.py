@@ -95,6 +95,9 @@ class SimulationDaily(Base):
     grain_wt: Mapped[float | None] = mapped_column(Float)
     grain_n: Mapped[float | None] = mapped_column(Float)
     n: Mapped[float | None] = mapped_column(Float)
-    # One value per soil layer, top layer first.
+    # Main stems and tillers per m². Above the plant population, the crop tillers
+    stems: Mapped[float | None] = mapped_column(Float)
+    # One value per soil layer, top layer first. sw is volumetric (mm/mm), and
+    # paw is in mm once the sim reports PAWmm (PR #50).
     paw: Mapped[list[float] | None] = mapped_column(ARRAY(Float))
     sw: Mapped[list[float] | None] = mapped_column(ARRAY(Float))

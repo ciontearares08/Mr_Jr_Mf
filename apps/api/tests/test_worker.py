@@ -119,6 +119,7 @@ def daily_row(date: dt.date) -> dict[str, Any]:
         "grain_n": 0.0,
         "sw": [0.3] * 7,
         "paw": [10.0, None, 10.0, 10.0, 10.0, 10.0, 10.0],
+        "stems": 300.0,
     }
 
 
@@ -184,6 +185,7 @@ def test_a_queued_job_runs_and_stores_the_daily_rows(db: Session, field: Field) 
     ]
     assert daily[0].stage == "Sowing"
     assert daily[0].paw == [10.0, None, 10.0, 10.0, 10.0, 10.0, 10.0]
+    assert daily[0].stems == 300.0
 
 
 def test_a_job_without_sowing_inputs_uses_the_field(db: Session, field: Field) -> None:
