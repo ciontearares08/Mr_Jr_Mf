@@ -141,7 +141,10 @@ def test_daily_rows_keep_the_soil_layers_and_go_with_the_field(
     db.flush()
     db.expire_all()
 
-    daily = db.scalars(select(SimulationDaily)).one()
+    # Only this run: the dev database can hold rows of real runs
+    daily = db.scalars(
+        select(SimulationDaily).where(SimulationDaily.run_id == run.id)
+    ).one()
     assert daily.paw == [10.5, 20.0, 30.25]
     assert daily.sw == [0.3, 0.28, 0.25]
     assert daily.grain_yield == 0.0
