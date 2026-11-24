@@ -49,7 +49,9 @@ class StageInfo(SourceInfo):
 class Metric(SourceInfo):
     value: FloatRange
     unit: str
-    rating: Rating
+    rating: Rating | None = Field(
+        description="None until the rating scales exist (S4-37)"
+    )
 
 
 class Metrics(BaseModel):
@@ -71,13 +73,15 @@ class WeatherCondition(StrEnum):
 
 class Weather(SourceInfo):
     date: datetime.date
-    condition: WeatherCondition
+    condition: WeatherCondition | None = Field(
+        description="None when the data cannot tell, DMI's daily grid has no clouds"
+    )
     temp_c: float
     temp_min_c: float
     temp_max_c: float
     rain_mm: float
-    wind_ms: float
-    humidity_pct: float
+    wind_ms: float | None = Field(description="None when DMI has no value")
+    humidity_pct: float | None = Field(description="None when DMI has no value")
 
 
 class AlertRule(StrEnum):
@@ -155,7 +159,11 @@ class Overview(BaseModel):
     field: FieldInfo
     stage: StageInfo
     metrics: Metrics
-    weather: Weather
+    weather: Weather | None = Field(
+        description="None when no weather is stored for as_of"
+    )
     alerts: Alerts
-    summary: HealthSummary
-    satellite: Satellite
+    summary: HealthSummary | None = Field(
+        description="None until the health summary exists (S9-05)"
+    )
+    satellite: Satellite | None = Field(description="None until S6-37")
