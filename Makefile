@@ -10,7 +10,7 @@ SIM_HINT := Run sim targets inside the APSIM devcontainer.
 require = @command -v $(1) >/dev/null 2>&1 || { echo "error: '$(1)' not found. $(2)"; exit 1; }
 
 .DEFAULT_GOAL := help
-.PHONY: help api-setup api-install api-dev api-lint api-format api-test api-check \
+.PHONY: help api-setup api-install api-dev worker-dev api-lint api-format api-test api-check \
 	sim-setup sim-install sim-dev sim-lint sim-format sim-test sim-check \
 	migration migrate migrate-down db-reset db-seed db-fresh db-nuke web-setup web-dev web-lint web-typecheck web-build web-check api-types \
 	up down logs hooks
@@ -31,6 +31,10 @@ api-install: ## Install/update Python deps
 api-dev: ## Start the API with auto-reload on :8000
 	$(call require,uv,$(API_HINT))
 	cd $(API) && uv run uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+
+worker-dev: ## Start the simulation worker (needs the sim service, see SIM_URL)
+	$(call require,uv,$(API_HINT))
+	cd $(API) && uv run python -m api.jobs.worker
 
 api-lint: ## Lint and check formatting (same as CI)
 	$(call require,uv,$(API_HINT))

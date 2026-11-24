@@ -37,6 +37,39 @@ services:
       db:
         condition: service_healthy
 
+  # Runs the queued simulation jobs (api.jobs.worker). Same image and code as
+  # the API. The API container applies the migrations, so start it with the API.
+  worker:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: dev
+
+    working_dir: /workspace/apps/api
+
+    volumes:
+      - .:/workspace
+      - api-venv:/workspace/apps/api/.venv
+
+    command:
+      - sh
+      - -c
+      - >-
+        uv sync &&
+        exec uv run python -m api.jobs.worker
+
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/agriculture
+      SIM_URL: http://sim:8001
+
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_started
+      sim:
+        condition: service_started
+
   sim:
     platform: linux/amd64
     build:
