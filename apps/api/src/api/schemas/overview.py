@@ -47,7 +47,7 @@ class StageInfo(SourceInfo):
 
 
 class Metric(SourceInfo):
-    value: FloatRange
+    value: FloatRange | None = Field(description="None when no run has a value")
     unit: str
     rating: Rating | None = Field(
         description="None until the rating scales exist (S4-37)"

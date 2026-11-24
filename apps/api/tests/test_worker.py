@@ -385,3 +385,99 @@ def test_a_field_without_a_wind_station_fails_while_dmi_is_down(
     [run] = runs_of(db, field)
     assert run.status == RunStatus.failed
     assert "no DMI wind station" in run.error
+
+
+def test_results_are_dropped_for_a_run_another_worker_took_over(
+    db: Session, field: Field
+) -> None:
+    add_season_weather(db)
+    queue_job(db, field.id, [SEASON], INPUTS)
+
+    def slow_sim(body: dict[str, Any]) -> dict[str, Any]:
+        # While APSIM runs, the run counts as stuck and a second worker takes it
+        db.execute(
+            update(SimulationRun)
+            .where(SimulationRun.field_id == field.id)
+            .values(attempts=SimulationRun.attempts + 1)
+        )
+        return FakeSim()(body)
+
+    worker.work_once(db, slow_sim)
+
+    [run] = runs_of(db, field)
+    db.refresh(run)
+    # The second worker owns the run now, so this worker wrote nothing
+    assert run.status == RunStatus.running
+    assert run.attempts == 2
+    daily = db.scalars(select(SimulationDaily).where(SimulationDaily.run_id == run.id))
+    assert daily.all() == []
+
+
+def test_a_field_deleted_during_the_job_does_not_crash_the_worker(
+    db: Session, field: Field
+) -> None:
+    add_season_weather(db)
+    job_id = queue_job(db, field.id, [SEASON], INPUTS)
+    field_id = field.id
+
+    def sim_while_the_user_deletes_the_field(body: dict[str, Any]) -> dict[str, Any]:
+        db.delete(db.get(Field, field_id))
+        db.flush()
+        return FakeSim()(body)
+
+    assert worker.work_once(db, sim_while_the_user_deletes_the_field) == job_id
+
+    assert (
+        db.scalars(select(SimulationRun).where(SimulationRun.job_id == job_id)).all()
+        == []
+    )
+
+
+def test_the_worker_loop_survives_an_error() -> None:
+    def broken_session_factory() -> Session:
+        raise ConnectionError("the database is down")
+
+    assert worker.work_safely(broken_session_factory, FakeSim()) is None
+
+
+def test_the_weather_download_is_kept_when_the_run_fails_later(
+    db: Session, field: Field, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    add_season_weather(db)
+    queue_job(db, field.id, [SEASON], INPUTS)
+
+    def fetch_one_new_day(db, cell_id, wind_station_id, until):
+        db.add(WeatherDaily(cell_id=cell_id, date=dt.date(2026, 9, 1), maxt=1.0))
+        return 1
+
+    def broken_sim(body: dict[str, Any]) -> dict[str, Any]:
+        return {"not members": []}
+
+    monkeypatch.setattr(worker, "fetch_missing", fetch_one_new_day)
+
+    worker.work_once(db, broken_sim)
+
+    [run] = runs_of(db, field)
+    assert run.status == RunStatus.failed
+    # The weather was committed before the run, so the rollback kept it
+    assert db.get(WeatherDaily, (CELL, dt.date(2026, 9, 1))) is not None
+
+
+def test_the_download_time_does_not_count_toward_stuck(
+    db: Session, field: Field
+) -> None:
+    add_season_weather(db)
+    queue_job(db, field.id, [SEASON], INPUTS)
+    started = []
+
+    def sim_that_reads_started_at(body: dict[str, Any]) -> dict[str, Any]:
+        [run] = runs_of(db, field)
+        started.append((run.created_at, run.started_at))
+        return FakeSim()(body)
+
+    worker.work_once(db, sim_that_reads_started_at)
+
+    [(created_at, started_at)] = started
+    # take_job set started_at to the start of the transaction, the same as
+    # created_at here. After the weather, it is renewed to the real time.
+    assert started_at > created_at

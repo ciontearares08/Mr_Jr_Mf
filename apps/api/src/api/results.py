@@ -40,6 +40,12 @@ ROOT_ZONE_LAYERS = 5
 # The stage that starts with the first tiller, found from the stem count
 TILLERING = "Tillering"
 
+# The version of the sim output that these functions expect. A job stores the
+# version it was queued with (in its inputs), and an older job counts as stale.
+# Raise it when the meaning of a stored column changes.
+# 1: before results_version existed. 2: paw in mm and the stem count (PR #50).
+RESULTS_VERSION = 2
+
 UNITS = {"lai": "m²/m²", "biomass": "g/m²", "grain_yield": "kg/ha", "paw": "mm"}
 
 
@@ -98,6 +104,8 @@ class FinishedJob:
     finished_at: dt.datetime
     # The demo date the job was queued for, if its inputs have one
     demo_date: dt.date | None
+    # The RESULTS_VERSION the job was queued with, 1 for older jobs
+    results_version: int
 
 
 def newest_finished_job(db: Session, field_id: int) -> FinishedJob | None:
@@ -129,13 +137,15 @@ def newest_finished_job(db: Session, field_id: int) -> FinishedJob | None:
         days[day.run_id].append(day)
 
     finished = [run.finished_at or run.created_at for run in runs]
-    demo_date = (runs[0].inputs or {}).get("demo_date")
+    inputs = runs[0].inputs or {}
+    demo_date = inputs.get("demo_date")
     return FinishedJob(
         job_id=job_id,
         runs=runs,
         days=days,
         finished_at=max(finished),
         demo_date=dt.date.fromisoformat(demo_date) if demo_date else None,
+        results_version=int(inputs.get("results_version", 1)),
     )
 
 

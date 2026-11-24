@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from api.db.models.field import Field
 from api.jobs.queue import queue_job
+from api.results import RESULTS_VERSION
 
 # The season the app replays. Until the ensemble (S5-31), a job has one run with
 # the observed weather of this season.
@@ -23,7 +24,12 @@ def job_inputs(field: Field, demo_date: dt.date) -> dict[str, object]:
     The worker reads the sowing date or window from here, and the run history
     shows the demo date. A change to any of them queues a new job.
     """
-    inputs: dict[str, object] = {"demo_date": demo_date}
+    # results_version is in the hash too, so a newer sim output runs again
+    # instead of reusing an old finished job
+    inputs: dict[str, object] = {
+        "demo_date": demo_date,
+        "results_version": RESULTS_VERSION,
+    }
     if field.sowing_date is not None:
         inputs["sowing_date"] = field.sowing_date
     else:

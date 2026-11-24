@@ -80,6 +80,7 @@ def test_a_new_field_queues_its_first_job(created: dict, db: Session) -> None:
     # The worker reads the sowing window and the run history the demo date
     assert run.inputs == {
         "demo_date": "2026-03-15",
+        "results_version": 2,
         "sowing_window": {"start": "2025-09-15", "end": "2025-10-15"},
     }
 
@@ -92,7 +93,11 @@ def test_a_field_with_a_sowing_date_queues_it(
     created = client.post("/fields", json=body, headers=owner).json()
 
     [run] = runs_of_job(db, created["job_id"])
-    assert run.inputs == {"demo_date": "2026-03-15", "sowing_date": "2025-10-01"}
+    assert run.inputs == {
+        "demo_date": "2026-03-15",
+        "results_version": 2,
+        "sowing_date": "2025-10-01",
+    }
 
 
 def test_the_job_status_follows_its_runs(

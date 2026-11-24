@@ -190,22 +190,31 @@ def job_lock_key(job_id: uuid.UUID) -> int:
 # Running a job
 
 
-def run_job(db: Session, runs: Sequence[SimulationRun], sim: SimClient) -> None:
+def run_job(
+    db: Session,
+    runs: Sequence[SimulationRun],
+    sim: SimClient,
+    taken: dict[int, int] | None = None,
+) -> None:
     """Run the taken runs of one job and store the results. Does not commit.
 
     A failed member fails only its own run. When the whole job cannot run (no
     field, missing weather, the sim service is down), every run fails with the
     same message.
+
+    `taken` is the attempts value of each run when this worker took it. Results
+    are only written for runs that this worker still owns (see owned_runs).
     """
+    taken = taken if taken is not None else {run.id: run.attempts for run in runs}
     try:
         body = simulate_request(db, runs)
         response = sim(body)
     except JobError as error:
-        fail_runs(runs, str(error))
+        fail_runs(owned_runs(db, taken), str(error))
         return
 
     results = {member["season"]: member for member in response["members"]}
-    for run in runs:
+    for run in owned_runs(db, taken):
         result = results.get(run.season)
         if result is None:
             fail_runs([run], "The sim service returned no result for this season.")
@@ -215,6 +224,34 @@ def run_job(db: Session, runs: Sequence[SimulationRun], sim: SimClient) -> None:
             store_result(db, run, result)
 
 
+def owned_runs(db: Session, taken: dict[int, int]) -> list[SimulationRun]:
+    """Lock and return the runs that this worker still owns.
+
+    A run is no longer this worker's when another worker took it after it
+    counted as stuck (its attempts changed), or when it is gone because the
+    field was deleted. Those runs are left alone. The lock lasts until the
+    commit, so the run cannot change or be deleted while the results are written.
+    """
+    runs = db.scalars(
+        select(SimulationRun)
+        .where(
+            SimulationRun.id.in_(taken),
+            SimulationRun.status == RunStatus.running,
+        )
+        .order_by(SimulationRun.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    ).all()
+    owned = [run for run in runs if run.attempts == taken[run.id]]
+    if len(owned) < len(taken):
+        logger.warning(
+            "%d of %d runs were taken over or deleted, so their results are dropped",
+            len(taken) - len(owned),
+            len(taken),
+        )
+    return owned
+
+
 def simulate_request(db: Session, runs: Sequence[SimulationRun]) -> dict[str, Any]:
     """Build the POST /sim/simulate body for the runs of one job."""
     field = db.get(Field, runs[0].field_id)
@@ -222,7 +259,6 @@ def simulate_request(db: Session, runs: Sequence[SimulationRun]) -> dict[str, An
         raise JobError("The field of this job no longer exists.")
     if field.cell_id is None:
         raise JobError("The field has no DMI weather cell.")
-    load_weather(db, field)
 
     point = to_shape(field.geom).representative_point()
     body: dict[str, Any] = {
@@ -236,6 +272,37 @@ def simulate_request(db: Session, runs: Sequence[SimulationRun]) -> dict[str, An
     }
     body.update(sowing(runs[0].inputs or {}, field))
     return body
+
+
+def load_job_weather(
+    db: Session, runs: Sequence[SimulationRun], taken: dict[int, int]
+) -> bool:
+    """Load the weather of the job's field in its own short transaction.
+
+    Commits the weather, so no weather or field row stays locked while APSIM
+    runs, and a later error does not throw the download away. Then it renews
+    started_at, so a long DMI download does not make the job count as stuck.
+
+    Returns False when the weather could not be loaded. Then the runs are
+    failed and committed, and the job must not run.
+    """
+    field = db.get(Field, runs[0].field_id)
+    if field is None or field.cell_id is None:
+        return True  # simulate_request fails the job with the reason
+    try:
+        load_weather(db, field)
+        db.commit()
+    except JobError as error:
+        db.rollback()
+        fail_runs(owned_runs(db, taken), str(error))
+        db.commit()
+        return False
+
+    # clock_timestamp, not now(): now() is the start of the transaction
+    for run in owned_runs(db, taken):
+        run.started_at = func.clock_timestamp()
+    db.commit()
+    return True
 
 
 def load_weather(db: Session, field: Field) -> None:
@@ -343,9 +410,9 @@ def fail_runs(runs: Sequence[SimulationRun], message: str) -> None:
 def work_once(db: Session, sim: SimClient = http_sim_client) -> uuid.UUID | None:
     """Run the oldest queued job, if there is one, and return its job_id.
 
-    Commits twice: once after taking the job, so other workers skip it, and
-    once with the results. The sim call happens between the two, outside any
-    transaction, so no row stays locked while APSIM runs.
+    Commits after taking the job, so other workers skip it, after loading the
+    weather (see load_job_weather), and with the results. No row is locked
+    while DMI or APSIM runs.
     """
     requeue_stuck_runs(db)
     runs = take_job(db)
@@ -354,19 +421,46 @@ def work_once(db: Session, sim: SimClient = http_sim_client) -> uuid.UUID | None
         return None
 
     job_id = runs[0].job_id
+    # Plain values, so they still work if the rows are deleted during the job
+    taken = {run.id: run.attempts for run in runs}
     logger.info("Running job %s with %d runs", job_id, len(runs))
     started = time.perf_counter()
     try:
-        run_job(db, runs, sim)
+        if load_job_weather(db, runs, taken):
+            run_job(db, runs, sim, taken)
+        db.commit()
     except Exception as error:
         # Anything unexpected fails the job instead of leaving it running until
         # it counts as stuck
         logger.exception("Job %s failed", job_id)
         db.rollback()
-        fail_runs(runs, f"The worker failed: {type(error).__name__}: {error}")
-    db.commit()
+        try:
+            message = f"The worker failed: {type(error).__name__}: {error}"
+            fail_runs(owned_runs(db, taken), message)
+            db.commit()
+        except Exception:
+            # The database itself has a problem. The runs stay running and
+            # count as stuck later.
+            logger.exception("Could not mark job %s as failed", job_id)
+            db.rollback()
     logger.info("Job %s finished in %.1f s", job_id, time.perf_counter() - started)
     return job_id
+
+
+def work_safely(
+    session_factory: Callable[[], Session], sim: SimClient = http_sim_client
+) -> uuid.UUID | None:
+    """Run work_once in a new session. Any error is logged, never raised.
+
+    The worker must keep running when the database is briefly down or a job
+    fails in a way nobody foresaw, otherwise every later job stays queued.
+    """
+    try:
+        with session_factory() as db:
+            return work_once(db, sim)
+    except Exception:
+        logger.exception("The worker loop failed, trying again")
+        return None
 
 
 def main() -> None:
@@ -377,9 +471,7 @@ def main() -> None:
     )
     logger.info("Worker started, sim service at %s", SIM_URL)
     while True:
-        with session_local() as db:
-            job_id = work_once(db)
-        if job_id is None:
+        if work_safely(session_local) is None:
             time.sleep(POLL_SECONDS)
 
 
