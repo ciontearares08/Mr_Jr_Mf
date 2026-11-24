@@ -14,6 +14,8 @@ CELL_SIZE_M = 10_000
 # Denmark and Bornholm. At sea they follow the middle line between Denmark and
 # its neighbors, and on land the German border, to within a few km. A simple
 # box is not enough, because it also covers Skåne and Halland in Sweden.
+# A copy is used by the web app in
+# apps/web/src/pages/fields/validations/denmarkAreaValidation.ts. Keep the two in sync.
 DENMARK_WITHOUT_BORNHOLM = Polygon(
     [
         (7.90, 55.10),  # North Sea, between Rømø and Sylt (Germany)

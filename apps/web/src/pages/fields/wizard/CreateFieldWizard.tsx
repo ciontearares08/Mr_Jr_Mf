@@ -8,8 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "cn";
 import {
   canAdvanceFromStep,
@@ -17,6 +15,8 @@ import {
   initialWizardState,
   type WizardStep,
 } from "./createFieldWizardState";
+import BoundaryStep from "./steps/BoundaryStep";
+import NameStep from "./steps/NameStep";
 
 const STEPS: ReadonlyArray<{ step: WizardStep; label: string }> = [
   { step: 1, label: "Name" },
@@ -25,24 +25,12 @@ const STEPS: ReadonlyArray<{ step: WizardStep; label: string }> = [
   { step: 4, label: "Confirm" },
 ];
 
-function getNameValidationMessage(name: string): string | null {
-  const trimmed = name.trim();
-  if (trimmed.length === 0) {
-    return "Field name is required (1 to 50 characters).";
-  }
-  if (trimmed.length > 50) {
-    return "Field name must be 50 characters or fewer.";
-  }
-  return null;
-}
-
 export default function CreateFieldWizard() {
   const [state, dispatch] = useReducer(
     createFieldWizardReducer,
     initialWizardState,
   );
 
-  const nameError = getNameValidationMessage(state.name);
   const canGoNext = canAdvanceFromStep(state, state.step);
 
   return (
@@ -101,71 +89,21 @@ export default function CreateFieldWizard() {
 
       <Card>
         {state.step === 1 && (
-          <>
-            <CardHeader>
-              <CardTitle>Step 1: Name</CardTitle>
-              <CardDescription>
-                Give your field a name between 1 and 50 characters.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="field-name">Field Name</Label>
-                <Input
-                  id="field-name"
-                  name="fieldName"
-                  type="text"
-                  maxLength={50}
-                  value={state.name}
-                  placeholder="e.g. North Wheat Field"
-                  aria-invalid={Boolean(state.name.length > 0 && nameError)}
-                  aria-describedby="field-name-help"
-                  onChange={(e) =>
-                    dispatch({ type: "SET_NAME", name: e.target.value })
-                  }
-                />
-              </div>
-              <div
-                id="field-name-help"
-                className="flex items-center justify-between text-xs"
-              >
-                <span
-                  className={cn(
-                    nameError && state.name.length > 0
-                      ? "text-destructive"
-                      : "text-muted-foreground",
-                  )}
-                >
-                  {nameError && state.name.length > 0
-                    ? nameError
-                    : "1 to 50 characters."}
-                </span>
-                <span className="text-muted-foreground">
-                  {state.name.length}/50
-                </span>
-              </div>
-            </CardContent>
-          </>
+          <NameStep
+            name={state.name}
+            onChange={(name) => dispatch({ type: "SET_NAME", name })}
+          />
         )}
 
         {state.step === 2 && (
-          <>
-            <CardHeader>
-              <CardTitle>Step 2: Boundary</CardTitle>
-              <CardDescription>
-                Placeholder for the field boundary step (S3-06).
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Boundary map drawing will be added here for field{" "}
-                <span className="font-medium text-foreground">
-                  {state.name.trim() || "Untitled"}
-                </span>
-                .
-              </p>
-            </CardContent>
-          </>
+          <BoundaryStep
+            geometry={state.geometry}
+            isValid={state.boundaryValid}
+            outsideDenmark={state.outsideDenmark}
+            onChange={(geometry) =>
+              dispatch({ type: "SET_GEOMETRY", geometry })
+            }
+          />
         )}
 
         {state.step === 3 && (
