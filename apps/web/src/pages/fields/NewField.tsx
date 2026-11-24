@@ -1,4 +1,4 @@
-import CreateFieldWizard from "./CreateFieldWizard";
+import CreateFieldWizard from "./wizard/CreateFieldWizard";
 
 export default function NewField() {
   return <CreateFieldWizard />;

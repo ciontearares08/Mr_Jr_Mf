@@ -1,3 +1,4 @@
+import copy
 import datetime as dt
 import json
 import os
@@ -6,6 +7,7 @@ import shutil
 import sqlite3
 import subprocess
 import tempfile
+from collections.abc import Mapping
 from contextlib import closing
 from dataclasses import dataclass
 from pathlib import Path
@@ -14,6 +16,8 @@ import pandas as pd
 
 MODEL_PATH = Path(__file__).resolve().parents[2] / "models" / "wheat.apsimx"
 RUN_TIMEOUT_SECONDS = 300
+# MessageType of an error in APSIM's _Messages table (1 is a warning)
+APSIM_ERROR = 0
 
 COLUMNS = {
     "Clock.Today": "date",
@@ -86,9 +90,79 @@ def run_season(
     Give either sowing_date (the crop is sown on exactly that day) or
     sowing_window (APSIM's sowing rule picks a day inside it). The clock runs
     from the first to the last day of the weather file.
+
+    This is run_seasons() with one weather file. It raises the error of that
+    season instead of returning it.
+    """
+    result = run_seasons(
+        {"season": weather_path},
+        sowing_date=sowing_date,
+        sowing_window=sowing_window,
+        model_path=model_path,
+    )["season"]
+    if isinstance(result, Exception):
+        raise result
+    return result
+
+
+def run_seasons(
+    weather_paths: Mapping[str, str | Path],
+    sowing_date: dt.date | None = None,
+    sowing_window: tuple[dt.date, dt.date] | None = None,
+    model_path: str | Path = MODEL_PATH,
+) -> dict[str, SeasonResult | Exception]:
+    """Run one wheat season per weather file, all in one APSIM process.
+
+    APSIM spends most of a run on fixed start-up work: .NET loads the model and
+    compiles the manager scripts. With one simulation per weather file in one
+    .apsimx file, that work happens once, and APSIM runs the simulations on
+    several threads. In S3-04 testing, 10 seasons took about 2.5 s this way,
+    against about 2 s for one season alone.
+
+    Returns a result per name, in the order of weather_paths. A season that
+    fails gets its error (FileNotFoundError, ValueError or ApsimError) instead
+    of a SeasonResult, and the other seasons are not affected. Raises ValueError
+    for a wrong sowing date or window, because that fails every season, and
+    ApsimError when APSIM itself does not run.
     """
     start, end = _sowing_start_and_end(sowing_date, sowing_window)
-    weather_path = Path(weather_path).resolve()  # check for missing file
+    template = json.loads(Path(model_path).read_text(encoding="utf-8"))
+
+    results: dict[str, SeasonResult | Exception] = {}
+    simulations: dict[str, dict] = {}  # APSIM simulation name -> simulation node
+    names: dict[str, str] = {}  # APSIM simulation name -> name in weather_paths
+    for number, (name, weather_path) in enumerate(weather_paths.items()):
+        try:
+            simulation = _simulation_for(
+                template, weather_path, start, end, sowing_date
+            )
+        except (FileNotFoundError, ValueError) as error:
+            results[name] = error
+            continue
+        # Names like "2018/19" are not safe in APSIM, so each run gets its own
+        simulation["Name"] = f"season_{number}"
+        simulations[simulation["Name"]] = simulation
+        names[simulation["Name"]] = name
+
+    if simulations:
+        outputs = _run_simulations(template, list(simulations.values()))
+        for simulation_name, name in names.items():
+            results[name] = outputs.get(
+                simulation_name, ApsimError("APSIM wrote no rows for this season.")
+            )
+
+    return {name: results[name] for name in weather_paths}
+
+
+def _simulation_for(
+    template: dict,
+    weather_path: str | Path,
+    start: dt.date,
+    end: dt.date,
+    sowing_date: dt.date | None,
+) -> dict:
+    """Return a copy of the template's simulation node set up for one weather file."""
+    weather_path = Path(weather_path).resolve()
     if not weather_path.is_file():
         raise FileNotFoundError(f"Weather file not found: {weather_path}")
 
@@ -99,55 +173,128 @@ def run_season(
             f"which covers {first_day} to {last_day}."
         )
 
+    simulation = copy.deepcopy(_template_simulation(template))
+    _set_inputs(
+        simulation,
+        weather_path,
+        clock=(first_day, last_day),
+        sowing=(start, end),
+        fixed_date=sowing_date is not None,
+    )
+    return simulation
+
+
+def _template_simulation(model: dict) -> dict:
+    """Return the one simulation node of the model file."""
+    simulations = [
+        child
+        for child in model["Children"]
+        if child["$type"].startswith("Models.Core.Simulation,")
+    ]
+    if len(simulations) != 1:
+        raise ApsimError(
+            f"The model must have exactly one simulation, not {len(simulations)}"
+        )
+    return simulations[0]
+
+
+def _run_simulations(
+    template: dict, simulations: list[dict]
+) -> dict[str, SeasonResult | ApsimError]:
+    """Run the simulations in one APSIM process and return a result per name."""
+    template_simulation = _template_simulation(template)
+    model = dict(template)
+    model["Children"] = simulations + [
+        child for child in template["Children"] if child is not template_simulation
+    ]
+
     with tempfile.TemporaryDirectory() as temp_dir:
         # APSIM writes a .db next to the model, so each run gets its own folder
-        temp_model_path = Path(temp_dir) / "wheat.apsimx"
-        model = json.loads(Path(model_path).read_text(encoding="utf-8"))
-        first_day, last_day = _weather_dates(weather_path)
-        _set_inputs(
-            model,
-            weather_path,
-            clock=(first_day, last_day),
-            sowing=(start, end),
-            fixed_date=sowing_date is not None,
-        )
-        temp_model_path.write_text(json.dumps(model, indent=2), encoding="utf-8")
+        model_path = Path(temp_dir) / "wheat.apsimx"
+        model_path.write_text(json.dumps(model), encoding="utf-8")
 
         try:
+            # APSIM exits with 1 when any simulation fails, but it still writes
+            # the others, so the exit code alone does not fail the run
             run = subprocess.run(
-                [apsim_models_path(), temp_model_path],
-                check=True,
+                [apsim_models_path(), model_path],
+                check=False,
                 capture_output=True,
                 text=True,
                 timeout=RUN_TIMEOUT_SECONDS,
             )
-        except subprocess.CalledProcessError as e:
-            raise RuntimeError(
-                f"APSIM run failed.\nSTDERR: {e.stderr}\nSTDOUT: {e.stdout}"
-            ) from e
         except subprocess.TimeoutExpired as e:
-            raise RuntimeError(
+            raise ApsimError(
                 f"APSIM run took longer than {RUN_TIMEOUT_SECONDS} seconds."
             ) from e
 
-        db_path = temp_model_path.with_suffix(".db")
+        db_path = model_path.with_suffix(".db")
         if not db_path.is_file():
-            raise ApsimError(f"APSIM wrote no output database.\nSTDOUT: {run.stdout}")
+            raise ApsimError(
+                f"APSIM wrote no output database (exit code {run.returncode}).\n"
+                f"STDOUT: {run.stdout[-2000:]}\nSTDERR: {run.stderr[-2000:]}"
+            )
 
-        with closing(sqlite3.connect(temp_model_path.with_suffix(".db"))) as conn:
+        with closing(sqlite3.connect(db_path)) as conn:
             try:
-                report = pd.read_sql_query("SELECT * FROM Report", conn)
+                report = pd.read_sql_query(
+                    "SELECT s.Name AS simulation, r.* FROM Report r "
+                    "JOIN _Simulations s ON s.ID = r.SimulationID",
+                    conn,
+                )
+                errors = pd.read_sql_query(
+                    "SELECT s.Name AS simulation, m.Message AS message "
+                    "FROM _Messages m JOIN _Simulations s ON s.ID = m.SimulationID "
+                    f"WHERE m.MessageType = {APSIM_ERROR}",
+                    conn,
+                )
             except pd.errors.DatabaseError as e:
                 raise ApsimError(
-                    f"APSIM wrote no Report table.\nSTDOUT: {run.stdout}"
+                    f"APSIM wrote no Report table (exit code {run.returncode}).\n"
+                    f"STDOUT: {run.stdout[-2000:]}"
                 ) from e
-        if report.empty:
-            raise ApsimError(f"APSIM wrote an empty Report.\nSTDOUT: {run.stdout}")
 
+    error_by_simulation = errors.groupby("simulation")["message"].first().to_dict()
+    results: dict[str, SeasonResult | ApsimError] = {}
+    for simulation in simulations:
+        name = simulation["Name"]
+        if name in error_by_simulation:
+            # A simulation that failed part way can still have rows, so the
+            # error wins over the rows
+            results[name] = ApsimError(_short_error(error_by_simulation[name]))
+            continue
+        rows = report[report["simulation"] == name].drop(columns="simulation")
+        if rows.empty:
+            continue
+        try:
+            results[name] = _season_result(rows.reset_index(drop=True))
+        except ApsimError as error:
+            results[name] = error
+    return results
+
+
+def _season_result(report: pd.DataFrame) -> SeasonResult:
+    """Turn the Report rows of one simulation into a SeasonResult."""
     rows = _season_rows(_rename_columns(report))
     rows["date"] = pd.to_datetime(rows["date"])
     rows["sowing_date"] = pd.to_datetime(rows["sowing_date"])
     return SeasonResult(rows=rows, sowing_date=rows["date"].iloc[0].date())
+
+
+def _short_error(message: str) -> str:
+    """Return the APSIM error without the file name and the .NET stack trace.
+
+    APSIM writes "ERROR in file: ...", "Simulation name: ...", the exception
+    lines and then the stack trace, whose lines start with "at ".
+    """
+    lines = [line.strip() for line in message.splitlines()]
+    kept = [
+        line
+        for line in lines
+        if line
+        and not line.startswith(("ERROR in file:", "Simulation name:", "at ", "---"))
+    ]
+    return "APSIM failed: " + " ".join(kept[:3])
 
 
 # function to return a start and end date to the sowing window

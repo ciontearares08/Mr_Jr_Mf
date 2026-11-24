@@ -21,10 +21,35 @@ const position: Leaflet.LatLngTuple = [56.2639, 10.5];
 const zoom = 7;
 
 type DrawControlsProps = {
+  initialValue: GeoJSONPolygon | null;
   onChange: (polygon: GeoJSONPolygon | null) => void;
 };
 
-function DrawControls({ onChange }: DrawControlsProps) {
+type FieldMapEditorProps = {
+  initialValue?: GeoJSONPolygon | null;
+  onChange: (polygon: GeoJSONPolygon | null) => void;
+};
+
+export function FieldMapEditor({
+  initialValue = null,
+  onChange,
+}: FieldMapEditorProps) {
+  return (
+    <MapContainer
+      center={position}
+      zoom={zoom}
+      className="relative z-0 h-[60vh] min-h-80 w-full overflow-hidden rounded-lg"
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <DrawControls initialValue={initialValue} onChange={onChange} />
+    </MapContainer>
+  );
+}
+
+function DrawControls({ initialValue, onChange }: DrawControlsProps) {
   const map = useMap();
   // Keep the latest callback in a ref so a new onChange identity
   // doesn't tear down and rebuild the controls (and the drawn polygon).
@@ -32,6 +57,9 @@ function DrawControls({ onChange }: DrawControlsProps) {
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
+  //Only read when the map is set up. The wizard shows the map again
+  // after Back, so this is enough to restore the drawn polygon.
+  const initialValueRef = useRef(initialValue);
 
   useEffect(() => {
     const drawn = Leaflet.featureGroup().addTo(map);
@@ -52,6 +80,7 @@ function DrawControls({ onChange }: DrawControlsProps) {
       cutPolygon: false,
       rotateMode: false,
     });
+
     const refresh = () => {
       const layer = drawn.getLayers()[0];
       if (layer instanceof Leaflet.Polygon) {
@@ -66,17 +95,33 @@ function DrawControls({ onChange }: DrawControlsProps) {
         drawn.getLayers().length > 0,
       );
     };
+
+    const watch = (layer: Leaflet.Layer) => {
+      layer.on("pm:edit", refresh);
+      layer.on("pm:dragend", refresh);
+    };
+
     const onCreate: Leaflet.PM.CreateEventHandler = (event) => {
       drawn.addLayer(event.layer);
-      event.layer.on("pm:edit", refresh);
-      event.layer.on("pm:dragend", refresh);
+      watch(event.layer);
       refresh();
     };
+
     const onRemove: Leaflet.PM.RemoveEventHandler = (event) => {
       drawn.removeLayer(event.layer);
       refresh();
     };
 
+    const start = initialValueRef.current;
+    if (start) {
+      // coordsToLatLngs swaps GeoJSON which is in [lon, lat] to Leaflet which is in [lat, lon]
+      const layer = Leaflet.polygon(
+        Leaflet.GeoJSON.coordsToLatLngs(start.coordinates, 1),
+      );
+      drawn.addLayer(layer);
+      watch(layer);
+      map.fitBounds(layer.getBounds(), { padding: [24, 24] });
+    }
     map.on("pm:create", onCreate);
     map.on("pm:remove", onRemove);
 
@@ -99,7 +144,6 @@ function DrawControls({ onChange }: DrawControlsProps) {
 export default function FieldMap() {
   const [polygon, setPolygon] = useState<GeoJSONPolygon | null>(null);
   const areaHa = polygon ? area(polygon) / 10000 : null;
-
   return (
     <div>
       <h2 className="mb-6 text-3xl font-bold text-primary">Field Map</h2>
@@ -112,17 +156,7 @@ export default function FieldMap() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <MapContainer
-            center={position}
-            zoom={zoom}
-            className="relative z-0 h-[60vh] min-h-80 w-full overflow-hidden rounded-lg"
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <DrawControls onChange={setPolygon} />
-          </MapContainer>
+          <FieldMapEditor onChange={setPolygon} />
         </CardContent>
       </Card>
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
