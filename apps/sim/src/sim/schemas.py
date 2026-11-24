@@ -122,9 +122,17 @@ class DailyRow(BaseModel):
     grain_number: float | None = Field(description="Grains per m²")
     grain_wt: float | None = Field(description="Grain dry weight, g/m²")
     grain_n: float | None = Field(description="Nitrogen in the grain, g/m²")
+    stems: float | None = Field(
+        description=(
+            "Main stems and tillers per m². Above the plant population, the crop "
+            "has started tillering"
+        )
+    )
     # One value per soil layer, top layer first, as stored in simulation_daily
     sw: list[float] = Field(description="Soil water per layer, mm/mm")
-    paw: list[float] = Field(description="Plant available water per layer, mm")
+    paw: list[float] = Field(
+        description="Plant available water per layer, mm (APSIM's PAWmm)"
+    )
 
 
 class MemberResult(BaseModel):

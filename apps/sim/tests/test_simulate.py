@@ -75,6 +75,7 @@ def test_two_members_return_daily_rows() -> None:
         # One value per soil layer
         assert len(daily[0]["sw"]) == 7
         assert len(daily[0]["paw"]) == 7
+        assert daily[0]["stems"] > 0
 
 
 def test_a_failed_member_does_not_fail_the_others() -> None:
