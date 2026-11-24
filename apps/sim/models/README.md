@@ -75,7 +75,7 @@ The Report node writes one row per day. `run_season()` returns a `SeasonResult`:
 | `[Wheat].Phenology.CurrentStageName` | `stage`            |
 | `[Wheat].AboveGround.Wt`             | `biomass`          |
 | `[Wheat].Grain.Total.Wt*10 as Yield` | `yield`            |
-| `[Soil].SoilWater.PAW`               | `paw_1` to `paw_7` |
+| `[Soil].SoilWater.PAWmm`             | `paw_1` to `paw_7` |
 | `[Soil].SoilWater.SW`                | `sw_1` to `sw_7`   |
 | `[Wheat].SowingDate as SowingDate`   | `sowing_date`      |
 | `[Wheat].AboveGround.N`              | `biomass_n`        |
@@ -84,8 +84,13 @@ The Report node writes one row per day. `run_season()` returns a `SeasonResult`:
 | `[Wheat].Grain.Number`               | `grain_number`     |
 | `[Wheat].Grain.Total.Wt`             | `grain_wt`         |
 | `[Wheat].Grain.Total.N`              | `grain_n`          |
+| `[Wheat].Structure.TotalStemPopn`    | `stems`            |
 
 APSIM fills `stage` only on the day that a stage starts. On the other days, `stage` is empty.
+
+`sw_N` is volumetric soil water (mm/mm), so it compares with the soil limits below. `paw_N` is the plant available water of the layer in mm, which is the volumetric value (SW minus LL15) times the layer thickness. Add the layers to get the water in a root zone.
+
+`zadoks` follows the leaves on the main stem until stem extension: in that phase it is 10 plus the main stem leaf number, not a tillering code. So the value passes 20 in April without tillering and then jumps to 30 or more at stem extension. Use `stems` for tillering. It is 300 (the plant population) until the first tiller appears in the autumn.
 
 ## Soil limits
 

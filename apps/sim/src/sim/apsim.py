@@ -33,9 +33,11 @@ COLUMNS = {
     "Wheat.Grain.Number": "grain_number",
     "Wheat.Grain.Total.Wt": "grain_wt",
     "Wheat.Grain.Total.N": "grain_n",
+    "Wheat.Structure.TotalStemPopn": "stems",
 }
-# Per-layer columns, for example "Soil.SoilWater.SW(3)" becomes "sw_3"
-LAYER_COLUMN = re.compile(r"^Soil\.SoilWater\.(SW|PAW)\((\d+)\)$")
+# Per-layer columns, for example "Soil.SoilWater.SW(3)" becomes "sw_3". SW is
+# volumetric (mm/mm) and PAWmm is in mm, so "Soil.SoilWater.PAWmm(3)" becomes "paw_3"
+LAYER_COLUMN = re.compile(r"^Soil\.SoilWater\.(SW|PAW)(?:mm)?\((\d+)\)$")
 # APSIm writes dates as day-month --> 15-apr
 MONTHS = [
     "jan",

@@ -35,6 +35,17 @@ def test_run_season_returns_one_row_per_day_of_the_season() -> None:
     ]
 
 
+def test_run_season_reports_soil_water_in_mm_and_the_stem_count() -> None:
+    df = run_season(weather_path=WEATHER_PATH, sowing_date=dt.date(2025, 10, 1)).rows
+
+    # paw is in mm: the volumetric water above LL15 (0.09) times the 150 mm layer
+    first = df.iloc[0]
+    assert first["paw_1"] == pytest.approx((first["sw_1"] - 0.09) * 150, abs=0.01)
+    # 300 plants per m² start with one stem each, then the crop tillers
+    assert first["stems"] == pytest.approx(300)
+    assert df["stems"].max() > 500
+
+
 def test_run_season_sows_inside_the_sowing_window() -> None:
     window_start = dt.date(2025, 9, 15)
     window_end = dt.date(2025, 10, 15)

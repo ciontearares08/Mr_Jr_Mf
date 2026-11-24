@@ -152,6 +152,7 @@ def daily_rows(rows: pd.DataFrame) -> list[DailyRow]:
                 grain_number=row["grain_number"],
                 grain_wt=row["grain_wt"],
                 grain_n=row["grain_n"],
+                stems=row["stems"],
                 sw=[row[column] for column in sw_columns],
                 paw=[row[column] for column in paw_columns],
             )

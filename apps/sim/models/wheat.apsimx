@@ -90,7 +90,8 @@
                 "[Wheat].Grain.Total.Wt",
                 "[Wheat].Grain.Total.N",
                 "[Wheat].Total.Wt",
-                "[Soil].SoilWater.PAW",
+                "[Soil].SoilWater.PAWmm",
+                "[Wheat].Structure.TotalStemPopn",
                 "[Soil].SoilWater.SW",
                 "[Wheat].Leaf.LAI"
               ],
