@@ -4,7 +4,8 @@ import kinks from "@turf/kinks";
 
 /**
  * Checks the boundary before the user can leave step 2. Mirrors the API's
- * rules, except "inside Denmark", which the server checks on submit.
+ * rules, except "inside Denmark", which is checked by isInsideDenmark() in
+ * denmarkAreaValidation.ts when the user presses Next (and again by the API).
  */
 export function isBoundaryValid(geometry: GeoJSONPolygon | null): boolean {
   if (geometry === null || geometry.coordinates.length !== 1) {

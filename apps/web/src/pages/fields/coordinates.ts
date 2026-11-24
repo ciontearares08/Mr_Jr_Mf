@@ -1,24 +1,36 @@
 import type { Polygon as GeoJSONPolygon } from "geojson";
 
-/* one corner as the user typed it. Kept as text so half-typed numbers like "57." work. */
-export type CornerRow = { lat: string; lon: string };
+/* one corner as the user typed it. Kept as text so half-typed numbers like "57." work.
+The id stays the same when other rows are added or removed, so React keeps focus on the right row. */
+export type CornerRow = { id: string; lat: string; lon: string };
 
 export const MIN_CORNERS = 3;
 
-/* round GeoJSOn to 6 decimals */
+let nextRowId = 0;
+
+/* a new corner row with its own id */
+export function newCornerRow(lat = "", lon = ""): CornerRow {
+  nextRowId += 1;
+  return { id: `corner-${nextRowId}`, lat, lon };
+}
+
+/* round GeoJSON to 6 decimals (about 0.1 m) */
 function roundTo6(value: number): number {
   return Math.round(value * 1e6) / 1e6;
 }
+
+/* a decimal number with an optional minus sign, e.g. "57", "57." or "-8.25".
+Number() alone would also accept "0x38" or "5.6e1". */
+const DECIMAL_PATTERN = /^-?\d+(\.\d*)?$/;
 
 /* typed text to number, accepts comma as decimal separator
 Returns null if it is not a number. */
 export function parseCoordinate(text: string): number | null {
   const cleaned = text.trim().replace(",", ".");
-  if (cleaned === "") {
+  if (!DECIMAL_PATTERN.test(cleaned)) {
     return null;
   }
-  const value = Number(cleaned);
-  return Number.isFinite(value) ? value : null;
+  return Number(cleaned);
 }
 
 /* returns True when the text is filled in but is not a valid latitude or longitude. */
@@ -50,13 +62,16 @@ export function rowsToPolygon(rows: CornerRow[]): GeoJSONPolygon | null {
   return { type: "Polygon", coordinates: [ring] };
 }
 
-/* turns a polygon into rows for the inputs, returns empty rows when there's no polygon */
+/* turns a polygon into rows for the inputs, returns empty rows when there's no polygon.
+Rounded to 6 decimals like rowsToPolygon, so the rows show the same corners that are saved. */
 export function polygonToRows(geometry: GeoJSONPolygon | null): CornerRow[] {
   if (geometry === null) {
-    return Array.from({ length: MIN_CORNERS }, () => ({ lat: "", lon: "" }));
+    return Array.from({ length: MIN_CORNERS }, () => newCornerRow());
   }
   // leave out the closing corner, user only sees each corner once.
   return geometry.coordinates[0]
     .slice(0, -1)
-    .map(([lon, lat]) => ({ lat: String(lat), lon: String(lon) }));
+    .map(([lon, lat]) =>
+      newCornerRow(String(roundTo6(lat)), String(roundTo6(lon))),
+    );
 }

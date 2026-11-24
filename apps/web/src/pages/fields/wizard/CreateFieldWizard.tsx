@@ -98,6 +98,7 @@ export default function CreateFieldWizard() {
         {state.step === 2 && (
           <BoundaryStep
             geometry={state.geometry}
+            isValid={state.boundaryValid}
             outsideDenmark={state.outsideDenmark}
             onChange={(geometry) =>
               dispatch({ type: "SET_GEOMETRY", geometry })

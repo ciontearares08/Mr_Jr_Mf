@@ -144,22 +144,6 @@ function DrawControls({ initialValue, onChange }: DrawControlsProps) {
 export default function FieldMap() {
   const [polygon, setPolygon] = useState<GeoJSONPolygon | null>(null);
   const areaHa = polygon ? area(polygon) / 10000 : null;
-  // to test whether the polygon stays even after refresh and is zoomed in
-  // uncomment below and add initialValue={testPolygon} in <FieldMapEditor /> to test
-  // const testPolygon = {
-  //   type: "Polygon",
-  //   coordinates: [
-  //     [
-  //       [10.222692, 56.169352],
-  //       [10.234365, 56.180622],
-  //       [10.218315, 56.183009],
-  //       [10.219002, 56.177375],
-  //       [10.22192, 56.175083],
-  //       [10.21986, 56.169639],
-  //       [10.222692, 56.169352],
-  //     ],
-  //   ],
-  // };
   return (
     <div>
       <h2 className="mb-6 text-3xl font-bold text-primary">Field Map</h2>

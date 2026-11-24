@@ -11,7 +11,10 @@ export interface CreateFieldWizardState {
   step: WizardStep;
   name: string;
   geometry: GeoJSONPolygon | null;
-  outsideDenmark: boolean; //returns true when field is outside of DK (*** after next is pressed)
+  // worked out once per geometry change in SET_GEOMETRY, so a render does not run kinks() and booleanWithin() again
+  boundaryValid: boolean;
+  insideDenmark: boolean;
+  outsideDenmark: boolean; // true after Next was pressed with a field outside Denmark; shows the error
   sowingDate: string | null;
   sowingWindow: SowingWindow | null;
 }
@@ -32,6 +35,8 @@ export const initialWizardState: CreateFieldWizardState = {
   step: 1,
   name: "",
   geometry: null,
+  boundaryValid: false,
+  insideDenmark: false,
   outsideDenmark: false,
   sowingDate: null,
   sowingWindow: null,
@@ -53,7 +58,7 @@ export function canAdvanceFromStep(
     return isNameStepValid(state.name);
   }
   if (step === 2) {
-    return isBoundaryValid(state.geometry) && !state.outsideDenmark;
+    return state.boundaryValid && !state.outsideDenmark;
   }
   return false;
 }
@@ -64,11 +69,7 @@ function isStepComplete(
   step: WizardStep,
 ): boolean {
   if (step === 2) {
-    return (
-      canAdvanceFromStep(state, 2) &&
-      state.geometry !== null &&
-      isInsideDenmark(state.geometry)
-    );
+    return canAdvanceFromStep(state, 2) && state.insideDenmark;
   }
   return canAdvanceFromStep(state, step);
 }
@@ -91,12 +92,7 @@ export function canReachStep(
 function rejectOutsideDenmark(
   state: CreateFieldWizardState,
 ): CreateFieldWizardState | null {
-  if (
-    state.step === 2 &&
-    state.geometry !== null &&
-    isBoundaryValid(state.geometry) &&
-    !isInsideDenmark(state.geometry)
-  ) {
+  if (state.step === 2 && state.boundaryValid && !state.insideDenmark) {
     return { ...state, outsideDenmark: true };
   }
   return null;
@@ -113,12 +109,20 @@ export function createFieldWizardReducer(
         ...state,
         name: action.name,
       };
-    case "SET_GEOMETRY":
+    case "SET_GEOMETRY": {
+      const boundaryValid = isBoundaryValid(action.geometry);
       return {
         ...state,
         geometry: action.geometry,
+        boundaryValid,
+        // only checked for a valid outline; booleanWithin() needs a proper polygon
+        insideDenmark:
+          boundaryValid &&
+          action.geometry !== null &&
+          isInsideDenmark(action.geometry),
         outsideDenmark: false,
       };
+    }
     case "SET_SOWING":
       return {
         ...state,

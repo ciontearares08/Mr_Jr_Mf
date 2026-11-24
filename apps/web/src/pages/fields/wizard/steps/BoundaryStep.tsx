@@ -8,21 +8,21 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FieldMapEditor } from "@/components/map/FieldMap";
-import { isBoundaryValid } from "../../validations/boundaryValidation";
 import CoordinateInput from "../../CoordinateInput";
 
 type BoundaryStepProps = {
   geometry: GeoJSONPolygon | null;
+  isValid: boolean;
   outsideDenmark: boolean;
   onChange: (geometry: GeoJSONPolygon | null) => void;
 };
 
 export default function BoundaryStep({
   geometry,
+  isValid,
   outsideDenmark,
   onChange,
 }: BoundaryStepProps) {
-  const isValid = isBoundaryValid(geometry);
   const areaHa = geometry && isValid ? area(geometry) / 10000 : null;
 
   return (
