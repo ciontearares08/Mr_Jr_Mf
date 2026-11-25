@@ -1,7 +1,7 @@
 """Queue ensemble jobs in the simulation_runs table.
 
 A job is one run per past weather season, all with the same field inputs and
-one shared job_id. The worker (S4-01) picks up the queued runs. The queue is the
+one shared job_id. The worker (S4-31, api.jobs.worker) picks up the queued runs. The queue is the
 table itself, so it needs no Redis and survives an API restart.
 
 queue_job does not commit: the caller owns the transaction, for example:
@@ -49,12 +49,15 @@ def queue_job(
         return finished_job_id
 
     job_id = uuid.uuid4()
+    # The same conversion as the hash, so a date is stored as "2026-03-15"
+    json_inputs = json.loads(json.dumps(inputs, sort_keys=True, default=str))
     db.add_all(
         SimulationRun(
             job_id=job_id,
             field_id=field_id,
             season=season,
             inputs_hash=inputs_hash,
+            inputs=json_inputs,
             status=RunStatus.queued,
         )
         for season in seasons
